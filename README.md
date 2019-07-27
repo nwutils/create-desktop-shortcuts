@@ -1,6 +1,8 @@
 
 # create-desktop-shortcuts
 
+[![Build Status](https://travis-ci.org/nwutils/create-desktop-shortcuts.svg?branch=master)](https://travis-ci.org/nwutils/create-desktop-shortcuts)
+
 Easy API to create desktop shortcuts with Node
 
 This is **not ready for use yet**. But the following is the planned API, it is subject to change.
