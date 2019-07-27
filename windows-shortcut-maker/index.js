@@ -53,7 +53,7 @@ function makeSync (options) {
       options.lnkHtk
     ]
   )
-}
+};
 
 module.exports = {
   makeSync: makeSync
