@@ -30,7 +30,7 @@ function makeSync (options) {
     options.lnkCwd = '';
   }
   if (!isString(options.lnkIco)) {
-    options.lnkIco = filepath;
+    options.lnkIco = options.filepath;
   }
   if (!isString(options.lnkWin)) {
     options.lnkWin = 4;
@@ -52,9 +52,9 @@ function makeSync (options) {
       options.lnkWin,
       options.lnkHtk
     ]
-  )
-};
+  );
+}
 
 module.exports = {
   makeSync: makeSync
-}
+};

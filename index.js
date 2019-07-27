@@ -65,19 +65,24 @@ const library = {
     return fileContents;
   },
   makeLinuxShortcut: function (options) {
-    var fileContents = generateLinuxFileData(options);
+    var fileContents = this.generateLinuxFileData(options);
     // todo: save file to location
+    console.log(fileContents);
+
     if (options.chmod) {
       var command = 'chmod +x ~/Desktop/Example.desktop';
       // todo: run command
+      console.log(command);
     }
   },
   makeWindowsShortcut: function (options) {
     // todo
+    console.log(options);
     return true;
   },
   makeOSXShortcut: function (options) {
     // todo
+    console.log(options);
     return true;
   },
   runCorrectOSs: function (options) {

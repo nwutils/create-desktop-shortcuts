@@ -11,7 +11,12 @@
     "alias",
     "lnk"
   ],
-  "scripts": {},
+  "scripts": {
+    "start": "node index.js",
+    "lint": "eslint --config=.eslintrc.js index.js windows-shortcut-maker/**/*.js",
+    "fix": "eslint --fix --config=.eslintrc.js index.js windows-shortcut-maker/**/*.js",
+    "debug": "node --inspect-brk index.js"
+  },
   "devDependencies": {
     "eslint": "^6.1.0"
   },

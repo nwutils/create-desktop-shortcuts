@@ -9,8 +9,8 @@ This is **not ready for use yet**. But the following is the planned API, it is s
 ```js
 const createDesktopShortcut = require('create-desktop-shortcuts');
 createDesktopShortcut({
-  async: true,
-  onlyCurrentOS: false,
+  async: true, // defaults to false
+  onlyCurrentOS: false, // defaults to true
   win: {
     name: 'My App Name',
     description: 'My App description',
