@@ -1,11 +1,18 @@
+'use strict';
+
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
+const exec = require('child_process').execSync;
 
 const library = {
   // HELPERS
   throwError: function (message) {
-    console.error(message);
+    console.error(
+      '_________________________\n' +
+      'Create-Desktop-Shortcuts:\n' +
+      message
+    );
   },
   resolveTilde: function (filePath) {
     if (!filePath || typeof(filePath) !== 'string') {
@@ -187,9 +194,9 @@ const library = {
       this.throwError(error);
     }
 
-    if (success && options.chmod) {
+    if (success && options.linux.chmod) {
       try {
-        fs.chmodSync(options.linux.outputPath, 0o755);
+        fs.chmodSync(options.linux.outputPath, '755');
       } catch (error) {
         success = false;
         this.throwError('ERROR attempting to change permisions of ' + options.linux.outputPath);
