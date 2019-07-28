@@ -57,6 +57,7 @@ const library = {
     options = this.validateOptionalString(options, operatingSystem, 'name');
 
     if (options[operatingSystem].outputPath) {
+      options[operatingSystem].outputPath = this.resolveTilde(options[operatingSystem].outputPath);
       if (
         !fs.existsSync(options[operatingSystem].outputPath) ||
         !fs.lstatSync(options[operatingSystem].outputPath).isDirectory()
@@ -104,20 +105,21 @@ const library = {
     }
 
     if (options.linux.icon) {
-      let icon = options.linux.icon;
-      let isPng = icon.endsWith('.png');
-      let isIcns = icon.endsWith('.icns');
-      let iconPath = icon;
-      if (!path.isAbsolute(icon)) {
-        iconPath = path.join(options.linux.outputPath, icon);
+      let iconPath = this.resolveTilde(options.linux.icon);
+
+      if (!path.isAbsolute(iconPath)) {
+        iconPath = path.join(options.linux.outputPath, iconPath);
       }
 
-      if (!isPng && !isIcns) {
+      if (!iconPath.endsWith('.png') && !iconPath.endsWith('.icns')) {
         this.throwError('Optional LINUX icon should probably be a PNG file.');
       }
+
       if (!fs.existsSync(iconPath)) {
         this.throwError('Optional LINUX icon could not be found.');
         delete options.linux.icon;
+      } else {
+        options.linux.icon = iconPath;
       }
     }
 
@@ -150,8 +152,8 @@ const library = {
     if (options.linux.comment) {
       comment = 'comment=' + options.linux.comment;
     }
-    if (options.linux.filePath) {
-      icon = 'Icon=' + options.linux.filePath;
+    if (options.linux.icon) {
+      icon = 'Icon=' + options.linux.icon;
     }
 
     var fileContents = [
@@ -212,6 +214,7 @@ const library = {
     return false;
   },
 
+  // RUN
   runCorrectOSs: function (options) {
     if (options.onlyCurrentOS) {
       if (process.platform === 'win32' && options.windows) {
@@ -252,6 +255,10 @@ function createDesktopShortcut (options) {
   options = options || {};
   options = library.validateOptions(options);
   let success = library.runCorrectOSs(options);
+
+  console.log('TEMPORARY DEBUGGER');
+  console.log(JSON.stringify(options, null, 2));
+
   return success;
 }
 
