@@ -3,9 +3,24 @@ const path = require('path');
 const os = require('os');
 
 const library = {
+  // HELPERS
   throwError: function (message) {
     console.error(message);
   },
+  resolveTilde: function (filePath) {
+    if (!filePath || typeof(filePath) !== 'string') {
+      return undefined;
+    }
+
+    // '~/folder/path' or '~'
+    if (filePath[0] === '~' && (filePath[1] === '/' || filePath.length === 1)) {
+      return filePath.replace('~', os.homedir());
+    }
+
+    return filePath;
+  },
+
+  // VALIDATION
   validateOptions: function (options) {
     if (typeof(options.onlyCurrentOS) !== 'boolean') {
       options.onlyCurrentOS = true;
@@ -22,6 +37,10 @@ const library = {
   },
   validateFilePath: function (options, operatingSystem) {
     if (options[operatingSystem]) {
+      if (options[operatingSystem].filePath) {
+        options[operatingSystem].filePath = this.resolveTilde(options[operatingSystem].filePath);
+      }
+
       if (
         !options[operatingSystem].filePath ||
         typeof(options[operatingSystem].filePath) !== 'string' ||
@@ -31,6 +50,7 @@ const library = {
         delete options[operatingSystem];
       }
     }
+
     return options;
   },
   validateOutputPath: function (options, operatingSystem) {
@@ -103,6 +123,8 @@ const library = {
 
     return options;
   },
+
+  // LINUX
   generateLinuxFileData: function (options) {
     // Set defaults
     let type = 'Type=Application';
@@ -175,16 +197,21 @@ const library = {
 
     return success;
   },
+
+  // WINDOWS
   makeWindowsShortcut: function (options) {
     // todo
     this.throwError('WINDOWS shortcut creation is not available yet.\n' + JSON.stringify(options, null, 2));
     return false;
   },
+
+  // OSX
   makeOSXShortcut: function (options) {
     // todo
     this.throwError('OSX shortcut creation is not available yet.\n' + JSON.stringify(options, null, 2));
     return false;
   },
+
   runCorrectOSs: function (options) {
     if (options.onlyCurrentOS) {
       if (process.platform === 'win32' && options.windows) {
