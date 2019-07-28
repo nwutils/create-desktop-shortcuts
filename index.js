@@ -5,13 +5,16 @@ const path = require('path');
 const os = require('os');
 
 const library = {
+  verbose: true,
   // HELPERS
   throwError: function (message) {
-    console.error(
-      '_________________________\n' +
-      'Create-Desktop-Shortcuts:\n' +
-      message
-    );
+    if (this.verbose) {
+      console.error(
+        '_________________________\n' +
+        'Create-Desktop-Shortcuts:\n' +
+        message
+      );
+    }
   },
   resolveTilde: function (filePath) {
     if (!filePath || typeof(filePath) !== 'string') {
@@ -28,9 +31,14 @@ const library = {
 
   // VALIDATION
   validateOptions: function (options) {
+    if (typeof(options.verbose) !== 'boolean') {
+      options.verbose = true;
+    }
     if (typeof(options.onlyCurrentOS) !== 'boolean') {
       options.onlyCurrentOS = true;
     }
+
+    this.verbose = options.verbose;
 
     options = this.validateFilePath(options, 'linux');
     options = this.validateFilePath(options, 'windows');
@@ -42,17 +50,50 @@ const library = {
     return options;
   },
   validateFilePath: function (options, operatingSystem) {
-    if (options[operatingSystem]) {
-      if (options[operatingSystem].filePath) {
-        options[operatingSystem].filePath = this.resolveTilde(options[operatingSystem].filePath);
+    const optionsOS = options[operatingSystem];
+    if (optionsOS) {
+      if (optionsOS.filePath) {
+        optionsOS.filePath = this.resolveTilde(optionsOS.filePath);
       }
 
+      const type = optionsOS.type;
       if (
-        !options[operatingSystem].filePath ||
-        typeof(options[operatingSystem].filePath) !== 'string' ||
-        !fs.existsSync(options[operatingSystem].filePath)
+        (!type || type === 'Application') &&
+        (
+          !optionsOS.filePath ||
+          typeof(optionsOS.filePath) !== 'string' ||
+          !fs.existsSync(optionsOS.filePath) ||
+          fs.lstatSync(optionsOS.filePath).isDirectory()
+        )
       ) {
-        this.throwError(operatingSystem.toUpperCase() + ' file path does not exist: ' + options[operatingSystem].filePath);
+        this.throwError(operatingSystem.toUpperCase() + ' filePath does not exist: ' + optionsOS.filePath);
+        delete options[operatingSystem];
+      } else if (
+        type &&
+        type === 'Directory' &&
+        (
+          !optionsOS.filePath ||
+          typeof(optionsOS.filePath) !== 'string' ||
+          !fs.existsSync(optionsOS.filePath) ||
+          !fs.lstatSync(optionsOS.filePath).isDirectory()
+        )
+      ) {
+        this.throwError(operatingSystem.toUpperCase() + ' filePath directory must exist and be a folder: ' + optionsOS.filePath);
+        delete options[operatingSystem];
+      } else if (
+        type &&
+        type === 'Link' &&
+        (
+          !optionsOS.filePath ||
+          typeof(optionsOS.filePath) !== 'string'
+        )
+      ) {
+        this.throwError(operatingSystem.toUpperCase() + ' filePath url must exist a string: ' + optionsOS.filePath);
+        delete options[operatingSystem];
+      }
+
+      if (options[operatingSystem] && !options[operatingSystem].filePath) {
+        this.throwError(operatingSystem.toUpperCase() + ' filePath does not exist: ' + optionsOS.filePath);
         delete options[operatingSystem];
       }
     }
@@ -110,6 +151,12 @@ const library = {
       options.linux.chmod = true;
     }
 
+    const validTypes = ['Application', 'Link', 'Directory'];
+    if (options.linux.type && !validTypes.includes(options.linux.type)) {
+      this.throwError('Optional LINUX type must be "Application", "Link", or "Documentation". Defaulting to "Application".');
+      options.linux.type = 'Application';
+    }
+
     if (options.linux.icon) {
       let iconPath = this.resolveTilde(options.linux.icon);
 
@@ -162,6 +209,8 @@ const library = {
       icon = 'Icon=' + options.linux.icon;
     }
 
+    // File format details:
+    // https://wiki.archlinux.org/index.php/Desktop_entries
     var fileContents = [
       '#!/user/bin/env xdg-open',
       '[Desktop Entry]',
