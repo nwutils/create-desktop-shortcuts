@@ -14,13 +14,10 @@ insert_final_newline = true
 charset = utf-8
 
 # 4 space indentation
-[*.{js,css,sass,scss}]
+[*.{css,sass,scss}]
 indent_style = space
 indent_size = 4
 
-[*.{json}]
-indent_style = space
-
-[*.{html}]
+[*.{html,js,json}]
 indent_style = space
 indent_size = 2
