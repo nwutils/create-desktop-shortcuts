@@ -107,6 +107,8 @@ Key           | Type   | Allowed                                  | Default     
 
 OSX will automatically inherit the icon of the target you point to. It doesn't care if you point to a folder, file, or application.
 
+If overwrite is set to false and a matching file already exists, a console log will occur to inform you of this, however `create-desktop-shortcuts` will still report successful. This console log can be hidden by setting verbose to false.
+
 Key          | Type    | Allowed                     | Default                  | Description
 :--          | :--     | :--                         | :--                      | :--
 `name`       | String  | Any file system safe string | Uses name from filePath  | The name of the shortcut file.

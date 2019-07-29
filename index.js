@@ -32,13 +32,25 @@ const library = {
 
   // VALIDATION
   validateOptions: function (options) {
-    if (typeof(options.onlyCurrentOS) !== 'boolean') {
-      options.onlyCurrentOS = true;
-    }
     if (typeof(options.verbose) !== 'boolean') {
       options.verbose = true;
     }
     this.verbose = options.verbose;
+
+    if (typeof(options.onlyCurrentOS) !== 'boolean') {
+      options.onlyCurrentOS = true;
+    }
+    if (options.onlyCurrentOS) {
+      if (process.platform !== 'win32' && options.windows) {
+        delete options.windows;
+      }
+      if (process.platform !== 'linux' && options.linux) {
+        delete options.linux;
+      }
+      if (process.platform !== 'darwin' && options.osx) {
+        delete options.osx;
+      }
+    }
 
     options = this.validateLinuxOptions(options);
     options = this.validateWindowsOptions(options);
@@ -48,6 +60,10 @@ const library = {
   },
   validateOutputPath: function (options, operatingSystem) {
     options = this.validateOptionalString(options, operatingSystem, 'name');
+
+    if (!options[operatingSystem]) {
+      return options;
+    }
 
     if (options[operatingSystem].outputPath) {
       options[operatingSystem].outputPath = this.resolveTilde(options[operatingSystem].outputPath);
@@ -147,6 +163,10 @@ const library = {
     options = this.validateOptionalString(options, 'linux', 'comment');
     options = this.validateOptionalString(options, 'linux', 'type');
     options = this.validateOptionalString(options, 'linux', 'icon');
+
+    if (!options.linux) {
+      return options;
+    }
 
     if (typeof(options.linux.terminal) !== 'boolean') {
       options.linux.terminal = false;
@@ -327,14 +347,14 @@ const library = {
       overwrite = '-f';
     }
 
-    if (options.osx.overwrite || (!options.osx.overwrite && !fs.existsSync(options.osx.outputfile))) {
+    if (options.osx.overwrite || (!options.osx.overwrite && !fs.existsSync(options.osx.outputPath))) {
       let command = [
         'ln',
         overwrite,
         '-s',
         '"' + options.osx.filePath + '"',
-        '"' + options.osx.outputFile + '"'
-      ].join(' ');
+        '"' + options.osx.outputPath + '"'
+      ].filter(Boolean).join(' ');
 
       try {
         // ln -s "/Applications/Sublime Text.app" "/Users/owner/Desktop/Sublime Text"
