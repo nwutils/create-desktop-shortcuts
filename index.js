@@ -3,6 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
+const exec = require('child_process').execSync;
 
 const library = {
   verbose: true,
@@ -31,72 +32,17 @@ const library = {
 
   // VALIDATION
   validateOptions: function (options) {
-    if (typeof(options.verbose) !== 'boolean') {
-      options.verbose = true;
-    }
     if (typeof(options.onlyCurrentOS) !== 'boolean') {
       options.onlyCurrentOS = true;
     }
-
+    if (typeof(options.verbose) !== 'boolean') {
+      options.verbose = true;
+    }
     this.verbose = options.verbose;
 
-    options = this.validateFilePath(options, 'linux');
-    options = this.validateFilePath(options, 'windows');
-    options = this.validateFilePath(options, 'osx');
-
-    if (options.linux) {
-      options = this.validateLinuxOptions(options);
-    }
-    return options;
-  },
-  validateFilePath: function (options, operatingSystem) {
-    const optionsOS = options[operatingSystem];
-    if (optionsOS) {
-      if (optionsOS.filePath) {
-        optionsOS.filePath = this.resolveTilde(optionsOS.filePath);
-      }
-
-      const type = optionsOS.type;
-      if (
-        (!type || type === 'Application') &&
-        (
-          !optionsOS.filePath ||
-          typeof(optionsOS.filePath) !== 'string' ||
-          !fs.existsSync(optionsOS.filePath) ||
-          fs.lstatSync(optionsOS.filePath).isDirectory()
-        )
-      ) {
-        this.throwError(operatingSystem.toUpperCase() + ' filePath does not exist: ' + optionsOS.filePath);
-        delete options[operatingSystem];
-      } else if (
-        type &&
-        type === 'Directory' &&
-        (
-          !optionsOS.filePath ||
-          typeof(optionsOS.filePath) !== 'string' ||
-          !fs.existsSync(optionsOS.filePath) ||
-          !fs.lstatSync(optionsOS.filePath).isDirectory()
-        )
-      ) {
-        this.throwError(operatingSystem.toUpperCase() + ' filePath directory must exist and be a folder: ' + optionsOS.filePath);
-        delete options[operatingSystem];
-      } else if (
-        type &&
-        type === 'Link' &&
-        (
-          !optionsOS.filePath ||
-          typeof(optionsOS.filePath) !== 'string'
-        )
-      ) {
-        this.throwError(operatingSystem.toUpperCase() + ' filePath url must exist a string: ' + optionsOS.filePath);
-        delete options[operatingSystem];
-      }
-
-      if (options[operatingSystem] && !options[operatingSystem].filePath) {
-        this.throwError(operatingSystem.toUpperCase() + ' filePath does not exist: ' + optionsOS.filePath);
-        delete options[operatingSystem];
-      }
-    }
+    options = this.validateLinuxOptions(options);
+    options = this.validateWindowsOptions(options);
+    options = this.validateOSXOptions(options);
 
     return options;
   },
@@ -109,7 +55,7 @@ const library = {
         !fs.existsSync(options[operatingSystem].outputPath) ||
         !fs.lstatSync(options[operatingSystem].outputPath).isDirectory()
       ) {
-        this.throwError('Optional ' + operatingSystem.toUpperCase() + ' output path must exist and be a folder. Defaulting to desktop.');
+        this.throwError('Optional ' + operatingSystem.toUpperCase() + ' outputPath must exist and be a folder. Defaulting to desktop.');
         delete options[operatingSystem].outputPath;
       }
     }
@@ -118,11 +64,13 @@ const library = {
       options[operatingSystem].outputPath = path.join(os.homedir(), 'Desktop');
     }
 
-    let fileName = options[operatingSystem].name || path.parse(options[operatingSystem].filePath).name;
-    let fileExtension = '.desktop';
-    if (process.platform === 'win32') {
-      fileExtension = '.lnk';
-    }
+    const fileName = options[operatingSystem].name || path.parse(options[operatingSystem].filePath).name || 'Root';
+    const fileExtensions = {
+      linux: '.desktop',
+      win32: '.lnk',
+      darwin: ''
+    };
+    const fileExtension = fileExtensions[process.platform];
 
     // 'C:\Users\Bob\Desktop\' + 'My App Name.lnk'
     // '~/Desktop/' + 'My App Name.desktop'
@@ -137,8 +85,64 @@ const library = {
     }
     return options;
   },
+  validateLinuxFilePath: function (options) {
+    if (!options.linux) {
+      return options;
+    }
+
+    if (options.linux.filePath) {
+      options.linux.filePath = this.resolveTilde(options.linux.filePath);
+    }
+
+    const type = options.linux.type;
+    if (
+      (!type || type === 'Application') &&
+      (
+        !options.linux.filePath ||
+        typeof(options.linux.filePath) !== 'string' ||
+        !fs.existsSync(options.linux.filePath) ||
+        fs.lstatSync(options.linux.filePath).isDirectory()
+      )
+    ) {
+      this.throwError('LINUX filePath does not exist: ' + options.linux.filePath);
+      delete options.linux;
+    } else if (
+      type &&
+      type === 'Directory' &&
+      (
+        !options.linux.filePath ||
+        typeof(options.linux.filePath) !== 'string' ||
+        !fs.existsSync(options.linux.filePath) ||
+        !fs.lstatSync(options.linux.filePath).isDirectory()
+      )
+    ) {
+      this.throwError('LINUX filePath directory must exist and be a folder: ' + options.linux.filePath);
+      delete options.linux;
+    } else if (
+      type &&
+      type === 'Link' &&
+      (
+        !options.linux.filePath ||
+        typeof(options.linux.filePath) !== 'string'
+      )
+    ) {
+      this.throwError('LINUX filePath url must exist a string: ' + options.linux.filePath);
+      delete options.linux;
+    }
+
+    if (options.linux && !options.linux.filePath) {
+      this.throwError('LINUX filePath does not exist: ' + options.linux.filePath);
+      delete options.linux;
+    }
+
+    return options;
+  },
   validateLinuxOptions: function (options) {
-    // already validated options.linux and options.linux.filepath by this point
+    if (!options.linux) {
+      return options;
+    }
+
+    options = this.validateLinuxFilePath(options);
     options = this.validateOutputPath(options, 'linux');
     options = this.validateOptionalString(options, 'linux', 'comment');
     options = this.validateOptionalString(options, 'linux', 'type');
@@ -149,6 +153,9 @@ const library = {
     }
     if (typeof(options.linux.chmod) !== 'boolean') {
       options.linux.chmod = true;
+    }
+    if (options.linux.outputPath) {
+      options.linux.outputPath = this.resolveTilde(options.linux.outputPath);
     }
 
     const validTypes = ['Application', 'Link', 'Directory'];
@@ -175,6 +182,55 @@ const library = {
         options.linux.icon = iconPath;
       }
     }
+
+    return options;
+  },
+  validateWindowsOptions: function (options) {
+    if (!options.windows) {
+      return options;
+    }
+    if (!options.windows.filePath) {
+      delete options.windows;
+      return options;
+    }
+
+    return options;
+  },
+  validateOSXFilePath: function (options) {
+    if (!options.osx) {
+      return options;
+    }
+    if (!options.osx.filePath) {
+      delete options.osx;
+      return options;
+    }
+
+    if (options.osx.filePath) {
+      options.osx.filePath = this.resolveTilde(options.osx.filePath);
+    }
+
+    if (
+      !options.osx.filePath ||
+      typeof(options.osx.filePath) !== 'string' ||
+      !fs.existsSync(options.osx.filePath)
+    ) {
+      this.throwError('OSX filePath does not exist: ' + options.osx.filePath);
+      delete options.osx;
+    }
+
+    return options;
+  },
+  validateOSXOptions: function (options) {
+    options = this.validateOSXFilePath(options);
+    if (!options.osx) {
+      return options;
+    }
+
+    if (typeof(options.osx.overwrite) !== 'boolean') {
+      options.osx.overwrite = false;
+    }
+
+    options = this.validateOutputPath(options, 'osx');
 
     return options;
   },
@@ -264,9 +320,39 @@ const library = {
 
   // OSX
   makeOSXShortcut: function (options) {
-    // todo
-    this.throwError('OSX shortcut creation is not available yet.\n' + JSON.stringify(options, null, 2));
-    return false;
+    let success = true;
+
+    let overwrite = '';
+    if (options.osx.overwrite) {
+      overwrite = '-f';
+    }
+
+    if (options.osx.overwrite || (!options.osx.overwrite && !fs.existsSync(options.osx.outputfile))) {
+      let command = [
+        'ln',
+        overwrite,
+        '-s',
+        '"' + options.osx.filePath + '"',
+        '"' + options.osx.outputFile + '"'
+      ].join(' ');
+
+      try {
+        // ln -s "/Applications/Sublime Text.app" "/Users/owner/Desktop/Sublime Text"
+        exec(command);
+      } catch (error) {
+        success = false;
+        this.throwError(
+          'ERROR: Could not create OSX shortcut.\n' +
+          'TARGET: ' + options.osx.filePath + '\n' +
+          'PATH: ' + options.osx.outputPath + '\n'
+        );
+        this.throwError(error);
+      }
+    } else {
+      this.throwError('Could not create OSX shortcut because matching outputPath already exists and overwrite is false.');
+    }
+
+    return success;
   },
 
   // RUN
