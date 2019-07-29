@@ -29,6 +29,33 @@ const library = {
 
     return filePath;
   },
+  /**
+   * Replaces all environment variables with their actual value.
+   * Keeps intact non-environment variables using '%'
+   * @param  {string} filePath The input file path with percents
+   * @return {string}          The resolved file path;
+   */
+  resolveWindowsEnvironmentVariables: function (filePath) {
+    if (!filePath || typeof(filePath) !== 'string') {
+      return undefined;
+    }
+
+    /**
+     * @param  {string} withPercents    '%USERNAME%'
+     * @param  {string} withoutPercents 'USERNAME'
+     * @return {string}
+     */
+    function replaceEnvironmentVariable (withPercents, withoutPercents) {
+      let found = process.env[withoutPercents];
+      // 'C:\Users\%USERNAME%\Desktop\%asdf%' => 'C:\Users\bob\Desktop\%asdf%'
+      return found || withPercents;
+    }
+
+    // 'C:\Users\%USERNAME%\Desktop\%PROCESSOR_ARCHITECTURE%' => 'C:\Users\bob\Desktop\AMD64'
+    filePath = filePath.replace(/%([^%]+)%/g, replaceEnvironmentVariable);
+
+    return filePath;
+  },
 
   // VALIDATION
   validateOptions: function (options) {
@@ -66,7 +93,11 @@ const library = {
     }
 
     if (options[operatingSystem].outputPath) {
-      options[operatingSystem].outputPath = this.resolveTilde(options[operatingSystem].outputPath);
+      if (process.platform === 'win32') {
+        options[operatingSystem].outputPath = this.resolveWindowsEnvironmentVariables(options[operatingSystem].outputPath);
+      } else {
+        options[operatingSystem].outputPath = this.resolveTilde(options[operatingSystem].outputPath);
+      }
       if (
         !fs.existsSync(options[operatingSystem].outputPath) ||
         !fs.lstatSync(options[operatingSystem].outputPath).isDirectory()
@@ -174,9 +205,6 @@ const library = {
     if (typeof(options.linux.chmod) !== 'boolean') {
       options.linux.chmod = true;
     }
-    if (options.linux.outputPath) {
-      options.linux.outputPath = this.resolveTilde(options.linux.outputPath);
-    }
 
     const validTypes = ['Application', 'Link', 'Directory'];
     if (options.linux.type && !validTypes.includes(options.linux.type)) {
@@ -188,7 +216,10 @@ const library = {
       let iconPath = this.resolveTilde(options.linux.icon);
 
       if (!path.isAbsolute(iconPath)) {
-        iconPath = path.join(options.linux.outputPath, iconPath);
+        const outputDirectory = path.parse(options.linux.outputPath).dir;
+        process.chdir(outputDirectory);
+        iconPath = path.join(outputDirectory, iconPath);
+        process.chdir(__dirname);
       }
 
       if (!iconPath.endsWith('.png') && !iconPath.endsWith('.icns')) {
@@ -205,13 +236,65 @@ const library = {
 
     return options;
   },
-  validateWindowsOptions: function (options) {
+  validateWindowsFilePath: function (options) {
     if (!options.windows) {
       return options;
     }
-    if (!options.windows.filePath) {
+
+    if (options.windows.filePath) {
+      options.windows.filePath = this.resolveWindowsEnvironmentVariables(options.windows.filePath);
+    }
+
+    if (
+      !options.windows.filePath ||
+      typeof(options.windows.filePath) !== 'string' ||
+      !fs.existsSync(options.windows.filePath)
+    ) {
+      this.throwError('WINDOWS filePath does not exist: ' + options.windows.filePath);
       delete options.windows;
+    }
+
+    return options;
+  },
+  validateWindowsOptions: function (options) {
+    options = this.validateWindowsFilePath(options);
+    if (!options.windows) {
       return options;
+    }
+
+    options = this.validateOutputPath(options, 'windows');
+    options = this.validateOptionalString(options, 'windows', 'description');
+    options = this.validateOptionalString(options, 'windows', 'icon');
+    options = this.validateOptionalString(options, 'windows', 'arguments');
+    options = this.validateOptionalString(options, 'windows', 'windowMode');
+    options = this.validateOptionalString(options, 'windows', 'hotkey');
+
+    const validWindowModes = ['normal', 'maximized', 'minimized'];
+    if (options.windows.windowMode && !validWindowModes.includes(options.windows.windowMode)) {
+      this.throwError('Optional WINDOWS windowMode must be "normal", "maximized", or "minimized". Defaulting to "normal".');
+      options.windows.windowMode = 'normal';
+    }
+
+    if (options.windows.icon) {
+      let iconPath = this.resolveWindowsEnvironmentVariables(options.windows.icon);
+
+      if (!path.isAbsolute(iconPath)) {
+        const outputDirectory = path.parse(options.widnows.outputPath).dir;
+        process.chdir(outputDirectory);
+        iconPath = path.join(outputDirectory, iconPath);
+        process.chdir(__dirname);
+      }
+
+      if (!iconPath.endsWith('.ico')) {
+        this.throwError('Optional WINDOWS icon must be a ICO file.');
+      }
+
+      if (!fs.existsSync(iconPath)) {
+        this.throwError('Optional WINDOWS icon could not be found.');
+        delete options.windows.icon;
+      } else {
+        options.windows.icon = iconPath;
+      }
     }
 
     return options;
@@ -333,9 +416,13 @@ const library = {
 
   // WINDOWS
   makeWindowsShortcut: function (options) {
+    let success = true;
+
     // todo
     this.throwError('WINDOWS shortcut creation is not available yet.\n' + JSON.stringify(options, null, 2));
-    return false;
+    success = false;
+
+    return success;
   },
 
   // OSX
