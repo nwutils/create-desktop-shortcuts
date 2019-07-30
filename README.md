@@ -3,13 +3,17 @@
 
 [![Build Status](https://travis-ci.org/nwutils/create-desktop-shortcuts.svg?branch=master)](https://travis-ci.org/nwutils/create-desktop-shortcuts)
 
+## Small, lightweight, dependency free, cross-platform!
+
 Easy API to create desktop shortcuts with Node.
 
 This is **not ready for use yet**. But the following is the planned API, it is subject to change.
 
 Currently everything is **synchronous**.
 
-Simple example:
+### Examples
+
+**Simple example:**
 
 ```js
 const createDesktopShortcut = require('create-desktop-shortcuts');
@@ -28,7 +32,9 @@ const shortCutsCreated = createDesktopShortcut({
 console.log(shortCutsCreated);
 ```
 
-Advanced Example:
+**Advanced Example:**
+
+Each OS handles the conscept of a shortcut icon slightly differently. So they each have a slightly different API, but I tried to keep them similar when they overlap.
 
 ```js
 const createDesktopShortcut = require('create-desktop-shortcuts');
@@ -37,10 +43,10 @@ createDesktopShortcut({
   verbose: false,
   linux: {
     name: 'My App Name',
-    comment: 'My comment',
+    description: 'My comment',
     icon: '/home/path/to/file.png',
     filePath: '/home/path/to/executable',
-    outputPath: 'C:\some\folder',
+    outputPath: '/home/some/folder',
     type: 'Application',
     terminal: false,
     chmod: true
@@ -67,6 +73,9 @@ console.log(shortCutsCreated);
 ```
 
 
+## Documentation
+
+
 ### Global Settings
 
 Key             | Type    | Allowed         | Default | Description
@@ -77,16 +86,16 @@ Key             | Type    | Allowed         | Default | Description
 
 ### Linux Settings
 
-Key          | Type    | Allowed                                  | Default                  | Description
-:--          | :--     | :--                                      | :--                      | :--
-`name`       | String  | Any file system safe string              | Uses name from filePath  | The name of the shortcut file.
-`comment`    | String  | Any string                               | Not used if not supplied | Metadata file property. Description of what the shortcut would open.
-`icon`       | String  | Valid path to PNG or ICNS file           | Uses OS default icon     | The image shown on the shortcut icon. Preferably a 256x256 PNG.
-`filePath`   | String  | Any valid path or URL                    | This is a required field | This is the target the shortcut points to. Must be a valid/existing folder if `type: 'Directory'`, or file if `type: 'Application'`.
-`outputPath` | String  | Any valid path to a folder               | Current user's desktop   | Path where the shortcut will be placed.
-`type`       | String  | `'Application'`, `'Link'`, `'Directory'` | `'Application'`          | Type of shortcut. Must be an exact match to this string.
-`terminal`   | Boolean | `true`, `false`                          | `false`                  | If true, will run in a terminal.
-`chmod`      | Boolean | `true`, `false`                          | `true`                   | If true, will apply a `chmod +x` (755) to the shortcut after creation to allow execution permission.
+Key           | Type    | Allowed                                  | Default                  | Description
+:--           | :--     | :--                                      | :--                      | :--
+`name`        | String  | Any file system safe string              | Uses name from filePath  | The name of the shortcut file.
+`description` | String  | Any string                               | Not used if not supplied | Metadata file "comment" property. Description of what the shortcut would open.
+`icon`        | String  | Valid path to PNG or ICNS file           | Uses OS default icon     | The image shown on the shortcut icon. Preferably a 256x256 PNG.
+`filePath`    | String  | Any valid path or URL                    | This is a required field | This is the target the shortcut points to. Must be a valid/existing folder if `type: 'Directory'`, or file if `type: 'Application'`.
+`outputPath`  | String  | Any valid path to a folder               | Current user's desktop   | Path where the shortcut will be placed.
+`type`        | String  | `'Application'`, `'Link'`, `'Directory'` | `'Application'`          | Type of shortcut. Must be an exact match to this string.
+`terminal`    | Boolean | `true`, `false`                          | `false`                  | If true, will run in a terminal.
+`chmod`       | Boolean | `true`, `false`                          | `true`                   | If true, will apply a `chmod +x` (755) to the shortcut after creation to allow execution permission.
 
 
 ### Windows Settings

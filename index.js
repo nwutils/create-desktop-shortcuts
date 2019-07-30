@@ -191,7 +191,7 @@ const library = {
 
     options = this.validateLinuxFilePath(options);
     options = this.validateOutputPath(options, 'linux');
-    options = this.validateOptionalString(options, 'linux', 'comment');
+    options = this.validateOptionalString(options, 'linux', 'description');
     options = this.validateOptionalString(options, 'linux', 'type');
     options = this.validateOptionalString(options, 'linux', 'icon');
 
@@ -345,7 +345,7 @@ const library = {
     let terminal = 'Terminal=false';
     let exec = '';
     let name = 'Name=' + path.parse(options.linux.filePath).name;
-    let comment = '';
+    let description = '';
     let icon = '';
 
     // Replace defaults if value passed in
@@ -361,8 +361,8 @@ const library = {
     if (options.linux.name) {
       name = 'Name=' + options.linux.name;
     }
-    if (options.linux.comment) {
-      comment = 'comment=' + options.linux.comment;
+    if (options.linux.description) {
+      description = 'comment=' + options.linux.description;
     }
     if (options.linux.icon) {
       icon = 'Icon=' + options.linux.icon;
@@ -378,7 +378,7 @@ const library = {
       terminal,
       exec,
       name,
-      comment,
+      description,
       icon
     ].filter(Boolean).join('\n');
 
