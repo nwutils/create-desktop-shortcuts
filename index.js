@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const exec = require('child_process').execSync;
+const spawn = require('child_process').spawnSync;
 
 const library = {
   verbose: true,
@@ -416,11 +417,57 @@ const library = {
 
   // WINDOWS
   makeWindowsShortcut: function (options) {
+    const vbsScript = path.join(__dirname, 'lnk.vbs');
+    const rawName = path.parse(options.filepath).name;
+
     let success = true;
 
-    // todo
-    this.throwError('WINDOWS shortcut creation is not available yet.\n' + JSON.stringify(options, null, 2));
-    success = false;
+    if (!isString(options.lnkName)) {
+      options.lnkName = rawName;
+    }
+    if (!isString(options.lnkArgs)) {
+      options.lnkArgs = '';
+    }
+    if (!isString(options.lnkDes)) {
+      options.lnkDes = rawName;
+    }
+    if (!isString(options.lnkCwd)) {
+      options.lnkCwd = '';
+    }
+    if (!isString(options.lnkIco)) {
+      options.lnkIco = options.filepath;
+    }
+    if (!isString(options.lnkWin)) {
+      options.lnkWin = 4;
+    }
+    if (!isString(options.lnkHtk)) {
+      options.lnkHtk = '';
+    }
+
+    try {
+      spawn(
+        'wscript',
+        [
+          vbsScript,
+          options.filepath,
+          options.lnkName,
+          options.lnkArgs,
+          options.lnkDes,
+          options.lnkCwd,
+          options.lnkIco,
+          options.lnkWin,
+          options.lnkHtk
+        ]
+      );
+    } catch (error) {
+      success = false;
+      this.throwError(
+        'ERROR: Could not create WINDOWS shortcut.\n' +
+        'TARGET: ' + options.windows.filePath + '\n' +
+        'PATH: ' + options.windows.outputPath + '\n',
+        error
+      );
+    }
 
     return success;
   },

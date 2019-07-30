@@ -16,7 +16,7 @@
     "lint": "eslint --config=.eslintrc.js index.js test.js windows-shortcut-maker/**/*.js",
     "fix": "eslint --fix --config=.eslintrc.js index.js test.js windows-shortcut-maker/**/*.js",
     "debug": "node --inspect-brk test.js",
-    "test": "clear && node test.js"
+    "test": "cls && node test.js"
   },
   "devDependencies": {
     "eslint": "^6.1.0"

@@ -56,8 +56,8 @@ createDesktopShortcut({
     description: 'My App description',
     icon: 'C:\\path\\to\\file.ico',
     filePath: 'C:\\path\\to\\executable.exe',
-    outputPath: 'C:\some\folder',
-    arguments: '--my-argument',
+    outputPath: 'C:\\some\\folder',
+    arguments: '--my-argument -f "other stuff"',
     windowMode: 'normal',
     hotkey: 'ALT+CTRL+F'
   },
@@ -100,16 +100,16 @@ Key           | Type    | Allowed                                  | Default    
 
 ### Windows Settings
 
-Key           | Type   | Allowed                                  | Default                  | Description
-:--           | :--    | :--                                      | :--                      | :--
-`name`        | String | Any file system safe string              | Uses name from filePath  | The name of the shortcut file.
-`description` | String | Any string                               | Not used if not supplied | Metadata file property. Description of what the shortcut would open.
-`icon`        | String | Valid path to ICO file                   | Uses OS default icon     | The image shown on the shortcut icon. Must be valid ICO file.
-`filePath`    | String | Any valid path or URL                    | This is a required field | This is the target the shortcut points to.
-`outputPath`  | String | Any valid path to a folder               | Current user's desktop   | Path where the shortcut will be placed.
-`arguments`   | String | Any string                               | None                     | Additional arguments passed in to the end of your target `filePath`
-`windowMode`  | String | `'normal'`, `'maximized'`, `'minimized'` | `'normal'`               | How the window should be displayed by default
-`hotkey`      | String | Any string                               | None                     | A global hotkey to associate to opening this shortcut, like `'CTRL+ALT+F'`
+Key           | Type   | Allowed                                  | Default                    | Description
+:--           | :--    | :--                                      | :--                        | :--
+`name`        | String | Any file system safe string              | Uses name from filePath    | The name of the shortcut file.
+`description` | String | Any string                               | Not used if not supplied   | Metadata file property. Description of what the shortcut would open.
+`icon`        | String | Valid path to ICO file                   | Uses OS default icon       | The image shown on the shortcut icon. Must be valid ICO file.
+`filePath`    | String | Any valid path or URL                    | This is a required field   | This is the target the shortcut points to.
+`outputPath`  | String | Any valid path to a folder               | `'%USERPROFILE%\\Desktop'` | Path where the shortcut will be placed.
+`arguments`   | String | Any string                               | None                       | Additional arguments passed in to the end of your target `filePath`
+`windowMode`  | String | `'normal'`, `'maximized'`, `'minimized'` | `'normal'`                 | How the window should be displayed by default
+`hotkey`      | String | Any string                               | None                       | A global hotkey to associate to opening this shortcut, like `'CTRL+ALT+F'`
 
 
 ### OSX Settings
@@ -124,3 +124,13 @@ Key          | Type    | Allowed                     | Default                  
 `filePath`   | String  | Any valid path or URL       | This is a required field | This is the target the shortcut points to.
 `outputPath` | String  | Any valid path to a folder  | Current user's desktop   | Path where the shortcut will be placed.
 `overwrite`  | Boolean | `true`, `false`             | false                    | If true, will replace any existing file in the `outputPath` with matching `name`
+
+
+* * *
+
+
+## Credits
+
+Author: The Jared Wilcurt
+
+Parts of the Windows portion of this utility come from [windows-shortcut-maker](https://github.com/phtdacosta/windows-shortcut-maker). Which is why this repo sadly uses the more restrictive GPL 3 License instead of the simpler MIT License. Sorry about that, out of my hands.
