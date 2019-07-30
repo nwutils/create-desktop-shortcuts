@@ -3,7 +3,7 @@ var cds = require('./index.js');
 var success = cds({
   linux: {
     name: 'Koala A11y',
-    description: 'Truly commented',
+    comment: 'Truly commented',
     filePath: '~/Downloads/Koa11y/Koa11y',
     chmod: true,
     icon: '~/Downloads/Koa11y/package.nw/_img/logo.png'
@@ -13,7 +13,7 @@ var success = cds({
   },
   windows: {
     name: 'My App Name',
-    description: 'My App description',
+    comment: 'My App description',
     icon: 'D:\\folder.ico',
     filePath: 'C:\\Users\\%USERNAME%\\Downloads\\InSpectre.exe',
     outputPath: '%USERPROFILE%\\Desktop',

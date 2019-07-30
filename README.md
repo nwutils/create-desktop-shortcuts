@@ -86,30 +86,30 @@ Key             | Type    | Allowed         | Default | Description
 
 ### Linux Settings
 
-Key           | Type    | Allowed                                  | Default                      | Description
-:--           | :--     | :--                                      | :--                          | :--
-`name`        | String  | Any file system safe string              | Uses name from filePath      | The name of the shortcut file.
-`description` | String  | Any string                               | Not used if not supplied     | Metadata file "comment" property. Description of what the shortcut would open.
-`icon`        | String  | Valid path to PNG or ICNS file           | Uses OS default icon         | The image shown on the shortcut icon. Preferably a 256x256 PNG.
-`filePath`    | String  | Any valid path or URL                    | **This is a required field** | This is the target the shortcut points to. Must be a valid/existing folder if `type: 'Directory'`, or file if `type: 'Application'`.
-`outputPath`  | String  | Any valid path to a folder               | Current user's desktop       | Path where the shortcut will be placed.
-`type`        | String  | `'Application'`, `'Link'`, `'Directory'` | `'Application'`              | Type of shortcut. Must be an exact match to this string.
-`terminal`    | Boolean | `true`, `false`                          | `false`                      | If true, will run in a terminal.
-`chmod`       | Boolean | `true`, `false`                          | `true`                       | If true, will apply a `chmod +x` (755) to the shortcut after creation to allow execution permission.
+Key          | Type    | Allowed                                  | Default                      | Description
+:--          | :--     | :--                                      | :--                          | :--
+`name`       | String  | Any file system safe string              | Uses name from filePath      | The name of the shortcut file.
+`comment`    | String  | Any string                               | Not used if not supplied     | Metadata file "comment" property. Description of what the shortcut would open.
+`icon`       | String  | Valid path to PNG or ICNS file           | Uses OS default icon         | The image shown on the shortcut icon. Preferably a 256x256 PNG.
+`filePath`   | String  | Any valid path or URL                    | **This is a required field** | This is the target the shortcut points to. Must be a valid/existing folder if `type: 'Directory'`, or file if `type: 'Application'`.
+`outputPath` | String  | Any valid path to a folder               | Current user's desktop       | Path where the shortcut will be placed.
+`type`       | String  | `'Application'`, `'Link'`, `'Directory'` | `'Application'`              | Type of shortcut. Must be an exact match to this string.
+`terminal`   | Boolean | `true`, `false`                          | `false`                      | If true, will run in a terminal.
+`chmod`      | Boolean | `true`, `false`                          | `true`                       | If true, will apply a `chmod +x` (755) to the shortcut after creation to allow execution permission.
 
 
 ### Windows Settings
 
-Key           | Type   | Allowed                                  | Default                      | Description
-:--           | :--    | :--                                      | :--                          | :--
-`name`        | String | Any file system safe string              | Uses name from filePath      | The name of the shortcut file.
-`description` | String | Any string                               | Not used if not supplied     | Metadata file property. Description of what the shortcut would open.
-`icon`        | String | Valid path to ICO file                   | Uses OS default icon         | The image shown on the shortcut icon. Must be valid ICO file.
-`filePath`    | String | Any valid path or URL                    | **This is a required field** | This is the target the shortcut points to.
-`outputPath`  | String | Any valid path to a folder               | `'%USERPROFILE%\\Desktop'`   | Path where the shortcut will be placed.
-`arguments`   | String | Any string                               | None                         | Additional arguments passed in to the end of your target `filePath`
-`windowMode`  | String | `'normal'`, `'maximized'`, `'minimized'` | `'normal'`                   | How the window should be displayed by default
-`hotkey`      | String | Any string                               | None                         | A global hotkey to associate to opening this shortcut, like `'CTRL+ALT+F'`
+Key          | Type   | Allowed                                  | Default                      | Description
+:--          | :--    | :--                                      | :--                          | :--
+`name`       | String | Any file system safe string              | Uses name from filePath      | The name of the shortcut file.
+`comment`    | String | Any string                               | Not used if not supplied     | Metadata file "comment" property. Description of what the shortcut would open.
+`icon`       | String | Valid path to ICO file                   | Uses OS default icon         | The image shown on the shortcut icon. Must be valid ICO file.
+`filePath`   | String | Any valid path or URL                    | **This is a required field** | This is the target the shortcut points to.
+`outputPath` | String | Any valid path to a folder               | `'%USERPROFILE%\\Desktop'`   | Path where the shortcut will be placed.
+`arguments`  | String | Any string                               | None                         | Additional arguments passed in to the end of your target `filePath`
+`windowMode` | String | `'normal'`, `'maximized'`, `'minimized'` | `'normal'`                   | How the window should be displayed by default
+`hotkey`     | String | Any string                               | None                         | A global hotkey to associate to opening this shortcut, like `'CTRL+ALT+F'`
 
 
 ### OSX Settings
