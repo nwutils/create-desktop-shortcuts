@@ -274,6 +274,9 @@ const library = {
     const validWindowModes = ['normal', 'maximized', 'minimized'];
     if (options.windows.windowMode && !validWindowModes.includes(options.windows.windowMode)) {
       this.throwError('Optional WINDOWS windowMode must be "normal", "maximized", or "minimized". Defaulting to "normal".');
+      delete options.windows.windowMode;
+    }
+    if (!options.windows.windowMode) {
       options.windows.windowMode = 'normal';
     }
 
@@ -417,46 +420,39 @@ const library = {
 
   // WINDOWS
   makeWindowsShortcut: function (options) {
-    const vbsScript = path.join(__dirname, 'lnk.vbs');
-    const rawName = path.parse(options.filepath).name;
+    const vbsScript = path.join(__dirname, 'windows.vbs');
+    const filePathName = path.parse(options.windows.filePath).name;
 
     let success = true;
 
-    if (!isString(options.lnkName)) {
-      options.lnkName = rawName;
-    }
-    if (!isString(options.lnkArgs)) {
-      options.lnkArgs = '';
-    }
-    if (!isString(options.lnkDes)) {
-      options.lnkDes = rawName;
-    }
-    if (!isString(options.lnkCwd)) {
-      options.lnkCwd = '';
-    }
-    if (!isString(options.lnkIco)) {
-      options.lnkIco = options.filepath;
-    }
-    if (!isString(options.lnkWin)) {
-      options.lnkWin = 4;
-    }
-    if (!isString(options.lnkHtk)) {
-      options.lnkHtk = '';
-    }
+    const windowModes = {
+      normal: 4,
+      maximixed: 3,
+      minimized: 7
+    };
+
+    let filePath = options.windows.filePath;
+    let name = options.windows.name || filePathName;
+    let args = options.windows.arguments || '';
+    let comment = options.windows.comment || filePathName;
+    let cwd = '';
+    let icon = options.windows.icon || options.windows.filePath;
+    let windowMode = windowModes[options.windows.windowMode] || 4;
+    let hotkey = options.windows.hotkey || '';
 
     try {
       spawn(
         'wscript',
         [
           vbsScript,
-          options.filepath,
-          options.lnkName,
-          options.lnkArgs,
-          options.lnkDes,
-          options.lnkCwd,
-          options.lnkIco,
-          options.lnkWin,
-          options.lnkHtk
+          filePath,
+          name,
+          args,
+          comment,
+          cwd,
+          icon,
+          windowMode,
+          hotkey
         ]
       );
     } catch (error) {
