@@ -8,12 +8,13 @@ const exec = require('child_process').execSync;
 const library = {
   verbose: true,
   // HELPERS
-  throwError: function (message) {
+  throwError: function (message, error) {
     if (this.verbose) {
       console.error(
         '_________________________\n' +
         'Create-Desktop-Shortcuts:\n' +
-        message
+        message,
+        error
       );
     }
   },
@@ -396,9 +397,9 @@ const library = {
       this.throwError(
         'ERROR: Could not create LINUX shortcut.\n' +
         'PATH: ' + options.linux.outputPath + '\n' +
-        'DATA:\n' + fileContents
+        'DATA:\n' + fileContents,
+        error
       );
-      this.throwError(error);
     }
 
     if (success && options.linux.chmod) {
@@ -406,8 +407,7 @@ const library = {
         fs.chmodSync(options.linux.outputPath, '755');
       } catch (error) {
         success = false;
-        this.throwError('ERROR attempting to change permisions of ' + options.linux.outputPath);
-        this.throwError(error);
+        this.throwError('ERROR attempting to change permisions of ' + options.linux.outputPath, error);
       }
     }
 
@@ -451,9 +451,9 @@ const library = {
         this.throwError(
           'ERROR: Could not create OSX shortcut.\n' +
           'TARGET: ' + options.osx.filePath + '\n' +
-          'PATH: ' + options.osx.outputPath + '\n'
+          'PATH: ' + options.osx.outputPath + '\n',
+          error
         );
-        this.throwError(error);
       }
     } else {
       this.throwError('Could not create OSX shortcut because matching outputPath already exists and overwrite is false.');
@@ -464,7 +464,10 @@ const library = {
 
   // RUN
   runCorrectOSs: function (options) {
-    if (options.onlyCurrentOS) {
+    if (!options.windows && !options.linux && !options.osx) {
+      this.throwError('No shortcuts were created due to lack of accurate details passed in to options object', options);
+      return false;
+    } else if (options.onlyCurrentOS) {
       if (process.platform === 'win32' && options.windows) {
         return this.makeWindowsShortcut(options);
       }
@@ -491,11 +494,6 @@ const library = {
 
       return windowsSuccess && linuxSuccess && osxSuccess;
     }
-
-    if (!options.windows && !options.linux && !options.osx) {
-      this.throwError('No shortcuts were created due to lack of accurate details passed in to options object\n' + JSON.stringify(options, null, 2));
-      return false;
-    }
   }
 };
 
@@ -505,7 +503,7 @@ function createDesktopShortcut (options) {
   let success = library.runCorrectOSs(options);
 
   console.log('TEMPORARY DEBUGGER');
-  console.log(JSON.stringify(options, null, 2));
+  console.log(options);
 
   return success;
 }
