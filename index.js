@@ -435,7 +435,6 @@ const library = {
 
     let outputPath = options.windows.outputPath;
     let filePath = options.windows.filePath;
-    let name = options.windows.name || filePathName;
     let args = options.windows.arguments || '';
     let comment = options.windows.comment || filePathName;
     let cwd = '';
