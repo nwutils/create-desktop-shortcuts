@@ -21,7 +21,7 @@
   "devDependencies": {
     "eslint": "^6.1.0"
   },
-  "license": "GPL-3.0",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/nwutils/create-desktop-shortcuts.git"
