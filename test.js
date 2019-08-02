@@ -15,10 +15,10 @@ var success = cds({
     name: 'My App Name',
     comment: 'My App description',
     icon: 'D:\\folder.ico',
-    filePath: 'C:\\Users\\%USERNAME%\\Downloads\\InSpectre.exe',
+    filePath: 'C:\\Portable Apps\\Koa11y_v3.0.0\\Koa11y.exe',
     outputPath: '%USERPROFILE%\\Desktop',
-    arguments: '--my-argument -f "other stuff"',
-    windowMode: 'normal',
+    arguments: '--my-argument -f \'other stuff\'',
+    windowMode: 'maximized',
     hotkey: 'ALT+CTRL+F'
   }
 });

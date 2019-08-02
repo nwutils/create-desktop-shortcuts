@@ -1,29 +1,31 @@
-' lnk.vbs (c) 2018 Pedro Costa
-' This code is licensed under GPL-3.0 license (see LICENSE for details)
+' Code based on https://forums.techguy.org/threads/solved-vbscript-create-a-shortcut-within-a-folder.886401/
+' and https://www.vbsedit.com/html/a239a3ac-e51c-4e70-859e-d2d8c2eb3135.asp
+
 option explicit
 
-dim strFilepath, strLinkName, strLinkArgs, strLinkDes, strLinkCwd, strLinkIco, strLinkWin, strLinkHtk
-strFilepath = Wscript.Arguments(0)
-strLinkName = Wscript.Arguments(1)
-strLinkArgs = Wscript.Arguments(2)
-strLinkDes = Wscript.Arguments(3)
-strLinkCwd = Wscript.Arguments(4)
-strLinkIco = Wscript.Arguments(5)
-strLinkWin = Wscript.Arguments(6)
-strLinkHtk = Wscript.Arguments(7)
+dim strOutputPath, strFilePath, strArgs, strComment, strCwd, strIcon, strWindowMode, strHotkey
+strOutputPath = Wscript.Arguments(0)
+strFilePath = Wscript.Arguments(1)
+strArgs = Wscript.Arguments(2)
+strComment = Wscript.Arguments(3)
+strCwd = Wscript.Arguments(4)
+strIcon = Wscript.Arguments(5)
+strWindowMode = Wscript.Arguments(6)
+strHotkey = Wscript.Arguments(7)
 
-sub FileToLnk()
-  dim objShell, strDesktopPath, objLink
+sub createFile()
+  dim objShell, objLink
   set objShell = CreateObject("WScript.Shell")
-  strDesktopPath = objShell.SpecialFolders("Desktop")
-  set objLink = objShell.CreateShortcut(strDesktopPath + "\" + strLinkName + ".lnk")
-  objLink.Arguments = strLinkArgs
-  objLink.Description = strLinkDes
-  objLink.TargetPath = strFilepath
-  objLink.WindowStyle = strLinkWin
-  objLink.WorkingDirectory = strLinkCwd
-  objLink.Hotkey = strLinkHtk
+  ' objShell.Run "cmd /c yourcommands", 0, True
+  set objLink = objShell.CreateShortcut(strOutputPath)
+  objLink.TargetPath = strFilePath
+  objLink.Arguments = strArgs
+  objLink.Description = strComment
+  objLink.WorkingDirectory = strCwd
+  objLink.IconLocation = strIcon
+  objLink.WindowStyle = strWindowMode
+  objLink.Hotkey = strHotkey
   objLink.Save
 end sub
 
-call FileToLnk()
+call createFile()

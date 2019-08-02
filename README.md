@@ -57,7 +57,7 @@ createDesktopShortcut({
     icon: 'C:\\path\\to\\file.ico',
     filePath: 'C:\\path\\to\\executable.exe',
     outputPath: 'C:\\some\\folder',
-    arguments: '--my-argument -f "other stuff"',
+    arguments: '--my-argument -f \'other stuff\'',
     windowMode: 'normal',
     hotkey: 'ALT+CTRL+F'
   },
@@ -133,4 +133,7 @@ Key          | Type    | Allowed                     | Default                  
 
 Author: The Jared Wilcurt
 
-Parts of the Windows portion of this utility come from [windows-shortcut-maker](https://github.com/phtdacosta/windows-shortcut-maker). Which is why this repo sadly uses the more restrictive GPL 3 License instead of the simpler MIT License. Sorry about that, out of my hands.
+Parts of the `windows.vbs` were copied/modified based on:
+
+ * https://www.vbsedit.com/html/a239a3ac-e51c-4e70-859e-d2d8c2eb3135.asp
+ * https://forums.techguy.org/threads/solved-vbscript-create-a-shortcut-within-a-folder.886401/

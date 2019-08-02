@@ -426,35 +426,37 @@ const library = {
     let success = true;
 
     const windowModes = {
-      normal: 4,
-      maximixed: 3,
+      normal: 1,
+      maximized: 3,
       minimized: 7
     };
 
+    let outputPath = options.windows.outputPath;
     let filePath = options.windows.filePath;
     let name = options.windows.name || filePathName;
     let args = options.windows.arguments || '';
     let comment = options.windows.comment || filePathName;
     let cwd = '';
-    let icon = options.windows.icon || options.windows.filePath;
-    let windowMode = windowModes[options.windows.windowMode] || 4;
+    let icon = options.windows.icon || options.windows.filePath + ',0';
+    let windowMode = windowModes[options.windows.windowMode] || 1;
     let hotkey = options.windows.hotkey || '';
 
+    let wscriptArguments = [
+      vbsScript,
+      // '/NoLogo',  // Apparently this stops it from displaying a logo in the console, even though I haven't actually ever seen one
+      // '/B',  // silent mode, but doesn't actually stop dialog alert windows from popping up on errors
+      outputPath,
+      filePath,
+      args,
+      comment,
+      cwd,
+      icon,
+      windowMode,
+      hotkey
+    ];
+
     try {
-      spawn(
-        'wscript',
-        [
-          vbsScript,
-          filePath,
-          name,
-          args,
-          comment,
-          cwd,
-          icon,
-          windowMode,
-          hotkey
-        ]
-      );
+      spawn('wscript', wscriptArguments);
     } catch (error) {
       success = false;
       this.throwError(
@@ -544,10 +546,6 @@ function createDesktopShortcut (options) {
   options = options || {};
   options = library.validateOptions(options);
   let success = library.runCorrectOSs(options);
-
-  console.log('TEMPORARY DEBUGGER');
-  console.log(options);
-
   return success;
 }
 
