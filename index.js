@@ -290,8 +290,10 @@ const library = {
         process.chdir(__dirname);
       }
 
-      if (!iconPath.endsWith('.ico')) {
-        this.throwError('Optional WINDOWS icon must be a ICO file.');
+      // anything, then either '.exe', '.ico', or '.dll', maybe ',12'.
+      let iconPattern = /^.*(?:\.exe|\.ico|\.dll)(?:,\d*)?$/m;
+      if (!RegExp(iconPattern).test(iconPath)) {
+        this.throwError('Optional WINDOWS icon must be a ICO, EXE, or DLL file. It may be followed by a comma and icon index value, like: \'C:\\file.exe,0\'');
       }
 
       if (!fs.existsSync(iconPath)) {
