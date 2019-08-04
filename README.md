@@ -3,13 +3,13 @@
 
 [![Build Status](https://travis-ci.org/nwutils/create-desktop-shortcuts.svg?branch=master)](https://travis-ci.org/nwutils/create-desktop-shortcuts)
 
+
 ## Small, lightweight, dependency free, cross-platform!
 
-Easy API to create desktop shortcuts with Node.
+An easy, cross-platform, API to create desktop shortcuts with Node.
 
-This is **not ready for use yet**. But the following is the planned API, it is subject to change.
+This library is completely **synchronous**.
 
-Currently everything is **synchronous**.
 
 ### Examples
 
@@ -17,18 +17,14 @@ Currently everything is **synchronous**.
 
 ```js
 const createDesktopShortcut = require('create-desktop-shortcuts');
+
 const shortCutsCreated = createDesktopShortcut({
-  linux: {
-    filePath: '/home/path/to/executable'
-  },
-  windows: {
-    filePath: 'C:\\path\\to\\executable.exe'
-  },
-  osx: {
-    filePath: '/home/path/to/executable'
-  }
+  windows: { filePath: 'C:\\path\\to\\executable.exe' },
+  linux:   { filePath: '/home/path/to/executable'     },
+  osx:     { filePath: '/home/path/to/executable'     }
 });
-// returns true if everything worked correctly, or false if it could not create the icon or set its permissions
+
+// returns true if everything worked correctly, or false if it could not create the icon or set its permissions (Linux)
 console.log(shortCutsCreated);
 ```
 
@@ -38,36 +34,38 @@ Each OS handles the conscept of a shortcut icon slightly differently. So they ea
 
 ```js
 const createDesktopShortcut = require('create-desktop-shortcuts');
+
 createDesktopShortcut({
   onlyCurrentOS: false,
   verbose: false,
-  linux: {
-    name: 'My App Name',
-    description: 'My comment',
-    icon: '/home/path/to/file.png',
-    filePath: '/home/path/to/executable',
-    outputPath: '/home/some/folder',
-    type: 'Application',
-    terminal: false,
-    chmod: true
-  },
   windows: {
+    filePath: 'C:\\path\\to\\executable.exe',
+    outputPath: 'C:\\some\\folder',
     name: 'My App Name',
     description: 'My App description',
     icon: 'C:\\path\\to\\file.ico',
-    filePath: 'C:\\path\\to\\executable.exe',
-    outputPath: 'C:\\some\\folder',
     arguments: '--my-argument -f \'other stuff\'',
     windowMode: 'normal',
     hotkey: 'ALT+CTRL+F'
   },
-  osx: {
+  linux: {
+    filePath: '/home/path/to/executable',
+    outputPath: '/home/some/folder',
     name: 'My App Name',
+    description: 'My comment',
+    icon: '/home/path/to/file.png',
+    type: 'Application',
+    terminal: false,
+    chmod: true
+  },
+  osx: {
     filePath: '/Applications/My App.app',
     outputPath: '/home/some/folder',
+    name: 'My App Name',
     overwrite: true
   }
 });
+
 // returns true if everything worked correctly, or false if it could not create the icon or set its permissions
 console.log(shortCutsCreated);
 ```
@@ -84,32 +82,32 @@ Key             | Type    | Allowed         | Default | Description
 `verbose`       | Boolean | `true`, `false` | `true`  | If true, consoles out helpful warnings and errors.
 
 
-### Linux Settings
-
-Key          | Type    | Allowed                                  | Default                      | Description
-:--          | :--     | :--                                      | :--                          | :--
-`name`       | String  | Any file system safe string              | Uses name from filePath      | The name of the shortcut file.
-`comment`    | String  | Any string                               | Not used if not supplied     | Metadata file "comment" property. Description of what the shortcut would open.
-`icon`       | String  | Valid path to PNG or ICNS file           | Uses OS default icon         | The image shown on the shortcut icon. Preferably a 256x256 PNG.
-`filePath`   | String  | Any valid path or URL                    | **This is a required field** | This is the target the shortcut points to. Must be a valid/existing folder if `type: 'Directory'`, or file if `type: 'Application'`.
-`outputPath` | String  | Any valid path to a folder               | Current user's desktop       | Path where the shortcut will be placed.
-`type`       | String  | `'Application'`, `'Link'`, `'Directory'` | `'Application'`              | Type of shortcut. Must be an exact match to this string.
-`terminal`   | Boolean | `true`, `false`                          | `false`                      | If true, will run in a terminal.
-`chmod`      | Boolean | `true`, `false`                          | `true`                       | If true, will apply a `chmod +x` (755) to the shortcut after creation to allow execution permission.
-
-
 ### Windows Settings
 
 Key          | Type   | Allowed                                  | Default                      | Description
 :--          | :--    | :--                                      | :--                          | :--
+`filePath`   | String | Any valid path or URL                    | **This is a required field** | This is the target the shortcut points to.
+`outputPath` | String | Any valid path to a folder               | `'%USERPROFILE%\\Desktop'`   | Path where the shortcut will be placed.
 `name`       | String | Any file system safe string              | Uses name from filePath      | The name of the shortcut file.
 `comment`    | String | Any string                               | Not used if not supplied     | Metadata file "comment" property. Description of what the shortcut would open.
 `icon`       | String | Valid path to ICO file                   | Uses OS default icon         | The image shown on the shortcut icon. Must be valid ICO file.
-`filePath`   | String | Any valid path or URL                    | **This is a required field** | This is the target the shortcut points to.
-`outputPath` | String | Any valid path to a folder               | `'%USERPROFILE%\\Desktop'`   | Path where the shortcut will be placed.
 `arguments`  | String | Any string                               | None                         | Additional arguments passed in to the end of your target `filePath`
 `windowMode` | String | `'normal'`, `'maximized'`, `'minimized'` | `'normal'`                   | How the window should be displayed by default
 `hotkey`     | String | Any string                               | None                         | A global hotkey to associate to opening this shortcut, like `'CTRL+ALT+F'`
+
+
+### Linux Settings
+
+Key          | Type    | Allowed                                  | Default                      | Description
+:--          | :--     | :--                                      | :--                          | :--
+`filePath`   | String  | Any valid path or URL                    | **This is a required field** | This is the target the shortcut points to. Must be a valid/existing folder if `type: 'Directory'`, or file if `type: 'Application'`.
+`outputPath` | String  | Any valid path to a folder               | Current user's desktop       | Path where the shortcut will be placed.
+`name`       | String  | Any file system safe string              | Uses name from filePath      | The name of the shortcut file.
+`comment`    | String  | Any string                               | Not used if not supplied     | Metadata file "comment" property. Description of what the shortcut would open.
+`icon`       | String  | Valid path to PNG or ICNS file           | Uses OS default icon         | The image shown on the shortcut icon. Preferably a 256x256 PNG.
+`type`       | String  | `'Application'`, `'Link'`, `'Directory'` | `'Application'`              | Type of shortcut. Must be an exact match to this string.
+`terminal`   | Boolean | `true`, `false`                          | `false`                      | If true, will run in a terminal.
+`chmod`      | Boolean | `true`, `false`                          | `true`                       | If true, will apply a `chmod +x` (755) to the shortcut after creation to allow execution permission.
 
 
 ### OSX Settings
@@ -120,9 +118,9 @@ If overwrite is set to false and a matching file already exists, a console log w
 
 Key          | Type    | Allowed                     | Default                      | Description
 :--          | :--     | :--                         | :--                          | :--
-`name`       | String  | Any file system safe string | Uses name from filePath      | The name of the shortcut file.
 `filePath`   | String  | Any valid path or URL       | **This is a required field** | This is the target the shortcut points to.
 `outputPath` | String  | Any valid path to a folder  | Current user's desktop       | Path where the shortcut will be placed.
+`name`       | String  | Any file system safe string | Uses name from filePath      | The name of the shortcut file.
 `overwrite`  | Boolean | `true`, `false`             | false                        | If true, will replace any existing file in the `outputPath` with matching `name`
 
 
@@ -137,3 +135,14 @@ Parts of the `windows.vbs` were copied/modified based on:
 
  * https://www.vbsedit.com/html/a239a3ac-e51c-4e70-859e-d2d8c2eb3135.asp
  * https://forums.techguy.org/threads/solved-vbscript-create-a-shortcut-within-a-folder.886401/
+
+
+* * *
+
+
+## How can you help improve this repo?
+
+* Write unit tests. Preferably in Jest.
+* Offer an async and sync mode, instead of just sync.
+  * Note: Make sure it can still run in older versions of NW.js
+* Find a way to not require passing in `window`
