@@ -25,24 +25,24 @@ npm install --save create-desktop-shortcuts
 ```js
 const createDesktopShortcut = require('create-desktop-shortcuts');
 
-const shortCutsCreated = createDesktopShortcut({
+const shortcutsCreated = createDesktopShortcut({
   windows: { filePath: 'C:\\path\\to\\executable.exe' },
   linux:   { filePath: '/home/path/to/executable'     },
   osx:     { filePath: '/home/path/to/executable'     }
 });
 
 // returns true if everything worked correctly, or false if it could not create the icon or set its permissions (Linux)
-console.log(shortCutsCreated);
+console.log(shortcutsCreated);
 ```
 
 **Advanced Example:**
 
-Each OS handles the conscept of a shortcut icon slightly differently. So they each have a slightly different API, but I tried to keep them similar when they overlap.
+Each OS handles the concept of a shortcut icon slightly differently. So they each have a slightly different API, but I tried to keep them similar when they overlap.
 
 ```js
 const createDesktopShortcut = require('create-desktop-shortcuts');
 
-const shortCutsCreated = createDesktopShortcut({
+const shortcutsCreated = createDesktopShortcut({
   onlyCurrentOS: true,
   verbose: true,
   /**
@@ -82,7 +82,7 @@ const shortCutsCreated = createDesktopShortcut({
 });
 
 // returns true if everything worked correctly, or false if it could not create the icon or set its permissions
-console.log(shortCutsCreated);
+console.log(shortcutsCreated);
 ```
 
 
@@ -95,7 +95,7 @@ Key             | Type     | Allowed         | Default | Description
 :--             | :--      | :--             | :--     | :--
 `onlyCurrentOS` | Boolean  | `true`, `false` | `true`  | If true and you pass in objects for multiple OS's, this will only create a shortcut for the OS it was ran on.
 `verbose`       | Boolean  | `true`, `false` | `true`  | If true, consoles out helpful warnings and errors.
-`customLogger`  | Function | Any function    | None    | You can pass in your own custom function to log errors/warnings to. When called the function will have a message string for the first argument and sometimes an error object. This is useful in NW.js to see the messages logged to the regular Chromium devtools instead of the background page DevTools. But this can also be useful in other scenarios, like adding in custom wrappers or colors in a commandline/terminal. This function may be called multiple times before all synchronous tasks complete.
+`customLogger`  | Function | Any function    | None    | You can pass in your own custom function to log errors/warnings to. When called the function will receive a `message` string for the first argument and sometimes an `error` object for the second argument. This is useful in NW.js to see the messages logged to the regular Chromium Developer Tools instead of the background page's developer tools. But this can also be useful in other scenarios, like adding in custom wrappers or colors in a command line/terminal. This function may be called multiple times before all synchronous tasks complete.
 
 
 ### Windows Settings
@@ -106,7 +106,7 @@ Key          | Type   | Allowed                                  | Default      
 `outputPath` | String | Any valid path to a folder               | `'%USERPROFILE%\\Desktop'`   | Path where the shortcut will be placed.
 `name`       | String | Any file system safe string              | Uses name from filePath      | The name of the shortcut file.
 `comment`    | String | Any string                               | Not used if not supplied     | Metadata file "comment" property. Description of what the shortcut would open.
-`icon`       | String | Valid path to ICO file                   | Uses OS default icon         | The image shown on the shortcut icon. Must be valid ICO file.
+`icon`       | String | Valid path to file (ICO, EXE, or DLL)    | Uses OS default icon         | The image shown on the shortcut icon. You can also pass in an index if multiple icons, like `'C:\\file.exe,0'`
 `arguments`  | String | Any string                               | None                         | Additional arguments passed in to the end of your target `filePath`
 `windowMode` | String | `'normal'`, `'maximized'`, `'minimized'` | `'normal'`                   | How the window should be displayed by default
 `hotkey`     | String | Any string                               | None                         | A global hotkey to associate to opening this shortcut, like `'CTRL+ALT+F'`
