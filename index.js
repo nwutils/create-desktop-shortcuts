@@ -214,7 +214,7 @@ const library = {
 
     const validTypes = ['Application', 'Link', 'Directory'];
     if (options.linux.type && !validTypes.includes(options.linux.type)) {
-      this.throwError(options, 'Optional LINUX type must be "Application", "Link", or "Documentation". Defaulting to "Application".');
+      this.throwError(options, 'Optional LINUX type must be "Application", "Link", or "Directory". Defaulting to "Application".');
       options.linux.type = 'Application';
     }
 

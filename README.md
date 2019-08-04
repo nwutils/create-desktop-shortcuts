@@ -11,6 +11,13 @@ An easy, cross-platform, API to create desktop shortcuts with Node.
 This library is completely **synchronous**.
 
 
+## Installation
+
+```
+npm install --save create-desktop-shortcuts
+```
+
+
 ### Examples
 
 **Simple example:**
@@ -35,9 +42,14 @@ Each OS handles the conscept of a shortcut icon slightly differently. So they ea
 ```js
 const createDesktopShortcut = require('create-desktop-shortcuts');
 
-createDesktopShortcut({
-  onlyCurrentOS: false,
-  verbose: false,
+const shortCutsCreated = createDesktopShortcut({
+  onlyCurrentOS: true,
+  verbose: true,
+  /**
+   * Your own custom logging function called with helpful warning/error messages from the internal validators
+   * @param  {string} message The human readable warning/error message
+   * @param  {object} error   Sometimes an error or options object is passed
+   */
   customLogger: function (message, error) {
     console.log(message, error);
   },
@@ -65,7 +77,7 @@ createDesktopShortcut({
     filePath: '/Applications/My App.app',
     outputPath: '/home/some/folder',
     name: 'My App Name',
-    overwrite: true
+    overwrite: false
   }
 });
 
