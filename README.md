@@ -4,9 +4,9 @@
 [![Build Status](https://travis-ci.org/nwutils/create-desktop-shortcuts.svg?branch=master)](https://travis-ci.org/nwutils/create-desktop-shortcuts)
 
 
-## Small, lightweight, dependency free, cross-platform!
+## Small, lightweight, cross-platform, built in validation!
 
-An easy, cross-platform, API to create desktop shortcuts with Node.
+An easy, cross-platform, API to create desktop shortcuts with Node. (*Works in [NW.js](https://nwjs.io) too!*)
 
 This library is completely **synchronous**.
 
@@ -161,3 +161,17 @@ Parts of the `windows.vbs` were copied/modified based on:
 * Write unit tests. Preferably in Jest.
 * Offer an async and sync mode, instead of just sync.
   * Note: Make sure it can still run in older versions of NW.js
+* Report bugs in the GitHub issues
+* Fix reported bugs with a PR
+
+
+* * *
+
+## Known issues
+
+1. When creating the Windows shortcut, if WScript does not like what is passed to it, it displays a Windows Dialog with an error on the line that failed. I have no idea how to turn that off, so I've just added in tons of validation checks to prevent anything from being passed in to it that could cause this. But may still occur if you pass in junk to it that gets by the validation checks.
+1. No real recourse if the script does not have permission to run `chmod` on Linux. You would just need to run it again with sudo or something.
+1. I know of no way to set a custom icon image on OSX.
+1. May want to add in `overwrite` option for Windows and Linux too.
+
+I thought this project would take a day, but it took a week. All Operating Systems are terrible.
