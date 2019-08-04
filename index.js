@@ -7,10 +7,11 @@ const exec = require('child_process').execSync;
 const spawn = require('child_process').spawnSync;
 
 const library = {
-  verbose: true,
   // HELPERS
-  throwError: function (message, error) {
-    if (this.verbose) {
+  throwError: function (options, message, error) {
+    if (options.verbose && options.customLogger) {
+      options.customLogger(message, error);
+    } else if (options.verbose) {
       console.error(
         '_________________________\n' +
         'Create-Desktop-Shortcuts:\n' +
@@ -64,11 +65,14 @@ const library = {
     if (typeof(options.verbose) !== 'boolean') {
       options.verbose = true;
     }
-    this.verbose = options.verbose;
-
     if (typeof(options.onlyCurrentOS) !== 'boolean') {
       options.onlyCurrentOS = true;
     }
+    if (!options.customLogger || typeof(options.customLogger) !== 'function') {
+      delete options.customLogger;
+      this.throwError(options, 'Optional customLogger must be a type of function.');
+    }
+
     if (options.onlyCurrentOS) {
       if (process.platform !== 'win32' && options.windows) {
         delete options.windows;
@@ -104,7 +108,7 @@ const library = {
         !fs.existsSync(options[operatingSystem].outputPath) ||
         !fs.lstatSync(options[operatingSystem].outputPath).isDirectory()
       ) {
-        this.throwError('Optional ' + operatingSystem.toUpperCase() + ' outputPath must exist and be a folder. Defaulting to desktop.');
+        this.throwError(options, 'Optional ' + operatingSystem.toUpperCase() + ' outputPath must exist and be a folder. Defaulting to desktop.');
         delete options[operatingSystem].outputPath;
       }
     }
@@ -129,7 +133,7 @@ const library = {
   },
   validateOptionalString: function (options, operatingSystem, key) {
     if (options[operatingSystem] && options[operatingSystem][key] && typeof(options[operatingSystem][key]) !== 'string') {
-      this.throwError('Optional ' + operatingSystem.toUpperCase() + ' ' + key + ' must be a string');
+      this.throwError(options, 'Optional ' + operatingSystem.toUpperCase() + ' ' + key + ' must be a string');
       delete options[operatingSystem][key];
     }
     return options;
@@ -153,7 +157,7 @@ const library = {
         fs.lstatSync(options.linux.filePath).isDirectory()
       )
     ) {
-      this.throwError('LINUX filePath does not exist: ' + options.linux.filePath);
+      this.throwError(options, 'LINUX filePath does not exist: ' + options.linux.filePath);
       delete options.linux;
     } else if (
       type &&
@@ -165,7 +169,7 @@ const library = {
         !fs.lstatSync(options.linux.filePath).isDirectory()
       )
     ) {
-      this.throwError('LINUX filePath directory must exist and be a folder: ' + options.linux.filePath);
+      this.throwError(options, 'LINUX filePath directory must exist and be a folder: ' + options.linux.filePath);
       delete options.linux;
     } else if (
       type &&
@@ -175,12 +179,12 @@ const library = {
         typeof(options.linux.filePath) !== 'string'
       )
     ) {
-      this.throwError('LINUX filePath url must exist a string: ' + options.linux.filePath);
+      this.throwError(options, 'LINUX filePath url must exist a string: ' + options.linux.filePath);
       delete options.linux;
     }
 
     if (options.linux && !options.linux.filePath) {
-      this.throwError('LINUX filePath does not exist: ' + options.linux.filePath);
+      this.throwError(options, 'LINUX filePath does not exist: ' + options.linux.filePath);
       delete options.linux;
     }
 
@@ -210,7 +214,7 @@ const library = {
 
     const validTypes = ['Application', 'Link', 'Directory'];
     if (options.linux.type && !validTypes.includes(options.linux.type)) {
-      this.throwError('Optional LINUX type must be "Application", "Link", or "Documentation". Defaulting to "Application".');
+      this.throwError(options, 'Optional LINUX type must be "Application", "Link", or "Documentation". Defaulting to "Application".');
       options.linux.type = 'Application';
     }
 
@@ -225,11 +229,11 @@ const library = {
       }
 
       if (!iconPath.endsWith('.png') && !iconPath.endsWith('.icns')) {
-        this.throwError('Optional LINUX icon should probably be a PNG file.');
+        this.throwError(options, 'Optional LINUX icon should probably be a PNG file.');
       }
 
       if (!fs.existsSync(iconPath)) {
-        this.throwError('Optional LINUX icon could not be found.');
+        this.throwError(options, 'Optional LINUX icon could not be found.');
         delete options.linux.icon;
       } else {
         options.linux.icon = iconPath;
@@ -252,7 +256,7 @@ const library = {
       typeof(options.windows.filePath) !== 'string' ||
       !fs.existsSync(options.windows.filePath)
     ) {
-      this.throwError('WINDOWS filePath does not exist: ' + options.windows.filePath);
+      this.throwError(options, 'WINDOWS filePath does not exist: ' + options.windows.filePath);
       delete options.windows;
     }
 
@@ -273,7 +277,7 @@ const library = {
 
     const validWindowModes = ['normal', 'maximized', 'minimized'];
     if (options.windows.windowMode && !validWindowModes.includes(options.windows.windowMode)) {
-      this.throwError('Optional WINDOWS windowMode must be "normal", "maximized", or "minimized". Defaulting to "normal".');
+      this.throwError(options, 'Optional WINDOWS windowMode must be "normal", "maximized", or "minimized". Defaulting to "normal".');
       delete options.windows.windowMode;
     }
     if (!options.windows.windowMode) {
@@ -293,11 +297,11 @@ const library = {
       // anything, then either '.exe', '.ico', or '.dll', maybe ',12'.
       let iconPattern = /^.*(?:\.exe|\.ico|\.dll)(?:,\d*)?$/m;
       if (!RegExp(iconPattern).test(iconPath)) {
-        this.throwError('Optional WINDOWS icon must be a ICO, EXE, or DLL file. It may be followed by a comma and icon index value, like: \'C:\\file.exe,0\'');
+        this.throwError(options, 'Optional WINDOWS icon must be a ICO, EXE, or DLL file. It may be followed by a comma and icon index value, like: \'C:\\file.exe,0\'');
       }
 
       if (!fs.existsSync(iconPath)) {
-        this.throwError('Optional WINDOWS icon could not be found.');
+        this.throwError(options, 'Optional WINDOWS icon could not be found.');
         delete options.windows.icon;
       } else {
         options.windows.icon = iconPath;
@@ -324,7 +328,7 @@ const library = {
       typeof(options.osx.filePath) !== 'string' ||
       !fs.existsSync(options.osx.filePath)
     ) {
-      this.throwError('OSX filePath does not exist: ' + options.osx.filePath);
+      this.throwError(options, 'OSX filePath does not exist: ' + options.osx.filePath);
       delete options.osx;
     }
 
@@ -401,6 +405,7 @@ const library = {
     } catch (error) {
       success = false;
       this.throwError(
+        options,
         'ERROR: Could not create LINUX shortcut.\n' +
         'PATH: ' + options.linux.outputPath + '\n' +
         'DATA:\n' + fileContents,
@@ -413,7 +418,7 @@ const library = {
         fs.chmodSync(options.linux.outputPath, '755');
       } catch (error) {
         success = false;
-        this.throwError('ERROR attempting to change permisions of ' + options.linux.outputPath, error);
+        this.throwError(options, 'ERROR attempting to change permisions of ' + options.linux.outputPath, error);
       }
     }
 
@@ -461,6 +466,7 @@ const library = {
     } catch (error) {
       success = false;
       this.throwError(
+        options,
         'ERROR: Could not create WINDOWS shortcut.\n' +
         'TARGET: ' + options.windows.filePath + '\n' +
         'PATH: ' + options.windows.outputPath + '\n',
@@ -495,6 +501,7 @@ const library = {
       } catch (error) {
         success = false;
         this.throwError(
+          options,
           'ERROR: Could not create OSX shortcut.\n' +
           'TARGET: ' + options.osx.filePath + '\n' +
           'PATH: ' + options.osx.outputPath + '\n',
@@ -502,7 +509,7 @@ const library = {
         );
       }
     } else {
-      this.throwError('Could not create OSX shortcut because matching outputPath already exists and overwrite is false.');
+      this.throwError(options, 'Could not create OSX shortcut because matching outputPath already exists and overwrite is false.');
     }
 
     return success;
@@ -511,7 +518,7 @@ const library = {
   // RUN
   runCorrectOSs: function (options) {
     if (!options.windows && !options.linux && !options.osx) {
-      this.throwError('No shortcuts were created due to lack of accurate details passed in to options object', options);
+      this.throwError(options, 'No shortcuts were created due to lack of accurate details passed in to options object', options);
       return false;
     } else if (options.onlyCurrentOS) {
       if (process.platform === 'win32' && options.windows) {

@@ -38,6 +38,9 @@ const createDesktopShortcut = require('create-desktop-shortcuts');
 createDesktopShortcut({
   onlyCurrentOS: false,
   verbose: false,
+  customLogger: function (message, error) {
+    console.log(message, error);
+  },
   windows: {
     filePath: 'C:\\path\\to\\executable.exe',
     outputPath: 'C:\\some\\folder',
@@ -76,10 +79,11 @@ console.log(shortCutsCreated);
 
 ### Global Settings
 
-Key             | Type    | Allowed         | Default | Description
-:--             | :--     | :--             | :--     | :--
-`onlyCurrentOS` | Boolean | `true`, `false` | `true`  | If true and you pass in objects for multiple OS's, this will only create a shortcut for the OS it was ran on.
-`verbose`       | Boolean | `true`, `false` | `true`  | If true, consoles out helpful warnings and errors.
+Key             | Type     | Allowed         | Default | Description
+:--             | :--      | :--             | :--     | :--
+`onlyCurrentOS` | Boolean  | `true`, `false` | `true`  | If true and you pass in objects for multiple OS's, this will only create a shortcut for the OS it was ran on.
+`verbose`       | Boolean  | `true`, `false` | `true`  | If true, consoles out helpful warnings and errors.
+`customLogger`  | Function | Any function    | None    | You can pass in your own custom function to log errors/warnings to. When called the function will have a message string for the first argument and sometimes an error object. This is useful in NW.js to see the messages logged to the regular Chromium devtools instead of the background page DevTools. But this can also be useful in other scenarios, like adding in custom wrappers or colors in a commandline/terminal. This function may be called multiple times before all synchronous tasks complete.
 
 
 ### Windows Settings
@@ -145,4 +149,3 @@ Parts of the `windows.vbs` were copied/modified based on:
 * Write unit tests. Preferably in Jest.
 * Offer an async and sync mode, instead of just sync.
   * Note: Make sure it can still run in older versions of NW.js
-* Find a way to not require passing in `window`
