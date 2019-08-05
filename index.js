@@ -68,7 +68,9 @@ const library = {
     if (typeof(options.onlyCurrentOS) !== 'boolean') {
       options.onlyCurrentOS = true;
     }
-    if (!options.customLogger || typeof(options.customLogger) !== 'function') {
+    if (!options.customLogger) {
+      delete options.customLogger;
+    } else if (typeof(options.customLogger) !== 'function') {
       delete options.customLogger;
       this.throwError(options, 'Optional customLogger must be a type of function.');
     }
