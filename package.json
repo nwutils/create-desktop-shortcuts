@@ -19,7 +19,7 @@
     "test": "cls && node test.js"
   },
   "devDependencies": {
-    "eslint": "^6.1.0"
+    "eslint": "^6.2.2"
   },
   "license": "MIT",
   "repository": {
