@@ -6,6 +6,7 @@ node_modules/
 .gitignore
 .npmignore
 .travis.yml
+CODE_OF_CONDUCT.md
 package-lock.json
 README.md
 test.js
