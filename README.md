@@ -31,8 +31,11 @@ const shortcutsCreated = createDesktopShortcut({
   osx:     { filePath: '/home/path/to/executable'     }
 });
 
-// returns true if everything worked correctly, or false if it could not create the icon or set its permissions (Linux)
-console.log(shortcutsCreated);
+if (shortcutsCreated) {
+  console.log('Everything worked correctly!');
+} else {
+  console.log('Could not create the icon or set its permissions (Linux)');
+}
 ```
 
 **Advanced Example:**
