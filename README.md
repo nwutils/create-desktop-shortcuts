@@ -174,7 +174,7 @@ Parts of the `windows.vbs` were copied/modified based on:
 
 1. When creating the Windows shortcut, if WScript does not like what is passed to it, it displays a Windows Dialog with an error on the line that failed. I have no idea how to turn that off, so I've just added in tons of validation checks to prevent anything from being passed in to it that could cause this. But may still occur if you pass in junk to it that gets by the validation checks.
 1. No real recourse if the script does not have permission to run `chmod` on Linux. You would just need to run it again with sudo or something.
-1. I know of no way to set a custom icon image on OSX.
+1. I know of no way to set a custom icon image on OSX. It will just always use the same icon the executable had (or file type if linking to an `.html` file for example)
 1. May want to add in `overwrite` option for Windows and Linux too.
 
 I thought this project would take a day, but it took a week. All Operating Systems are terrible.
