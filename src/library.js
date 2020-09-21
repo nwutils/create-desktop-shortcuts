@@ -150,13 +150,14 @@ const library = {
 
     // Global OSX command to create symbolic links
     const link = 'ln';
+    const symbolic = '-s';
 
     if (options.osx.overwrite || (!options.osx.overwrite && !fs.existsSync(options.osx.outputPath))) {
       // https://ss64.com/osx/ln.html
       let command = [
         link,
         overwrite,
-        '-s',
+        symbolic,
         '"' + options.osx.filePath + '"',
         '"' + options.osx.outputPath + '"'
       ].filter(Boolean).join(' ');
