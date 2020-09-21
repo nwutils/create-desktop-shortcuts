@@ -143,14 +143,14 @@ const library = {
   makeOSXShortcut: function (options) {
     let success = true;
 
+    // Global OSX command to create symbolic links
+    const link = 'ln';
+    const symbolic = '-s';
+
     let overwrite = '';
     if (options.osx.overwrite) {
       overwrite = '-f';
     }
-
-    // Global OSX command to create symbolic links
-    const link = 'ln';
-    const symbolic = '-s';
 
     if (options.osx.overwrite || (!options.osx.overwrite && !fs.existsSync(options.osx.outputPath))) {
       // https://ss64.com/osx/ln.html
