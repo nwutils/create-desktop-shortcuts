@@ -15,7 +15,7 @@ let success = createDesktopShortcuts({
     name: 'My App Name',
     comment: 'My App description',
     icon: 'D:\\folder.ico',
-    filePath: 'C:\\Portable Apps\\Koa11y_v3.0.0\\Koa11y.exe',
+    filePath: 'C:\\PortableApps\\Koa11y_3.0.0\\Koa11y.exe',
     outputPath: '%USERPROFILE%\\Desktop',
     arguments: '--my-argument -f \'other stuff\'',
     windowMode: 'maximized',
