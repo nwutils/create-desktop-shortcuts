@@ -35,6 +35,7 @@ const library = {
   /**
    * Replaces all environment variables with their actual value.
    * Keeps intact non-environment variables using '%'
+   *
    * @param  {string} filePath The input file path with percents
    * @return {string}          The resolved file path;
    */
@@ -44,9 +45,13 @@ const library = {
     }
 
     /**
+     * Returns the value stored in the process.env for a given
+     * environment variable. Or the original '%ASDF%' string if
+     * not found.
+     *
      * @param  {string} withPercents    '%USERNAME%'
      * @param  {string} withoutPercents 'USERNAME'
-     * @return {string}
+     * @return {string}                 'bob' || '%USERNAME%'
      */
     function replaceEnvironmentVariable (withPercents, withoutPercents) {
       let found = process.env[withoutPercents];
@@ -383,7 +388,7 @@ const library = {
 
     // File format details:
     // https://wiki.archlinux.org/index.php/Desktop_entries
-    var fileContents = [
+    const fileContents = [
       '#!/user/bin/env xdg-open',
       '[Desktop Entry]',
       'Version=1.0',
@@ -552,6 +557,12 @@ const library = {
   }
 };
 
+/**
+ * Creates OS based shortcuts for files, folders, and applications.
+ *
+ * @param  {object}  options Options object for each OS
+ * @return {boolean}         true = success, false = failed to create the icon or set its permissions (Linux)
+ */
 function createDesktopShortcut (options) {
   options = options || {};
   options = library.validateOptions(options);

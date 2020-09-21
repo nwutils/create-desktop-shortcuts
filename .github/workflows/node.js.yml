@@ -30,4 +30,6 @@ jobs:
     - if: ${{ matrix.node-version == '8.3.0' }}
       run: npm install -g npm@5.7.1
     - run: npm ci
-    - run: npm run lint
+    # ESLint 7.x uses `} catch {` which isn't supported in Node 8
+    - if: ${{ matrix.node-version != '8.3.0' }}
+      run: npm run lint
