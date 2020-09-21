@@ -1,6 +1,6 @@
-let cds = require('./index.js');
+let createDesktopShortcuts = require('./index.js');
 
-let success = cds({
+let success = createDesktopShortcuts({
   linux: {
     name: 'Koala A11y',
     comment: 'Truly commented',
