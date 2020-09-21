@@ -1,6 +1,6 @@
-var cds = require('./index.js');
+let cds = require('./index.js');
 
-var success = cds({
+let success = cds({
   linux: {
     name: 'Koala A11y',
     comment: 'Truly commented',

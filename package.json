@@ -19,7 +19,10 @@
     "test": "cls && node test.js"
   },
   "devDependencies": {
-    "eslint": "^6.8.0"
+    "eslint": "^7.9.0",
+    "eslint-config-tjw-base": "^1.0.0",
+    "eslint-config-tjw-jest": "^1.0.0",
+    "eslint-plugin-jsdoc": "^30.5.1"
   },
   "license": "MIT",
   "repository": {
