@@ -16,7 +16,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [8.0.0, 10.x, 12.x, 14.x]
+        node-version: [8.3.0, 10.x, 12.x, 14.x]
 
     steps:
     - uses: actions/checkout@v2
@@ -27,7 +27,7 @@ jobs:
 
     # However Node 8.3.0 comes with npm 5.3.0.
     # npm 5.7.1 is the first version to support npm ci
-    - if: ${{ matrix.node-version == '8.0.0' }}
+    - if: ${{ matrix.node-version == '8.3.0' }}
       run: npm install -g npm@5.7.1
     - run: npm ci
     - run: npm run lint
