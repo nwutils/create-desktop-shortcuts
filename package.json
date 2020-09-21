@@ -13,8 +13,8 @@
   ],
   "scripts": {
     "start": "node index.js",
-    "lint": "eslint --config=.eslintrc.js index.js test.js",
-    "fix": "eslint --fix --config=.eslintrc.js index.js test.js",
+    "lint": "eslint --config=.eslintrc.js index.js src test.js",
+    "fix": "eslint --fix --config=.eslintrc.js index.js src test.js",
     "debug": "node --inspect-brk test.js",
     "test": "cls && node test.js"
   },
