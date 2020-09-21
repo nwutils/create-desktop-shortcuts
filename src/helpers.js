@@ -13,13 +13,20 @@ const helpers = {
       );
     }
   },
+  /**
+   * Resolves paths that start with a tilde to the user's
+   * home directory.
+   *
+   * @param  {string} filePath '~/GitHub/Repo/file.png'
+   * @return {string}          '/home/bob/GitHub/Repo/file.png'
+   */
   resolveTilde: function (filePath) {
     if (!filePath || typeof(filePath) !== 'string') {
       return undefined;
     }
 
-    // '~/folder/path' or '~'
-    if (filePath[0] === '~' && (filePath[1] === '/' || filePath.length === 1)) {
+    // '~/folder/path' or '~' not '~alias/folder/path'
+    if (filePath.startsWith('~/') || filePath === '~') {
       return filePath.replace('~', os.homedir());
     }
 
