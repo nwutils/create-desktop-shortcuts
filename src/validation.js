@@ -6,6 +6,7 @@ const helpers = require('./helpers.js');
 
 const validation = {
   validateOptions: function (options) {
+    options = options || {};
     if (typeof(options.verbose) !== 'boolean') {
       options.verbose = true;
     }

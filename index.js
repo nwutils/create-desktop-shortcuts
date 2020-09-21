@@ -10,7 +10,6 @@ const library = require('./src/library.js');
  * @return {boolean}         true = success, false = failed to create the icon or set its permissions (Linux)
  */
 function createDesktopShortcut (options) {
-  options = options || {};
   options = validation.validateOptions(options);
   let success = library.runCorrectOSs(options);
   return success;

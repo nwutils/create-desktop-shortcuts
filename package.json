@@ -11,18 +11,23 @@
     "alias",
     "lnk"
   ],
+  "ManifestComments": [
+    "Pinned jest to 24.9.0. 25.1.0 is broken on Windows. Waiting for issue #9459 to be resolved."
+  ],
   "scripts": {
     "start": "node index.js",
-    "lint": "eslint --config=.eslintrc.js index.js src test.js",
-    "fix": "eslint --fix --config=.eslintrc.js index.js src test.js",
-    "debug": "node --inspect-brk test.js",
-    "test": "cls && node test.js"
+    "lint": "eslint --config=.eslintrc.js index.js src manual-testing.js",
+    "fix": "eslint --fix --config=.eslintrc.js index.js src manual-testing.js",
+    "debug": "node --inspect-brk manual-testing.js",
+    "manual-test": "node manual-testing.js",
+    "test": "jest --runInBand --coverage"
   },
   "devDependencies": {
     "eslint": "^7.9.0",
     "eslint-config-tjw-base": "^1.0.0",
     "eslint-config-tjw-jest": "^1.0.0",
-    "eslint-plugin-jsdoc": "^30.5.1"
+    "eslint-plugin-jsdoc": "^30.5.1",
+    "jest": "24.9.0"
   },
   "license": "MIT",
   "repository": {
