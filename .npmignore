@@ -1,12 +1,14 @@
 .git/
+.github/
+coverage/
 node_modules/
+tests/
 .editorconfig
 .eslintrc.js
 .gitattributes
 .gitignore
 .npmignore
-.travis.yml
 CODE_OF_CONDUCT.md
 package-lock.json
 README.md
-test.js
+manual-testing.js
