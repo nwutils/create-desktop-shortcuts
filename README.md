@@ -1,7 +1,7 @@
 
 # create-desktop-shortcuts
 
-[![Build Status](https://travis-ci.org/nwutils/create-desktop-shortcuts.svg?branch=master)](https://travis-ci.org/nwutils/create-desktop-shortcuts)
+[![Build Status](https://github.com/nwutils/create-desktop-shortcuts/workflows/Build%20Status/badge.svg)](https://github.com/nwutils/create-desktop-shortcuts/actions?query=workflow%3A%22Build+Status%22+branch%3Amaster)
 
 
 ## Small, lightweight, cross-platform, built in validation!
