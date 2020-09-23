@@ -5,6 +5,7 @@ const os = require('os');
 const helpers = require('./helpers.js');
 
 const validation = {
+  // SHARED
   validateOptions: function (options) {
     options = options || {};
     if (typeof(options.verbose) !== 'boolean') {
@@ -85,6 +86,20 @@ const validation = {
     }
     return options;
   },
+  defaultBoolean: function (options, operatingSystem, key, bool) {
+    bool = !!bool;
+
+    if (options[operatingSystem] && typeof(options[operatingSystem][key]) !== 'boolean') {
+      if (options[operatingSystem][key] !== undefined) {
+        helpers.throwError(options, 'Optional ' + operatingSystem.toUpperCase() + ' ' + key + ' must be a boolean. Defaulting to ' + bool);
+      }
+      options[operatingSystem][key] = bool;
+    }
+
+    return options;
+  },
+
+  // LINUX
   validateLinuxFilePath: function (options) {
     if (!options.linux) {
       return options;
@@ -137,33 +152,20 @@ const validation = {
 
     return options;
   },
-  validateLinuxOptions: function (options) {
-    if (!options.linux) {
-      return options;
-    }
-
-    options = this.validateLinuxFilePath(options);
-    options = this.validateOutputPath(options, 'linux');
-    options = this.validateOptionalString(options, 'linux', 'comment');
+  validateLinuxType: function (options) {
     options = this.validateOptionalString(options, 'linux', 'type');
-    options = this.validateOptionalString(options, 'linux', 'icon');
-
-    if (!options.linux) {
-      return options;
-    }
-
-    if (typeof(options.linux.terminal) !== 'boolean') {
-      options.linux.terminal = false;
-    }
-    if (typeof(options.linux.chmod) !== 'boolean') {
-      options.linux.chmod = true;
-    }
 
     const validTypes = ['Application', 'Link', 'Directory'];
-    if (options.linux.type && !validTypes.includes(options.linux.type)) {
+
+    if (options.linux && options.linux.type && !validTypes.includes(options.linux.type)) {
       helpers.throwError(options, 'Optional LINUX type must be "Application", "Link", or "Directory". Defaulting to "Application".');
       options.linux.type = 'Application';
     }
+
+    return options;
+  },
+  validateLinuxIcon: function (options) {
+    options = this.validateOptionalString(options, 'linux', 'icon');
 
     if (options.linux.icon) {
       let iconPath = helpers.resolveTilde(options.linux.icon);
@@ -189,6 +191,24 @@ const validation = {
 
     return options;
   },
+  validateLinuxOptions: function (options) {
+    options = this.validateLinuxFilePath(options);
+
+    if (!options.linux) {
+      return options;
+    }
+
+    options = this.validateOutputPath(options, 'linux');
+    options = this.validateLinuxType(options);
+    options = this.validateLinuxIcon(options);
+    options = this.defaultBoolean(options, 'linux', 'terminal', false);
+    options = this.defaultBoolean(options, 'linux', 'chmod', true);
+    options = this.validateOptionalString(options, 'linux', 'comment');
+
+    return options;
+  },
+
+  // WINDOWS
   validateWindowsFilePath: function (options) {
     if (!options.windows) {
       return options;
@@ -209,27 +229,24 @@ const validation = {
 
     return options;
   },
-  validateWindowsOptions: function (options) {
-    options = this.validateWindowsFilePath(options);
-    if (!options.windows) {
-      return options;
-    }
-
-    options = this.validateOutputPath(options, 'windows');
-    options = this.validateOptionalString(options, 'windows', 'comment');
-    options = this.validateOptionalString(options, 'windows', 'icon');
-    options = this.validateOptionalString(options, 'windows', 'arguments');
+  validateWindowsWindowMode: function (options) {
     options = this.validateOptionalString(options, 'windows', 'windowMode');
-    options = this.validateOptionalString(options, 'windows', 'hotkey');
 
     const validWindowModes = ['normal', 'maximized', 'minimized'];
+
     if (options.windows.windowMode && !validWindowModes.includes(options.windows.windowMode)) {
       helpers.throwError(options, 'Optional WINDOWS windowMode must be "normal", "maximized", or "minimized". Defaulting to "normal".');
       delete options.windows.windowMode;
     }
+
     if (!options.windows.windowMode) {
       options.windows.windowMode = 'normal';
     }
+
+    return options;
+  },
+  validateWindowsIcon: function (options) {
+    options = this.validateOptionalString(options, 'windows', 'icon');
 
     if (options.windows.icon) {
       let iconPath = helpers.resolveWindowsEnvironmentVariables(options.windows.icon);
@@ -257,6 +274,24 @@ const validation = {
 
     return options;
   },
+  validateWindowsOptions: function (options) {
+    options = this.validateWindowsFilePath(options);
+
+    if (!options.windows) {
+      return options;
+    }
+
+    options = this.validateOutputPath(options, 'windows');
+    options = this.validateWindowsWindowMode(options);
+    options = this.validateWindowsIcon(options);
+    options = this.validateOptionalString(options, 'windows', 'comment');
+    options = this.validateOptionalString(options, 'windows', 'arguments');
+    options = this.validateOptionalString(options, 'windows', 'hotkey');
+
+    return options;
+  },
+
+  // OSX
   validateOSXFilePath: function (options) {
     if (!options.osx) {
       return options;
@@ -283,15 +318,13 @@ const validation = {
   },
   validateOSXOptions: function (options) {
     options = this.validateOSXFilePath(options);
+
     if (!options.osx) {
       return options;
     }
 
-    if (typeof(options.osx.overwrite) !== 'boolean') {
-      options.osx.overwrite = false;
-    }
-
     options = this.validateOutputPath(options, 'osx');
+    options = this.defaultBoolean(options, 'osx', 'overwrite', false);
 
     return options;
   }
