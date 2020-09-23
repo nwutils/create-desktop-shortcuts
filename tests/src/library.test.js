@@ -1,4 +1,4 @@
-const library = require('../../src/library.js');
+const library = require('@/library.js');
 
 describe('library', () => {
   describe('generateLinuxFileData', () => {
