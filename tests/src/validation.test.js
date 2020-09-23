@@ -61,33 +61,99 @@ describe('Validation', () => {
       console.error = consoleError;
     });
 
-    test('Delete windows and linux', () => {
-      testHelpers.mockPlatform('darwin');
+    describe('Windows', () => {
+      test('Delete osx and linux', () => {
+        testHelpers.mockPlatform('win32');
 
-      fs.existsSync.mockReturnValue(true);
+        fs.existsSync.mockReturnValue(true);
 
-      const options = {
-        customLogger,
-        windows: { filePath: 'C:\\file.ext' },
-        linux: { filePath: '~/file.ext' },
-        osx: { filePath: '~/file.ext' }
-      };
-
-      const results = validation.validateOptions(options);
-      results.osx.outputPath = testHelpers.slasher(results.osx.outputPath);
-
-      expect(results)
-        .toEqual({
-          ...defaults,
+        const options = {
           customLogger,
-          osx: {
-            filePath: '/home/DUMMY/file.ext',
-            outputPath: '/home/DUMMY/Desktop/file',
-            overwrite: false
-          }
-        });
+          windows: { filePath: 'C:\\file.ext' },
+          linux: { filePath: '~/file.ext' },
+          osx: { filePath: '~/file.ext' }
+        };
 
-      testHelpers.mockPlatform(processPlatform);
+        const results = validation.validateOptions(options);
+        results.windows.filePath = testHelpers.slasher(results.windows.filePath);
+        results.windows.outputPath = testHelpers.slasher(results.windows.outputPath);
+
+        expect(results)
+          .toEqual({
+            ...defaults,
+            customLogger,
+            windows: {
+              filePath: 'C:/file.ext',
+              outputPath: 'C:/Users/DUMMY/Desktop/file.lnk',
+              windowMode: 'normal'
+            }
+          });
+
+        testHelpers.mockPlatform(processPlatform);
+      });
+    });
+
+    describe('Linux', () => {
+      test('Delete windows and osx', () => {
+        testHelpers.mockPlatform('linux');
+
+        fs.existsSync.mockReturnValue(true);
+        const options = {
+          customLogger,
+          windows: { filePath: 'C:\\file.ext' },
+          linux: { filePath: '~/file.ext', type: 'Link' },
+          osx: { filePath: '~/file.ext' }
+        };
+
+        const results = validation.validateOptions(options);
+        results.linux.outputPath = testHelpers.slasher(results.linux.outputPath);
+
+        expect(results)
+          .toEqual({
+            ...defaults,
+            customLogger,
+            linux: {
+              filePath: '/home/DUMMY/file.ext',
+              outputPath: '/home/DUMMY/Desktop/file.desktop',
+              type: 'Link',
+              chmod: true,
+              terminal: false
+            }
+          });
+
+        testHelpers.mockPlatform(processPlatform);
+      });
+    });
+
+    describe('OSX', () => {
+      test('Delete windows and linux', () => {
+        testHelpers.mockPlatform('darwin');
+
+        fs.existsSync.mockReturnValue(true);
+
+        const options = {
+          customLogger,
+          windows: { filePath: 'C:\\file.ext' },
+          linux: { filePath: '~/file.ext' },
+          osx: { filePath: '~/file.ext' }
+        };
+
+        const results = validation.validateOptions(options);
+        results.osx.outputPath = testHelpers.slasher(results.osx.outputPath);
+
+        expect(results)
+          .toEqual({
+            ...defaults,
+            customLogger,
+            osx: {
+              filePath: '/home/DUMMY/file.ext',
+              outputPath: '/home/DUMMY/Desktop/file',
+              overwrite: false
+            }
+          });
+
+        testHelpers.mockPlatform(processPlatform);
+      });
     });
   })
 });
