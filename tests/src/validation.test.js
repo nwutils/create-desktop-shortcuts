@@ -1,7 +1,6 @@
 const fs = require('fs');
 jest.mock('fs');
 jest.mock('os');
-const processPlatform = process.platform;
 
 const validation = require('@/validation.js');
 
@@ -88,8 +87,6 @@ describe('Validation', () => {
               windowMode: 'normal'
             }
           });
-
-        testHelpers.mockPlatform(processPlatform);
       });
     });
 
@@ -120,8 +117,6 @@ describe('Validation', () => {
               terminal: false
             }
           });
-
-        testHelpers.mockPlatform(processPlatform);
       });
     });
 
