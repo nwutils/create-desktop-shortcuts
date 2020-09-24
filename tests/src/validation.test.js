@@ -73,9 +73,8 @@ describe('Validation', () => {
           osx: { filePath: '~/file.ext' }
         };
 
-        const results = validation.validateOptions(options);
-        results.windows.filePath = testHelpers.slasher(results.windows.filePath);
-        results.windows.outputPath = testHelpers.slasher(results.windows.outputPath);
+        let results = validation.validateOptions(options);
+        results = testHelpers.optionsSlasher(results);
 
         expect(results)
           .toEqual({
@@ -102,8 +101,8 @@ describe('Validation', () => {
           osx: { filePath: '~/file.ext' }
         };
 
-        const results = validation.validateOptions(options);
-        results.linux.outputPath = testHelpers.slasher(results.linux.outputPath);
+        let results = validation.validateOptions(options);
+        results = testHelpers.optionsSlasher(results);
 
         expect(results)
           .toEqual({
@@ -133,8 +132,8 @@ describe('Validation', () => {
           osx: { filePath: '~/file.ext' }
         };
 
-        const results = validation.validateOptions(options);
-        results.osx.outputPath = testHelpers.slasher(results.osx.outputPath);
+        let results = validation.validateOptions(options);
+        results = testHelpers.optionsSlasher(results);
 
         expect(results)
           .toEqual({
