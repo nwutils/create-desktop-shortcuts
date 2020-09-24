@@ -155,7 +155,29 @@ describe('Validation', () => {
         .toEqual({});
     });
 
+    describe('Windows', () => {
+      test('Resolve outputPath', () => {
+        testHelpers.mockPlatform('win32');
 
+        fs.existsSync.mockReturnValue(true);
+
+        const options = {
+          windows: {
+            filePath: 'C:\\file.ext',
+            outputPath: 'C:\\folder'
+          }
+        };
+
+        let results = validation.validateOutputPath(options, 'windows');
+        results = testHelpers.optionsSlasher(results);
+
+        expect(results)
+          .toEqual({
+            windows: {
+              filePath: 'C:/file.ext',
+              outputPath: 'C:/folder'
+            }
+          });
       });
     });
   });
