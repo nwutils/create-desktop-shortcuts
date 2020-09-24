@@ -65,7 +65,11 @@ const validation = {
       options[operatingSystem].outputPath = path.join(os.homedir(), 'Desktop');
     }
 
-    const fileName = options[operatingSystem].name || path.parse(options[operatingSystem].filePath).name || 'Root';
+    // Used for cross-platform testing. 'C:\\file.ext' => 'C:/file.ext' allowing path.parse to work on Linux (CI) with Windows paths
+    const correctedFilePath = path.join(...options[operatingSystem].filePath.split('\\'));
+
+    const fileName = options[operatingSystem].name || path.parse(correctedFilePath).name || 'Root';
+    // const fileName = options[operatingSystem].name || path.parse(options[operatingSystem].filePath).name || 'Root';
     const fileExtensions = {
       linux: '.desktop',
       win32: '.lnk',
