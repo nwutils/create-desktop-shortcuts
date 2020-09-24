@@ -6,14 +6,14 @@ const validation = require('@/validation.js');
 
 const testHelpers = require('@@/testHelpers.js');
 
+const defaults = {
+  onlyCurrentOS: true,
+  verbose: true
+};
+const customLogger = jest.fn();
+
 describe('Validation', () => {
   describe('validateOptions', () => {
-    const defaults = {
-      onlyCurrentOS: true,
-      verbose: true
-    };
-    const customLogger = jest.fn();
-
     test('Empty', () => {
       expect(validation.validateOptions())
         .toEqual(defaults);
@@ -151,4 +151,88 @@ describe('Validation', () => {
       });
     });
   })
+
+  describe('validateOptionalString', () => {
+    test('Empty options', () => {
+      expect(validation.validateOptionalString({}))
+        .toEqual({});
+    });
+  });
+
+  describe('defaultBoolean', () => {
+    test('Empty options', () => {
+      expect(validation.defaultBoolean({}))
+        .toEqual({});
+    });
+  });
+
+  describe('validateLinuxFilePath', () => {
+    test('Empty options', () => {
+      expect(validation.validateLinuxFilePath({}))
+        .toEqual({});
+    });
+  });
+
+  describe('validateLinuxType', () => {
+    test('Empty options', () => {
+      expect(validation.validateLinuxType({}))
+        .toEqual({});
+    });
+  });
+
+  describe('validateLinuxIcon', () => {
+    test('Empty options', () => {
+      expect(validation.validateLinuxIcon({}))
+        .toEqual({});
+    });
+  });
+
+  describe('validateLinuxOptions', () => {
+    test('Empty options', () => {
+      expect(validation.validateLinuxOptions({}))
+        .toEqual({});
+    });
+  });
+
+  describe('validateWindowsFilePath', () => {
+    test('Empty options', () => {
+      expect(validation.validateWindowsFilePath({}))
+        .toEqual({});
+    });
+  });
+
+  describe('validateWindowsWindowMode', () => {
+    test('Empty options', () => {
+      expect(validation.validateWindowsWindowMode({}))
+        .toEqual({});
+    });
+  });
+
+  describe('validateWindowsIcon', () => {
+    test('Empty options', () => {
+      expect(validation.validateWindowsIcon({}))
+        .toEqual({});
+    });
+  });
+
+  describe('validateWindowsOptions', () => {
+    test('Empty options', () => {
+      expect(validation.validateWindowsOptions({}))
+        .toEqual({});
+    });
+  });
+
+  describe('validateOSXFilePath', () => {
+    test('Empty options', () => {
+      expect(validation.validateOSXFilePath({}))
+        .toEqual({});
+    });
+  });
+
+  describe('validateOSXOptions', () => {
+    test('Empty options', () => {
+      expect(validation.validateOSXOptions({}))
+        .toEqual({});
+    });
+  });
 });

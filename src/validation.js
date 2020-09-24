@@ -171,7 +171,7 @@ const validation = {
   validateLinuxIcon: function (options) {
     options = this.validateOptionalString(options, 'linux', 'icon');
 
-    if (options.linux.icon) {
+    if (options.linux && options.linux.icon) {
       let iconPath = helpers.resolveTilde(options.linux.icon);
 
       if (!path.isAbsolute(iconPath)) {
@@ -238,12 +238,12 @@ const validation = {
 
     const validWindowModes = ['normal', 'maximized', 'minimized'];
 
-    if (options.windows.windowMode && !validWindowModes.includes(options.windows.windowMode)) {
+    if (options.windows && options.windows.windowMode && !validWindowModes.includes(options.windows.windowMode)) {
       helpers.throwError(options, 'Optional WINDOWS windowMode must be "normal", "maximized", or "minimized". Defaulting to "normal".');
       delete options.windows.windowMode;
     }
 
-    if (!options.windows.windowMode) {
+    if (options.windows && !options.windows.windowMode) {
       options.windows.windowMode = 'normal';
     }
 
@@ -252,7 +252,7 @@ const validation = {
   validateWindowsIcon: function (options) {
     options = this.validateOptionalString(options, 'windows', 'icon');
 
-    if (options.windows.icon) {
+    if (options.windows && options.windows.icon) {
       let iconPath = helpers.resolveWindowsEnvironmentVariables(options.windows.icon);
 
       if (!path.isAbsolute(iconPath)) {
