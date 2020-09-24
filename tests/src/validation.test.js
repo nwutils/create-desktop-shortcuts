@@ -145,11 +145,20 @@ describe('Validation', () => {
               overwrite: false
             }
           });
-
-        testHelpers.mockPlatform(processPlatform);
       });
     });
-  })
+  });
+
+  describe('validateOutputPath', () => {
+    test('Empty options', () => {
+      expect(validation.validateOutputPath({}))
+        .toEqual({});
+    });
+
+
+      });
+    });
+  });
 
   describe('validateOptionalString', () => {
     test('Empty options', () => {
