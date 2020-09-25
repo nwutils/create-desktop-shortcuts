@@ -1,5 +1,5 @@
-const fs = require('fs');
-jest.mock('fs');
+const mock = require('mock-fs');
+
 jest.mock('os');
 
 const validation = require('@/validation.js');
@@ -10,9 +10,25 @@ const defaults = {
   onlyCurrentOS: true,
   verbose: true
 };
-const customLogger = jest.fn();
+const customLogger = undefined ||  jest.fn();
+const mockfs = function () {
+  mock({
+    'C:\\file.ext': 'text',
+    'C:\\folder': {},
+    '/home': {
+      'DUMMY': {
+        'file.ext': 'text',
+        'Desktop': {}
+      }
+    }
+  });
+}
 
 describe('Validation', () => {
+  afterEach(() => {
+    mock.restore();
+  });
+
   describe('validateOptions', () => {
     test('Empty', () => {
       expect(validation.validateOptions())
@@ -63,8 +79,7 @@ describe('Validation', () => {
     describe('Windows', () => {
       test('Delete osx and linux', () => {
         testHelpers.mockPlatform('win32');
-
-        fs.existsSync.mockReturnValue(true);
+        mockfs();
 
         const options = {
           customLogger,
@@ -92,8 +107,8 @@ describe('Validation', () => {
     describe('Linux', () => {
       test('Delete windows and osx', () => {
         testHelpers.mockPlatform('linux');
+        mockfs();
 
-        fs.existsSync.mockReturnValue(true);
         const options = {
           customLogger,
           windows: { filePath: 'C:\\file.ext' },
@@ -122,8 +137,7 @@ describe('Validation', () => {
     describe('OSX', () => {
       test('Delete windows and linux', () => {
         testHelpers.mockPlatform('darwin');
-
-        fs.existsSync.mockReturnValue(true);
+        mockfs();
 
         const options = {
           customLogger,
@@ -158,8 +172,7 @@ describe('Validation', () => {
     describe('Windows', () => {
       test('Resolve outputPath', () => {
         testHelpers.mockPlatform('win32');
-
-        fs.existsSync.mockReturnValue(true);
+        mockfs();
 
         const options = {
           windows: {
@@ -175,7 +188,7 @@ describe('Validation', () => {
           .toEqual({
             windows: {
               filePath: 'C:/file.ext',
-              outputPath: 'C:/folder'
+              outputPath: 'C:/folder/file.lnk'
             }
           });
       });

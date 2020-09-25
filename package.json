@@ -27,7 +27,8 @@
     "eslint-config-tjw-base": "^1.0.0",
     "eslint-config-tjw-jest": "^1.0.0",
     "eslint-plugin-jsdoc": "^30.5.1",
-    "jest": "24.9.0"
+    "jest": "24.9.0",
+    "mock-fs": "^4.13.0"
   },
   "license": "MIT",
   "repository": {
