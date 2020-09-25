@@ -135,7 +135,7 @@ const validation = {
         fs.lstatSync(options.linux.filePath).isDirectory()
       )
     ) {
-      helpers.throwError(options, 'LINUX filePath does not exist: ' + options.linux.filePath);
+      helpers.throwError(options, 'LINUX filePath (with type of "Application") must exist and cannot be a folder: ' + options.linux.filePath);
       delete options.linux;
     } else if (
       type &&

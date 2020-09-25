@@ -424,10 +424,36 @@ describe('Validation', () => {
             type: 'Application'
           }
         });
+
+      expect(customLogger)
+        .not.toHaveBeenCalled();
     });
 
-    expect(customLogger)
-      .not.toHaveBeenCalled();
+    test('File does not exist', () => {
+      options.linux.filePath = '/home/DUMMY/DoesNotExist.ext';
+
+      expect(validation.validateLinuxFilePath(options))
+        .toEqual({
+          ...defaults,
+          customLogger
+        });
+
+      expect(customLogger)
+        .toHaveBeenCalledWith('LINUX filePath (with type of "Application") must exist and cannot be a folder: /home/DUMMY/DoesNotExist.ext', undefined);
+    });
+
+    test('Application type cannot be a folder', () => {
+      options.linux.filePath = '/home/DUMMY';
+
+      expect(validation.validateLinuxFilePath(options))
+        .toEqual({
+          ...defaults,
+          customLogger
+        });
+
+      expect(customLogger)
+        .toHaveBeenCalledWith('LINUX filePath (with type of "Application") must exist and cannot be a folder: /home/DUMMY', undefined);
+    });
   });
 
   describe('validateLinuxType', () => {
