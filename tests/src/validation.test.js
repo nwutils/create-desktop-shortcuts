@@ -394,10 +394,40 @@ describe('Validation', () => {
   });
 
   describe('validateLinuxFilePath', () => {
+    let options;
+
+    beforeEach(() => {
+      testHelpers.mockPlatform('linux');
+      mockfs();
+      customLogger = jest.fn();
+      options = {
+        ...defaults,
+        customLogger,
+        linux: {
+          filePath: '/home/DUMMY/file.ext'
+        }
+      }
+    });
+
     test('Empty options', () => {
       expect(validation.validateLinuxFilePath({}))
         .toEqual({});
     });
+
+    test('No type', () => {
+      expect(validation.validateLinuxFilePath(options))
+        .toEqual({
+          ...defaults,
+          customLogger,
+          linux: {
+            filePath: '/home/DUMMY/file.ext',
+            type: 'Application'
+          }
+        });
+    });
+
+    expect(customLogger)
+      .not.toHaveBeenCalled();
   });
 
   describe('validateLinuxType', () => {

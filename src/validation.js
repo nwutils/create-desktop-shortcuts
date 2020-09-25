@@ -124,6 +124,7 @@ const validation = {
       options.linux.filePath = helpers.resolveTilde(options.linux.filePath);
     }
 
+    options = this.validateLinuxType(options);
     const type = options.linux.type;
     if (
       (!type || type === 'Application') &&
@@ -172,9 +173,14 @@ const validation = {
 
     const validTypes = ['Application', 'Link', 'Directory'];
 
-    if (options.linux && options.linux.type && !validTypes.includes(options.linux.type)) {
-      helpers.throwError(options, 'Optional LINUX type must be "Application", "Link", or "Directory". Defaulting to "Application".');
-      options.linux.type = 'Application';
+    if (options.linux) {
+      if (options.linux.type && !validTypes.includes(options.linux.type)) {
+        helpers.throwError(options, 'Optional LINUX type must be "Application", "Link", or "Directory". Defaulting to "Application".');
+        delete options.linux.type;
+      }
+      if (!options.linux.type) {
+        options.linux.type = 'Application';
+      }
     }
 
     return options;
@@ -214,7 +220,6 @@ const validation = {
     }
 
     options = this.validateOutputPath(options, 'linux');
-    options = this.validateLinuxType(options);
     options = this.validateLinuxIcon(options);
     options = this.defaultBoolean(options, 'linux', 'terminal', false);
     options = this.defaultBoolean(options, 'linux', 'chmod', true);
