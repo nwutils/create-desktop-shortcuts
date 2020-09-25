@@ -52,6 +52,7 @@ const validation = {
       } else {
         options[operatingSystem].outputPath = helpers.resolveTilde(options[operatingSystem].outputPath);
       }
+
       if (
         !fs.existsSync(options[operatingSystem].outputPath) ||
         !fs.lstatSync(options[operatingSystem].outputPath).isDirectory()

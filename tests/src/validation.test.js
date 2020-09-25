@@ -17,7 +17,8 @@ const mockfs = function () {
     'C:\\folder': {},
     '/home/DUMMY': {
       'file.ext': 'text',
-      'Desktop': {}
+      'Desktop': {},
+      'folder': {}
     }
   });
 }
@@ -172,10 +173,12 @@ describe('Validation', () => {
         testHelpers.mockPlatform('win32');
         mockfs();
 
+        process.env.KITTEN = 'folder';
+
         const options = {
           windows: {
             filePath: 'C:\\file.ext',
-            outputPath: 'C:\\folder'
+            outputPath: 'C:\\%KITTEN%'
           }
         };
 
@@ -187,6 +190,86 @@ describe('Validation', () => {
             windows: {
               filePath: 'C:/file.ext',
               outputPath: 'C:/folder/file.lnk'
+            }
+          });
+      });
+
+      test('Output does not exist', () => {
+        testHelpers.mockPlatform('win32');
+        mockfs();
+
+        process.env.KITTEN = 'folder';
+
+        const options = {
+          ...defaults,
+          customLogger,
+          windows: {
+            filePath: 'C:\\file.ext',
+            outputPath: 'C:\\DoesNotExist'
+          }
+        };
+
+        let results = validation.validateOutputPath(options, 'windows');
+        results = testHelpers.optionsSlasher(results);
+
+        expect(customLogger)
+          .toHaveBeenCalledWith('Optional WINDOWS outputPath must exist and be a folder. Defaulting to desktop.', undefined);
+
+        expect(results)
+          .toEqual({
+            ...defaults,
+            customLogger,
+            windows: {
+              filePath: 'C:/file.ext',
+              outputPath: 'C:/Users/DUMMY/Desktop/file.lnk'
+            }
+          });
+      });
+    });
+
+    describe('Linux', () => {
+      test('Resolve outputPath tilde', () => {
+        testHelpers.mockPlatform('linux');
+        mockfs();
+
+        const options = {
+          linux: {
+            filePath: '/home/DUMMY/file.ext',
+            outputPath: '~/folder'
+          }
+        };
+
+        let results = validation.validateOutputPath(options, 'linux');
+        results = testHelpers.optionsSlasher(results);
+
+        expect(results)
+          .toEqual({
+            linux: {
+              filePath: '/home/DUMMY/file.ext',
+              outputPath: '/home/DUMMY/folder/file.desktop'
+            }
+          });
+      });
+
+      test('Root file name', () => {
+        testHelpers.mockPlatform('linux');
+        mockfs();
+
+        const options = {
+          linux: {
+            filePath: '/',
+            outputPath: '/home/DUMMY/folder'
+          }
+        };
+
+        let results = validation.validateOutputPath(options, 'linux');
+        results = testHelpers.optionsSlasher(results);
+
+        expect(results)
+          .toEqual({
+            linux: {
+              filePath: '/',
+              outputPath: '/home/DUMMY/folder/Root.desktop'
             }
           });
       });
