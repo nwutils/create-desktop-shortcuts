@@ -15,11 +15,9 @@ const mockfs = function () {
   mock({
     'C:\\file.ext': 'text',
     'C:\\folder': {},
-    '/home': {
-      'DUMMY': {
-        'file.ext': 'text',
-        'Desktop': {}
-      }
+    '/home/DUMMY': {
+      'file.ext': 'text',
+      'Desktop': {}
     }
   });
 }
