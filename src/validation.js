@@ -85,7 +85,11 @@ const validation = {
     return options;
   },
   validateOptionalString: function (options, operatingSystem, key) {
-    if (options[operatingSystem] && options[operatingSystem][key] && typeof(options[operatingSystem][key]) !== 'string') {
+    if (
+      typeof(options[operatingSystem]) === 'object' &&
+      Object(options[operatingSystem]).hasOwnProperty(key) &&
+      typeof(options[operatingSystem][key]) !== 'string'
+    ) {
       helpers.throwError(options, 'Optional ' + operatingSystem.toUpperCase() + ' ' + key + ' must be a string');
       delete options[operatingSystem][key];
     }
@@ -94,7 +98,13 @@ const validation = {
   defaultBoolean: function (options, operatingSystem, key, bool) {
     bool = !!bool;
 
-    if (options[operatingSystem] && typeof(options[operatingSystem][key]) !== 'boolean') {
+    if (
+      typeof(options[operatingSystem]) === 'object' &&
+      (
+        Object(options[operatingSystem]).hasOwnProperty(key) ||
+        typeof(options[operatingSystem][key]) !== 'boolean'
+      )
+    ) {
       if (options[operatingSystem][key] !== undefined) {
         helpers.throwError(options, 'Optional ' + operatingSystem.toUpperCase() + ' ' + key + ' must be a boolean. Defaulting to ' + bool);
       }

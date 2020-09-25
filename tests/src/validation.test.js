@@ -10,7 +10,7 @@ const defaults = {
   onlyCurrentOS: true,
   verbose: true
 };
-const customLogger = undefined ||  jest.fn();
+let customLogger = undefined ||  jest.fn();
 const mockfs = function () {
   mock({
     'C:\\file.ext': 'text',
@@ -281,12 +281,115 @@ describe('Validation', () => {
       expect(validation.validateOptionalString({}))
         .toEqual({});
     });
+
+    test('Valid string', () => {
+      const options = {
+        windows: {
+          name: 'text'
+        }
+      };
+
+      expect(validation.validateOptionalString(options, 'windows', 'name'))
+        .toEqual(options);
+    });
+
+    test('Invalid string', () => {
+      const options = {
+        ...defaults,
+        customLogger,
+        windows: {
+          name: 3
+        }
+      };
+
+      expect(validation.validateOptionalString(options, 'windows', 'name'))
+        .toEqual(options);
+
+      expect(customLogger)
+        .toHaveBeenCalledWith('Optional WINDOWS name must be a string', undefined);
+    });
   });
 
   describe('defaultBoolean', () => {
     test('Empty options', () => {
       expect(validation.defaultBoolean({}))
         .toEqual({});
+    });
+
+    test('Valid false', () => {
+      const options = {
+        ...defaults,
+        customLogger,
+        linux: {
+          chmod: false
+        }
+      };
+
+      expect(validation.defaultBoolean(options, 'linux', 'chmod', true))
+        .toEqual(options);
+
+      expect(customLogger)
+        .not.toHaveBeenCalledWith();
+    });
+
+    test('Valid true', () => {
+      const options = {
+        ...defaults,
+        customLogger,
+        linux: {
+          chmod: true
+        }
+      };
+
+      expect(validation.defaultBoolean(options, 'linux', 'chmod', false))
+        .toEqual(options);
+
+      expect(customLogger)
+        .not.toHaveBeenCalledWith();
+    });
+
+    test('Default when key is empty', () => {
+      const options = {
+        ...defaults,
+        customLogger,
+        linux: {
+        }
+      };
+
+      expect(validation.defaultBoolean(options, 'linux', 'chmod', true))
+        .toEqual({
+          ...defaults,
+          customLogger,
+          linux: {
+            chmod: true
+          }
+        });
+
+      expect(customLogger)
+        .not.toHaveBeenCalledWith();
+    });
+
+    test('Log when non-boolean', () => {
+      customLogger = jest.fn();
+      const options = {
+        ...defaults,
+        customLogger,
+        linux: {
+          chmod: 'false'
+        }
+      };
+
+      expect(validation.defaultBoolean(options, 'linux', 'chmod', true))
+        .toEqual({
+          ...defaults,
+          customLogger,
+          linux: {
+            chmod: true
+          }
+        });
+
+      expect(customLogger)
+        .toHaveBeenLastCalledWith('Optional LINUX chmod must be a boolean. Defaulting to true', undefined);
     });
   });
 
