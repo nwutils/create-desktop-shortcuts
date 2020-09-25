@@ -393,7 +393,7 @@ describe('Validation', () => {
     });
   });
 
-  describe('validateLinuxFilePath', () => {
+  describe('Linux validators', () => {
     let options;
 
     beforeEach(() => {
@@ -409,113 +409,190 @@ describe('Validation', () => {
       }
     });
 
-    test('Empty options', () => {
-      expect(validation.validateLinuxFilePath({}))
-        .toEqual({});
+    describe('validateLinuxFilePath', () => {
+      test('Empty options', () => {
+        expect(validation.validateLinuxFilePath({}))
+          .toEqual({});
+      });
+
+      test('No filepath', () => {
+        options.linux.filePath = undefined;
+
+        expect(validation.validateLinuxFilePath(options))
+          .toEqual({
+            ...defaults,
+            customLogger
+          });
+
+        expect(customLogger)
+          .toHaveBeenCalledWith('LINUX filePath (with type of "Application") must exist and cannot be a folder: undefined', undefined);
+      });
+
+      test('No type', () => {
+        expect(validation.validateLinuxFilePath(options))
+          .toEqual({
+            ...defaults,
+            customLogger,
+            linux: {
+              filePath: '/home/DUMMY/file.ext',
+              type: 'Application'
+            }
+          });
+
+        expect(customLogger)
+          .not.toHaveBeenCalled();
+      });
+
+      test('File does not exist', () => {
+        options.linux.filePath = '/home/DUMMY/DoesNotExist.ext';
+
+        expect(validation.validateLinuxFilePath(options))
+          .toEqual({
+            ...defaults,
+            customLogger
+          });
+
+        expect(customLogger)
+          .toHaveBeenCalledWith('LINUX filePath (with type of "Application") must exist and cannot be a folder: /home/DUMMY/DoesNotExist.ext', undefined);
+      });
+
+      test('Application type cannot be a folder', () => {
+        options.linux.filePath = '/home/DUMMY';
+
+        expect(validation.validateLinuxFilePath(options))
+          .toEqual({
+            ...defaults,
+            customLogger
+          });
+
+        expect(customLogger)
+          .toHaveBeenCalledWith('LINUX filePath (with type of "Application") must exist and cannot be a folder: /home/DUMMY', undefined);
+      });
+
+      test('Directory type cannot be a file', () => {
+        options.linux.filePath = '/home/DUMMY/file.ext';
+        options.linux.type = 'Directory';
+
+        expect(validation.validateLinuxFilePath(options))
+          .toEqual({
+            ...defaults,
+            customLogger
+          });
+
+        expect(customLogger)
+          .toHaveBeenCalledWith('LINUX filePath (with type of "Directory") must exist and be a folder: /home/DUMMY/file.ext', undefined);
+      });
+
+      test('Link type must be a string', () => {
+        options.linux.filePath = undefined;
+        options.linux.type = 'Link';
+
+        expect(validation.validateLinuxFilePath(options))
+          .toEqual({
+            ...defaults,
+            customLogger
+          });
+
+        expect(customLogger)
+          .toHaveBeenCalledWith('LINUX filePath url must be a string: undefined', undefined);
+      });
+
+      test('Empty Linux object', () => {
+        options.linux = {};
+
+        expect(validation.validateLinuxFilePath(options))
+          .toEqual({
+            ...defaults,
+            customLogger
+          });
+
+        expect(customLogger)
+          .toHaveBeenCalledWith('LINUX filePath (with type of \"Application\") must exist and cannot be a folder: undefined', undefined);
+      });
     });
 
-    test('No type', () => {
-      expect(validation.validateLinuxFilePath(options))
-        .toEqual({
-          ...defaults,
-          customLogger,
-          linux: {
-            filePath: '/home/DUMMY/file.ext',
-            type: 'Application'
-          }
-        });
+    describe('validateLinuxType', () => {
+      test('Empty options', () => {
+        expect(validation.validateLinuxType({}))
+          .toEqual({});
+      });
 
-      expect(customLogger)
-        .not.toHaveBeenCalled();
+      test('Invalid type', () => {
+        options.linux.type = 'kitten';
+
+        expect(validation.validateLinuxType(options))
+          .toEqual({
+            ...defaults,
+            customLogger,
+            linux: {
+              filePath: '/home/DUMMY/file.ext',
+              type: 'Application'
+            }
+          });
+
+        expect(customLogger)
+          .toHaveBeenCalledWith('Optional LINUX type must be "Application", "Link", or "Directory". Defaulting to "Application".', undefined);
+      });
     });
 
-    test('File does not exist', () => {
-      options.linux.filePath = '/home/DUMMY/DoesNotExist.ext';
-
-      expect(validation.validateLinuxFilePath(options))
-        .toEqual({
-          ...defaults,
-          customLogger
-        });
-
-      expect(customLogger)
-        .toHaveBeenCalledWith('LINUX filePath (with type of "Application") must exist and cannot be a folder: /home/DUMMY/DoesNotExist.ext', undefined);
+    describe('validateLinuxIcon', () => {
+      test('Empty options', () => {
+        expect(validation.validateLinuxIcon({}))
+          .toEqual({});
+      });
     });
 
-    test('Application type cannot be a folder', () => {
-      options.linux.filePath = '/home/DUMMY';
-
-      expect(validation.validateLinuxFilePath(options))
-        .toEqual({
-          ...defaults,
-          customLogger
-        });
-
-      expect(customLogger)
-        .toHaveBeenCalledWith('LINUX filePath (with type of "Application") must exist and cannot be a folder: /home/DUMMY', undefined);
+    describe('validateLinuxOptions', () => {
+      test('Empty options', () => {
+        expect(validation.validateLinuxOptions({}))
+          .toEqual({});
+      });
     });
   });
 
-  describe('validateLinuxType', () => {
-    test('Empty options', () => {
-      expect(validation.validateLinuxType({}))
-        .toEqual({});
+  describe('Windows validators', () => {
+    describe('validateWindowsFilePath', () => {
+      test('Empty options', () => {
+        expect(validation.validateWindowsFilePath({}))
+          .toEqual({});
+      });
+    });
+
+    describe('validateWindowsWindowMode', () => {
+      test('Empty options', () => {
+        expect(validation.validateWindowsWindowMode({}))
+          .toEqual({});
+      });
+    });
+
+    describe('validateWindowsIcon', () => {
+      test('Empty options', () => {
+        expect(validation.validateWindowsIcon({}))
+          .toEqual({});
+      });
+    });
+
+    describe('validateWindowsOptions', () => {
+      test('Empty options', () => {
+        expect(validation.validateWindowsOptions({}))
+          .toEqual({});
+      });
     });
   });
 
-  describe('validateLinuxIcon', () => {
-    test('Empty options', () => {
-      expect(validation.validateLinuxIcon({}))
-        .toEqual({});
+  describe('OSX validators', () => {
+    describe('validateOSXFilePath', () => {
+      test('Empty options', () => {
+        expect(validation.validateOSXFilePath({}))
+          .toEqual({});
+      });
     });
-  });
 
-  describe('validateLinuxOptions', () => {
-    test('Empty options', () => {
-      expect(validation.validateLinuxOptions({}))
-        .toEqual({});
-    });
-  });
-
-  describe('validateWindowsFilePath', () => {
-    test('Empty options', () => {
-      expect(validation.validateWindowsFilePath({}))
-        .toEqual({});
-    });
-  });
-
-  describe('validateWindowsWindowMode', () => {
-    test('Empty options', () => {
-      expect(validation.validateWindowsWindowMode({}))
-        .toEqual({});
-    });
-  });
-
-  describe('validateWindowsIcon', () => {
-    test('Empty options', () => {
-      expect(validation.validateWindowsIcon({}))
-        .toEqual({});
-    });
-  });
-
-  describe('validateWindowsOptions', () => {
-    test('Empty options', () => {
-      expect(validation.validateWindowsOptions({}))
-        .toEqual({});
-    });
-  });
-
-  describe('validateOSXFilePath', () => {
-    test('Empty options', () => {
-      expect(validation.validateOSXFilePath({}))
-        .toEqual({});
-    });
-  });
-
-  describe('validateOSXOptions', () => {
-    test('Empty options', () => {
-      expect(validation.validateOSXOptions({}))
-        .toEqual({});
+    describe('validateOSXOptions', () => {
+      test('Empty options', () => {
+        expect(validation.validateOSXOptions({}))
+          .toEqual({});
+      });
     });
   });
 });

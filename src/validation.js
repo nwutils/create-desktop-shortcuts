@@ -147,7 +147,7 @@ const validation = {
         !fs.lstatSync(options.linux.filePath).isDirectory()
       )
     ) {
-      helpers.throwError(options, 'LINUX filePath directory must exist and be a folder: ' + options.linux.filePath);
+      helpers.throwError(options, 'LINUX filePath (with type of "Directory") must exist and be a folder: ' + options.linux.filePath);
       delete options.linux;
     } else if (
       type &&
@@ -157,12 +157,7 @@ const validation = {
         typeof(options.linux.filePath) !== 'string'
       )
     ) {
-      helpers.throwError(options, 'LINUX filePath url must exist a string: ' + options.linux.filePath);
-      delete options.linux;
-    }
-
-    if (options.linux && !options.linux.filePath) {
-      helpers.throwError(options, 'LINUX filePath does not exist: ' + options.linux.filePath);
+      helpers.throwError(options, 'LINUX filePath url must be a string: ' + options.linux.filePath);
       delete options.linux;
     }
 
