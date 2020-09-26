@@ -1,4 +1,4 @@
-
+jest.mock('path');
 jest.mock('os');
 
 const validation = require('@/validation.js');
@@ -757,8 +757,7 @@ describe('Validation', () => {
             customLogger,
             windows: {
               filePath: 'C:/file.ext',
-              outputPath: 'C:/Users/DUMMY/Desktop/file.lnk',
-              icon: 'C:/Users/DUMMY/icon.png'
+              outputPath: 'C:/Users/DUMMY/Desktop/file.lnk'
             }
           });
 

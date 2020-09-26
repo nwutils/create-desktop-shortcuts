@@ -275,7 +275,12 @@ const validation = {
       let iconPath = helpers.resolveWindowsEnvironmentVariables(options.windows.icon);
 
       if (!path.isAbsolute(iconPath)) {
-        const outputDirectory = path.parse(options.windows.outputPath).dir;
+        let outputPath = options.windows.outputPath;
+        if (path.sep !== '\\') {
+          outputPath = outputPath.split('\\').join('/');
+          iconPath = iconPath.split('\\').join('/');
+        }
+        const outputDirectory = path.parse(outputPath).dir;
         // I don't think process.chdir is needed, but leaving it in case
         // process.chdir(outputDirectory);
         iconPath = path.join(outputDirectory, iconPath);
@@ -285,6 +290,7 @@ const validation = {
       // anything, then either '.exe', '.ico', or '.dll', maybe ',12'.
       let iconPattern = /^.*(?:\.exe|\.ico|\.dll)(?:,\d*)?$/m;
       if (!RegExp(iconPattern).test(iconPath)) {
+        iconPath = undefined;
         helpers.throwError(options, 'Optional WINDOWS icon must be a ICO, EXE, or DLL file. It may be followed by a comma and icon index value, like: "C:\\file.exe,0"');
       }
 
@@ -304,7 +310,9 @@ const validation = {
         return icon.replace(extension, cleaned);
       }
 
-      if (!fs.existsSync(removeIconIndex(iconPath))) {
+      if (!iconPath) {
+        delete options.windows.icon;
+      } else if (!iconPath || !fs.existsSync(removeIconIndex(iconPath))) {
         helpers.throwError(options, 'Optional WINDOWS icon could not be found.');
         delete options.windows.icon;
       } else {
