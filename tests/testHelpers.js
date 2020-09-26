@@ -62,6 +62,7 @@ const testHelpers = {
   },
   mockfs: function () {
     mock({
+      // Windows
       'C:\\file.ext': 'text',
       'C:\\folder': {},
       'C:\\Users\\DUMMY\\icon.ico': 'text',
@@ -69,6 +70,15 @@ const testHelpers = {
       'C:\\Users\\DUMMY\\icon.dll': 'text',
       'C:\\Users\\DUMMY\\icon.png': 'text',
       'C:\\Users\\DUMMY\\Desktop': {},
+      // Windows in Linux CI
+      'C:/file.ext': 'text',
+      'C:/folder': {},
+      'C:/Users/DUMMY/icon.ico': 'text',
+      'C:/Users/DUMMY/icon.exe': 'text',
+      'C:/Users/DUMMY/icon.dll': 'text',
+      'C:/Users/DUMMY/icon.png': 'text',
+      'C:/Users/DUMMY/Desktop': {},
+      // Linux
       '/home/DUMMY': {
         'file.ext': 'text',
         'icon.png': 'text',
