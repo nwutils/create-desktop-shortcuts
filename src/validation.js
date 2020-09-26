@@ -275,6 +275,9 @@ const validation = {
 
       if (!path.win32.isAbsolute(iconPath)) {
         let outputPath = options.windows.outputPath;
+        // path.sep is forced to '/' in tests so Linux CI can validate Windows tests.
+        // Coverage ignored because we can't do ELSE on this IF.
+        /* istanbul ignore next */
         if (path.sep !== '\\') {
           outputPath = outputPath.split('\\').join('/');
           iconPath = iconPath.split('\\').join('/');
