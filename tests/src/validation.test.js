@@ -1,35 +1,14 @@
-const mock = require('mock-fs');
 
 jest.mock('os');
 
 const validation = require('@/validation.js');
-
 const testHelpers = require('@@/testHelpers.js');
 
-const defaults = {
-  onlyCurrentOS: true,
-  verbose: true
-};
+const defaults = testHelpers.defaults;
+const mockfs = testHelpers.mockfs;
+
+let options;
 let customLogger;
-const mockfs = function () {
-  mock({
-    'C:\\file.ext': 'text',
-    'C:\\folder': {},
-    'C:\\Users\\DUMMY\\icon.ico': 'text',
-    'C:\\Users\\DUMMY\\icon.exe': 'text',
-    'C:\\Users\\DUMMY\\icon.dll': 'text',
-    'C:\\Users\\DUMMY\\icon.png': 'text',
-    'C:\\Users\\DUMMY\\Desktop': {},
-    '/home/DUMMY': {
-      'file.ext': 'text',
-      'icon.png': 'text',
-      'icon.icns': 'text',
-      'icon.bmp': 'text',
-      'Desktop': {},
-      'folder': {}
-    }
-  });
-}
 
 describe('Validation', () => {
   beforeEach(() => {
@@ -37,7 +16,7 @@ describe('Validation', () => {
   });
 
   afterEach(() => {
-    mock.restore();
+    testHelpers.restoreMockFs();
   });
 
   describe('validateOptions', () => {
@@ -52,7 +31,7 @@ describe('Validation', () => {
     });
 
     test('Inverted defaults', () => {
-      const options = {
+      options = {
         onlyCurrentOS: false,
         verbose: false,
         customLogger: undefined
@@ -69,7 +48,7 @@ describe('Validation', () => {
       const consoleError = console.error;
       console.error = jest.fn();
 
-      const options = {
+      options = {
         customLogger: 'Not a function'
       };
       const message = [
@@ -92,7 +71,7 @@ describe('Validation', () => {
         testHelpers.mockPlatform('win32');
         mockfs();
 
-        const options = {
+        options = {
           customLogger,
           windows: { filePath: 'C:\\file.ext' },
           linux: { filePath: '~/file.ext' },
@@ -120,7 +99,7 @@ describe('Validation', () => {
         testHelpers.mockPlatform('linux');
         mockfs();
 
-        const options = {
+        options = {
           customLogger,
           windows: { filePath: 'C:\\file.ext' },
           linux: { filePath: '~/file.ext', type: 'Link' },
@@ -150,7 +129,7 @@ describe('Validation', () => {
         testHelpers.mockPlatform('darwin');
         mockfs();
 
-        const options = {
+        options = {
           customLogger,
           windows: { filePath: 'C:\\file.ext' },
           linux: { filePath: '~/file.ext' },
@@ -181,7 +160,6 @@ describe('Validation', () => {
     });
 
     describe('Windows', () => {
-      let options;
       beforeEach(() => {
         testHelpers.mockPlatform('win32');
         mockfs();
@@ -237,7 +215,6 @@ describe('Validation', () => {
     });
 
     describe('Linux', () => {
-      let options;
       beforeEach(() => {
         testHelpers.mockPlatform('linux');
         mockfs();
@@ -299,7 +276,7 @@ describe('Validation', () => {
     });
 
     test('Valid string', () => {
-      const options = {
+      options = {
         windows: {
           name: 'text'
         }
@@ -310,7 +287,7 @@ describe('Validation', () => {
     });
 
     test('Invalid string', () => {
-      const options = {
+      options = {
         ...defaults,
         customLogger,
         windows: {
@@ -327,7 +304,6 @@ describe('Validation', () => {
   });
 
   describe('defaultBoolean', () => {
-    let options;
     beforeEach(() => {
       options = {
         ...defaults,
@@ -393,8 +369,6 @@ describe('Validation', () => {
   });
 
   describe('Linux validators', () => {
-    let options;
-
     beforeEach(() => {
       testHelpers.mockPlatform('linux');
       mockfs();
@@ -641,8 +615,6 @@ describe('Validation', () => {
   });
 
   describe('Windows validators', () => {
-    let options;
-
     beforeEach(() => {
       testHelpers.mockPlatform('win32');
       mockfs();
@@ -843,8 +815,6 @@ describe('Validation', () => {
   });
 
   describe('OSX validators', () => {
-    let options;
-
     beforeEach(() => {
       testHelpers.mockPlatform('darwin');
       mockfs();

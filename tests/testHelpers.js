@@ -1,3 +1,5 @@
+const mock = require('mock-fs');
+
 const testHelpers = {
   /**
    * Sets the process.platform to specified value.
@@ -53,6 +55,32 @@ const testHelpers = {
       }
     }
     return options;
+  },
+  defaults: {
+    onlyCurrentOS: true,
+    verbose: true
+  },
+  mockfs: function () {
+    mock({
+      'C:\\file.ext': 'text',
+      'C:\\folder': {},
+      'C:\\Users\\DUMMY\\icon.ico': 'text',
+      'C:\\Users\\DUMMY\\icon.exe': 'text',
+      'C:\\Users\\DUMMY\\icon.dll': 'text',
+      'C:\\Users\\DUMMY\\icon.png': 'text',
+      'C:\\Users\\DUMMY\\Desktop': {},
+      '/home/DUMMY': {
+        'file.ext': 'text',
+        'icon.png': 'text',
+        'icon.icns': 'text',
+        'icon.bmp': 'text',
+        'Desktop': {},
+        'folder': {}
+      }
+    });
+  },
+  restoreMockFs: function () {
+    mock.restore();
   }
 };
 
