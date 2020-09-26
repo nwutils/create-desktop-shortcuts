@@ -274,7 +274,7 @@ const validation = {
     if (options.windows && options.windows.icon) {
       let iconPath = helpers.resolveWindowsEnvironmentVariables(options.windows.icon);
 
-      if (!path.isAbsolute(iconPath)) {
+      if (!path.win32.isAbsolute(iconPath)) {
         let outputPath = options.windows.outputPath;
         if (path.sep !== '\\') {
           outputPath = outputPath.split('\\').join('/');
@@ -312,7 +312,7 @@ const validation = {
 
       if (!iconPath) {
         delete options.windows.icon;
-      } else if (!iconPath || !fs.existsSync(removeIconIndex(iconPath))) {
+      } else if (!fs.existsSync(removeIconIndex(iconPath))) {
         helpers.throwError(options, 'Optional WINDOWS icon could not be found.');
         delete options.windows.icon;
       } else {

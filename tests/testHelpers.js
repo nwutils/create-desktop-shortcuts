@@ -61,6 +61,9 @@ const testHelpers = {
     verbose: true
   },
   mockfs: function () {
+    // mock-fs explodes if you use console in your code without
+    // running it once right before execution.
+    // console.log('');
     mock({
       // Windows
       'C:\\file.ext': 'text',
