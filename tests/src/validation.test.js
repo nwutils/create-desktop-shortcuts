@@ -10,13 +10,16 @@ const defaults = {
   onlyCurrentOS: true,
   verbose: true
 };
-let customLogger = undefined ||  jest.fn();
+let customLogger;
 const mockfs = function () {
   mock({
     'C:\\file.ext': 'text',
     'C:\\folder': {},
     '/home/DUMMY': {
       'file.ext': 'text',
+      'icon.png': 'text',
+      'icon.icns': 'text',
+      'icon.bmp': 'text',
       'Desktop': {},
       'folder': {}
     }
@@ -24,6 +27,10 @@ const mockfs = function () {
 }
 
 describe('Validation', () => {
+  beforeEach(() => {
+    customLogger = jest.fn();
+  });
+
   afterEach(() => {
     mock.restore();
   });
@@ -311,51 +318,41 @@ describe('Validation', () => {
   });
 
   describe('defaultBoolean', () => {
+    let options;
+    beforeEach(() => {
+      options = {
+        ...defaults,
+        customLogger,
+        linux: {}
+      };
+    });
+
     test('Empty options', () => {
       expect(validation.defaultBoolean({}))
         .toEqual({});
     });
 
     test('Valid false', () => {
-      const options = {
-        ...defaults,
-        customLogger,
-        linux: {
-          chmod: false
-        }
-      };
+      options.linux.chmod = false;
 
       expect(validation.defaultBoolean(options, 'linux', 'chmod', true))
         .toEqual(options);
 
       expect(customLogger)
-        .not.toHaveBeenCalledWith();
+        .not.toHaveBeenCalled();
     });
 
     test('Valid true', () => {
-      const options = {
-        ...defaults,
-        customLogger,
-        linux: {
-          chmod: true
-        }
-      };
+      options.linux.chmod = true;
 
       expect(validation.defaultBoolean(options, 'linux', 'chmod', false))
         .toEqual(options);
 
       expect(customLogger)
-        .not.toHaveBeenCalledWith();
+        .not.toHaveBeenCalled();
     });
 
     test('Default when key is empty', () => {
-      const options = {
-        ...defaults,
-        customLogger,
-        linux: {
-        }
-      };
-
       expect(validation.defaultBoolean(options, 'linux', 'chmod', true))
         .toEqual({
           ...defaults,
@@ -366,18 +363,11 @@ describe('Validation', () => {
         });
 
       expect(customLogger)
-        .not.toHaveBeenCalledWith();
+        .not.toHaveBeenCalled();
     });
 
     test('Log when non-boolean', () => {
-      customLogger = jest.fn();
-      const options = {
-        ...defaults,
-        customLogger,
-        linux: {
-          chmod: 'false'
-        }
-      };
+      options.linux.chmod = 'false';
 
       expect(validation.defaultBoolean(options, 'linux', 'chmod', true))
         .toEqual({
@@ -399,7 +389,6 @@ describe('Validation', () => {
     beforeEach(() => {
       testHelpers.mockPlatform('linux');
       mockfs();
-      customLogger = jest.fn();
       options = {
         ...defaults,
         customLogger,
@@ -536,6 +525,10 @@ describe('Validation', () => {
     });
 
     describe('validateLinuxIcon', () => {
+      beforeEach(() => {
+        delete options.linux.filePath;
+      });
+
       test('Empty options', () => {
         expect(validation.validateLinuxIcon({}))
           .toEqual({});
@@ -551,6 +544,20 @@ describe('Validation', () => {
   });
 
   describe('Windows validators', () => {
+    let options;
+
+    beforeEach(() => {
+      testHelpers.mockPlatform('win32');
+      mockfs();
+      options = {
+        ...defaults,
+        customLogger,
+        windows: {
+          filePath: 'C:\\file.ext'
+        }
+      }
+    });
+
     describe('validateWindowsFilePath', () => {
       test('Empty options', () => {
         expect(validation.validateWindowsFilePath({}))
@@ -581,6 +588,20 @@ describe('Validation', () => {
   });
 
   describe('OSX validators', () => {
+    let options;
+
+    beforeEach(() => {
+      testHelpers.mockPlatform('darwin');
+      mockfs();
+      options = {
+        ...defaults,
+        customLogger,
+        windows: {
+          filePath: '/home/DUMMY/file.ext'
+        }
+      }
+    });
+
     describe('validateOSXFilePath', () => {
       test('Empty options', () => {
         expect(validation.validateOSXFilePath({}))

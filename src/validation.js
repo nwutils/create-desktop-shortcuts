@@ -105,7 +105,10 @@ const validation = {
         typeof(options[operatingSystem][key]) !== 'boolean'
       )
     ) {
-      if (options[operatingSystem][key] !== undefined) {
+      if (
+        typeof(options[operatingSystem][key]) !== 'boolean' &&
+        options[operatingSystem][key] !== undefined
+      ) {
         helpers.throwError(options, 'Optional ' + operatingSystem.toUpperCase() + ' ' + key + ' must be a boolean. Defaulting to ' + bool);
       }
       options[operatingSystem][key] = bool;
@@ -203,6 +206,9 @@ const validation = {
       } else {
         options.linux.icon = iconPath;
       }
+    }
+    if (options.linux && !options.linux.icon) {
+      delete options.linux.icon;
     }
 
     return options;
