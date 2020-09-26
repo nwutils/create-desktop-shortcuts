@@ -184,6 +184,7 @@ const validation = {
     return options;
   },
   validateLinuxIcon: function (options) {
+    options = this.validateOutputPath(options, 'linux');
     options = this.validateOptionalString(options, 'linux', 'icon');
 
     if (options.linux && options.linux.icon) {
@@ -191,9 +192,10 @@ const validation = {
 
       if (!path.isAbsolute(iconPath)) {
         const outputDirectory = path.parse(options.linux.outputPath).dir;
-        process.chdir(outputDirectory);
+        // I don't think these process.chdir's are needed, but leaving them in case
+        // process.chdir(outputDirectory);
         iconPath = path.join(outputDirectory, iconPath);
-        process.chdir(__dirname);
+        // process.chdir(__dirname);
       }
 
       if (!iconPath.endsWith('.png') && !iconPath.endsWith('.icns')) {
@@ -220,7 +222,6 @@ const validation = {
       return options;
     }
 
-    options = this.validateOutputPath(options, 'linux');
     options = this.validateLinuxIcon(options);
     options = this.defaultBoolean(options, 'linux', 'terminal', false);
     options = this.defaultBoolean(options, 'linux', 'chmod', true);
@@ -267,6 +268,7 @@ const validation = {
     return options;
   },
   validateWindowsIcon: function (options) {
+    options = this.validateOutputPath(options, 'windows');
     options = this.validateOptionalString(options, 'windows', 'icon');
 
     if (options.windows && options.windows.icon) {
@@ -274,9 +276,10 @@ const validation = {
 
       if (!path.isAbsolute(iconPath)) {
         const outputDirectory = path.parse(options.widnows.outputPath).dir;
-        process.chdir(outputDirectory);
+        // I don't think process.chdir is needed, but leaving it in case
+        // process.chdir(outputDirectory);
         iconPath = path.join(outputDirectory, iconPath);
-        process.chdir(__dirname);
+        // process.chdir(__dirname);
       }
 
       // anything, then either '.exe', '.ico', or '.dll', maybe ',12'.
@@ -302,7 +305,6 @@ const validation = {
       return options;
     }
 
-    options = this.validateOutputPath(options, 'windows');
     options = this.validateWindowsWindowMode(options);
     options = this.validateWindowsIcon(options);
     options = this.validateOptionalString(options, 'windows', 'comment');

@@ -12,9 +12,12 @@ const defaults = {
 };
 let customLogger;
 const mockfs = function () {
+  // console.log('');
   mock({
     'C:\\file.ext': 'text',
     'C:\\folder': {},
+    'C:\\Users\\DUMMY\\icon.ico': 'text',
+    'C:\\Users\\DUMMY\\Desktop': {},
     '/home/DUMMY': {
       'file.ext': 'text',
       'icon.png': 'text',
@@ -176,24 +179,33 @@ describe('Validation', () => {
     });
 
     describe('Windows', () => {
-      test('Resolve outputPath', () => {
+      let options;
+      beforeEach(() => {
         testHelpers.mockPlatform('win32');
         mockfs();
-
         process.env.KITTEN = 'folder';
-
-        const options = {
+        options = {
+          ...defaults,
+          customLogger,
           windows: {
             filePath: 'C:\\file.ext',
-            outputPath: 'C:\\%KITTEN%'
           }
         };
+      });
+
+      test('Resolve outputPath', () => {
+        options.windows.outputPath = 'C:\\%KITTEN%';
 
         let results = validation.validateOutputPath(options, 'windows');
         results = testHelpers.optionsSlasher(results);
 
+        expect(customLogger)
+          .not.toHaveBeenCalled();
+
         expect(results)
           .toEqual({
+            ...defaults,
+            customLogger,
             windows: {
               filePath: 'C:/file.ext',
               outputPath: 'C:/folder/file.lnk'
@@ -202,19 +214,7 @@ describe('Validation', () => {
       });
 
       test('Output does not exist', () => {
-        testHelpers.mockPlatform('win32');
-        mockfs();
-
-        process.env.KITTEN = 'folder';
-
-        const options = {
-          ...defaults,
-          customLogger,
-          windows: {
-            filePath: 'C:\\file.ext',
-            outputPath: 'C:\\DoesNotExist'
-          }
-        };
+        options.windows.outputPath = 'C:\\DoesNotExist';
 
         let results = validation.validateOutputPath(options, 'windows');
         results = testHelpers.optionsSlasher(results);
@@ -235,50 +235,57 @@ describe('Validation', () => {
     });
 
     describe('Linux', () => {
-      test('Resolve outputPath tilde', () => {
+      let options;
+      beforeEach(() => {
         testHelpers.mockPlatform('linux');
         mockfs();
-
-        const options = {
-          linux: {
-            filePath: '/home/DUMMY/file.ext',
-            outputPath: '~/folder'
-          }
+        options = {
+          ...defaults,
+          customLogger,
+          linux: {}
         };
+      });
+
+      test('Resolve outputPath tilde', () => {
+        options.linux.filePath = '/home/DUMMY/file.ext';
+        options.linux.outputPath = '~/folder';
 
         let results = validation.validateOutputPath(options, 'linux');
         results = testHelpers.optionsSlasher(results);
 
         expect(results)
           .toEqual({
+            ...defaults,
+            customLogger,
             linux: {
               filePath: '/home/DUMMY/file.ext',
               outputPath: '/home/DUMMY/folder/file.desktop'
             }
           });
+
+        expect(customLogger)
+          .not.toHaveBeenCalled();
       });
 
       test('Root file name', () => {
-        testHelpers.mockPlatform('linux');
-        mockfs();
-
-        const options = {
-          linux: {
-            filePath: '/',
-            outputPath: '/home/DUMMY/folder'
-          }
-        };
+        options.linux.filePath = '/';
+        options.linux.outputPath = '/home/DUMMY/folder';
 
         let results = validation.validateOutputPath(options, 'linux');
         results = testHelpers.optionsSlasher(results);
 
         expect(results)
           .toEqual({
+            ...defaults,
+            customLogger,
             linux: {
               filePath: '/',
               outputPath: '/home/DUMMY/folder/Root.desktop'
             }
           });
+
+        expect(customLogger)
+          .not.toHaveBeenCalled();
       });
     });
   });
@@ -496,7 +503,7 @@ describe('Validation', () => {
           });
 
         expect(customLogger)
-          .toHaveBeenCalledWith('LINUX filePath (with type of \"Application\") must exist and cannot be a folder: undefined', undefined);
+          .toHaveBeenCalledWith('LINUX filePath (with type of "Application") must exist and cannot be a folder: undefined', undefined);
       });
     });
 
@@ -526,12 +533,100 @@ describe('Validation', () => {
 
     describe('validateLinuxIcon', () => {
       beforeEach(() => {
-        delete options.linux.filePath;
+        options.linux.outputPath = '/home/DUMMY/Desktop';
       });
 
       test('Empty options', () => {
         expect(validation.validateLinuxIcon({}))
           .toEqual({});
+      });
+
+      test('Empty string icon', () => {
+        options.linux.icon = '';
+
+        expect(testHelpers.optionsSlasher(validation.validateLinuxIcon(options)))
+          .toEqual({
+            ...defaults,
+            customLogger,
+            linux: {
+              filePath: '/home/DUMMY/file.ext',
+              outputPath: '/home/DUMMY/Desktop/file.desktop'
+            }
+          });
+
+        expect(customLogger)
+          .not.toHaveBeenCalled();
+      });
+
+      test('PNG icon', () => {
+        options.linux.icon = '/home/DUMMY/icon.png';
+
+        expect(testHelpers.optionsSlasher(validation.validateLinuxIcon(options)))
+          .toEqual({
+            ...defaults,
+            customLogger,
+            linux: {
+              filePath: '/home/DUMMY/file.ext',
+              outputPath: '/home/DUMMY/Desktop/file.desktop',
+              icon: '/home/DUMMY/icon.png'
+            }
+          });
+
+        expect(customLogger)
+          .not.toHaveBeenCalled();
+      });
+
+      test('ICNS icon', () => {
+        options.linux.icon = '/home/DUMMY/icon.icns';
+
+        expect(testHelpers.optionsSlasher(validation.validateLinuxIcon(options)))
+          .toEqual({
+            ...defaults,
+            customLogger,
+            linux: {
+              filePath: '/home/DUMMY/file.ext',
+              outputPath: '/home/DUMMY/Desktop/file.desktop',
+              icon: '/home/DUMMY/icon.icns'
+            }
+          });
+
+        expect(customLogger)
+          .not.toHaveBeenCalled();
+      });
+
+      test('BPM icon', () => {
+        options.linux.icon = '/home/DUMMY/file.bmp';
+
+        expect(testHelpers.optionsSlasher(validation.validateLinuxIcon(options)))
+          .toEqual({
+            ...defaults,
+            customLogger,
+            linux: {
+              filePath: '/home/DUMMY/file.ext',
+              outputPath: '/home/DUMMY/Desktop/file.desktop'
+            }
+          });
+
+        expect(customLogger)
+          .toHaveBeenCalledWith('Optional LINUX icon should probably be a PNG file.', undefined);
+      });
+
+      test('Relative path', () => {
+        options.linux.icon = '../icon.png';
+
+        expect(testHelpers.optionsSlasher(validation.validateLinuxIcon(options)))
+          .toEqual({
+            ...defaults,
+            customLogger,
+            linux: {
+              filePath: '/home/DUMMY/file.ext',
+              outputPath: '/home/DUMMY/Desktop/file.desktop',
+              icon: '/home/DUMMY/icon.png'
+            }
+          });
+
+        expect(customLogger)
+          .not.toHaveBeenCalled();
       });
     });
 
@@ -553,7 +648,8 @@ describe('Validation', () => {
         ...defaults,
         customLogger,
         windows: {
-          filePath: 'C:\\file.ext'
+          filePath: 'C:\\file.ext',
+          outputPath: 'C:\\Users\\DUMMY\\Desktop'
         }
       }
     });
@@ -563,6 +659,32 @@ describe('Validation', () => {
         expect(validation.validateWindowsFilePath({}))
           .toEqual({});
       });
+
+      test('No filePath', () => {
+        delete options.windows.filePath;
+
+        expect(validation.validateWindowsFilePath(options))
+          .toEqual({
+            ...defaults,
+            customLogger
+          });
+
+        expect(customLogger)
+          .toHaveBeenCalledWith('WINDOWS filePath does not exist: undefined', undefined);
+      });
+
+      test('File does not exist', () => {
+        options.windows.filePath = 'C:\\DoesNotExist.ext';
+
+        expect(testHelpers.optionsSlasher(validation.validateWindowsFilePath(options)))
+          .toEqual({
+            ...defaults,
+            customLogger
+          });
+
+        expect(customLogger)
+          .toHaveBeenCalledWith('WINDOWS filePath does not exist: C:\\DoesNotExist.ext', undefined);
+      });
     });
 
     describe('validateWindowsWindowMode', () => {
@@ -570,12 +692,68 @@ describe('Validation', () => {
         expect(validation.validateWindowsWindowMode({}))
           .toEqual({});
       });
+
+      test('Invalid mode', () => {
+        options.windows.windowMode = 'kitten';
+
+        expect(testHelpers.optionsSlasher(validation.validateWindowsWindowMode(options)))
+          .toEqual({
+            ...defaults,
+            customLogger,
+            windows: {
+              filePath: 'C:/file.ext',
+              outputPath: 'C:/Users/DUMMY/Desktop',
+              windowMode: 'normal'
+            }
+          });
+
+        expect(customLogger)
+          .toHaveBeenCalledWith('Optional WINDOWS windowMode must be "normal", "maximized", or "minimized". Defaulting to "normal".', undefined);
+      });
     });
 
     describe('validateWindowsIcon', () => {
+      beforeEach(() => {
+        options.windows.icon = 'C:\\Users\\DUMMY\\icon.ico';
+      });
+
       test('Empty options', () => {
         expect(validation.validateWindowsIcon({}))
           .toEqual({});
+      });
+
+      test('Icon', () => {
+        expect(testHelpers.optionsSlasher(validation.validateWindowsIcon(options)))
+          .toEqual({
+            ...defaults,
+            customLogger,
+            windows: {
+              filePath: 'C:/file.ext',
+              outputPath: 'C:/Users/DUMMY/Desktop/file.lnk',
+              icon: 'C:/Users/DUMMY/icon.ico'
+            }
+          });
+
+        expect(customLogger)
+          .not.toHaveBeenCalled();
+      });
+
+      test('Relative path', () => {
+        options.windows.icon = '..\\icon.ico';
+
+        expect(testHelpers.optionsSlasher(validation.validateWindowsIcon(options)))
+          .toEqual({
+            ...defaults,
+            customLogger,
+            windows: {
+              filePath: 'C:/file.ext',
+              outputPath: 'C:/Users/DUMMY/Desktop/file.lnk',
+              icon: 'C:/Users/DUMMY/icon.ico'
+            }
+          });
+
+        expect(customLogger)
+          .not.toHaveBeenCalled();
       });
     });
 
