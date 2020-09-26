@@ -275,7 +275,7 @@ const validation = {
       let iconPath = helpers.resolveWindowsEnvironmentVariables(options.windows.icon);
 
       if (!path.isAbsolute(iconPath)) {
-        const outputDirectory = path.parse(options.widnows.outputPath).dir;
+        const outputDirectory = path.parse(options.windows.outputPath).dir;
         // I don't think process.chdir is needed, but leaving it in case
         // process.chdir(outputDirectory);
         iconPath = path.join(outputDirectory, iconPath);
@@ -285,10 +285,26 @@ const validation = {
       // anything, then either '.exe', '.ico', or '.dll', maybe ',12'.
       let iconPattern = /^.*(?:\.exe|\.ico|\.dll)(?:,\d*)?$/m;
       if (!RegExp(iconPattern).test(iconPath)) {
-        helpers.throwError(options, 'Optional WINDOWS icon must be a ICO, EXE, or DLL file. It may be followed by a comma and icon index value, like: \'C:\\file.exe,0\'');
+        helpers.throwError(options, 'Optional WINDOWS icon must be a ICO, EXE, or DLL file. It may be followed by a comma and icon index value, like: "C:\\file.exe,0"');
       }
 
-      if (!fs.existsSync(iconPath)) {
+      /**
+       * Removes the icon index from file paths.
+       * Such as 'C:\\file.exe,2' => 'C:\\file.exe'
+       *
+       * @param  {string} icon  Icon filepath
+       * @return {string}       Icon filepath without icon index
+       */
+      function removeIconIndex (icon) {
+        // 'C:\\file.dll,0' => 'dll,0'
+        const extension = path.parse(icon).ext;
+        // 'dll,0' => ['dll', '0'] => 'dll'
+        const cleaned = extension.split(',')[0];
+        // 'C:\\file.dll,0' => 'C:\\file.dll'
+        return icon.replace(extension, cleaned);
+      }
+
+      if (!fs.existsSync(removeIconIndex(iconPath))) {
         helpers.throwError(options, 'Optional WINDOWS icon could not be found.');
         delete options.windows.icon;
       } else {
@@ -317,10 +333,6 @@ const validation = {
   // OSX
   validateOSXFilePath: function (options) {
     if (!options.osx) {
-      return options;
-    }
-    if (!options.osx.filePath) {
-      delete options.osx;
       return options;
     }
 

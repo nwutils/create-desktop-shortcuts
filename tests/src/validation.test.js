@@ -12,11 +12,13 @@ const defaults = {
 };
 let customLogger;
 const mockfs = function () {
-  // console.log('');
   mock({
     'C:\\file.ext': 'text',
     'C:\\folder': {},
     'C:\\Users\\DUMMY\\icon.ico': 'text',
+    'C:\\Users\\DUMMY\\icon.exe': 'text',
+    'C:\\Users\\DUMMY\\icon.dll': 'text',
+    'C:\\Users\\DUMMY\\icon.png': 'text',
     'C:\\Users\\DUMMY\\Desktop': {},
     '/home/DUMMY': {
       'file.ext': 'text',
@@ -722,7 +724,7 @@ describe('Validation', () => {
           .toEqual({});
       });
 
-      test('Icon', () => {
+      test('Icon.ico', () => {
         expect(testHelpers.optionsSlasher(validation.validateWindowsIcon(options)))
           .toEqual({
             ...defaults,
@@ -738,10 +740,85 @@ describe('Validation', () => {
           .not.toHaveBeenCalled();
       });
 
+      test('Icon.exe,0', () => {
+        options.windows.icon = 'C:\\Users\\DUMMY\\icon.exe,0';
+
+        expect(testHelpers.optionsSlasher(validation.validateWindowsIcon(options)))
+          .toEqual({
+            ...defaults,
+            customLogger,
+            windows: {
+              filePath: 'C:/file.ext',
+              outputPath: 'C:/Users/DUMMY/Desktop/file.lnk',
+              icon: 'C:/Users/DUMMY/icon.exe,0'
+            }
+          });
+
+        expect(customLogger)
+          .not.toHaveBeenCalled();
+      });
+
+      test('Icon.dll,0', () => {
+        options.windows.icon = 'C:\\Users\\DUMMY\\icon.dll,0';
+
+        expect(testHelpers.optionsSlasher(validation.validateWindowsIcon(options)))
+          .toEqual({
+            ...defaults,
+            customLogger,
+            windows: {
+              filePath: 'C:/file.ext',
+              outputPath: 'C:/Users/DUMMY/Desktop/file.lnk',
+              icon: 'C:/Users/DUMMY/icon.dll,0'
+            }
+          });
+
+        expect(customLogger)
+          .not.toHaveBeenCalled();
+      });
+
+      test('Icon.png', () => {
+        options.windows.icon = 'C:\\Users\\DUMMY\\icon.png';
+
+        expect(testHelpers.optionsSlasher(validation.validateWindowsIcon(options)))
+          .toEqual({
+            ...defaults,
+            customLogger,
+            windows: {
+              filePath: 'C:/file.ext',
+              outputPath: 'C:/Users/DUMMY/Desktop/file.lnk',
+              icon: 'C:/Users/DUMMY/icon.png'
+            }
+          });
+
+        expect(customLogger)
+          .toHaveBeenCalledWith('Optional WINDOWS icon must be a ICO, EXE, or DLL file. ' +
+            'It may be followed by a comma and icon index value, like: "C:\\file.exe,0"', undefined);
+      });
+
+      test('DoesNotExist.ico', () => {
+        options.windows.icon = 'C:\\Users\\DUMMY\\DoesNotExist.ico';
+
+        expect(testHelpers.optionsSlasher(validation.validateWindowsIcon(options)))
+          .toEqual({
+            ...defaults,
+            customLogger,
+            windows: {
+              filePath: 'C:/file.ext',
+              outputPath: 'C:/Users/DUMMY/Desktop/file.lnk'
+            }
+          });
+
+        expect(customLogger)
+          .toHaveBeenCalledWith('Optional WINDOWS icon could not be found.', undefined);
+      });
+
       test('Relative path', () => {
         options.windows.icon = '..\\icon.ico';
 
-        expect(testHelpers.optionsSlasher(validation.validateWindowsIcon(options)))
+        let results = validation.validateWindowsIcon(options);
+        results = testHelpers.optionsSlasher(results);
+
+        expect(results)
           .toEqual({
             ...defaults,
             customLogger,
@@ -774,7 +851,7 @@ describe('Validation', () => {
       options = {
         ...defaults,
         customLogger,
-        windows: {
+        osx: {
           filePath: '/home/DUMMY/file.ext'
         }
       }
@@ -784,6 +861,19 @@ describe('Validation', () => {
       test('Empty options', () => {
         expect(validation.validateOSXFilePath({}))
           .toEqual({});
+      });
+
+      test('No filePath', () => {
+        delete options.osx.filePath;
+
+        expect(validation.validateOSXFilePath(options))
+          .toEqual({
+            ...defaults,
+            customLogger
+          });
+
+        expect(customLogger)
+          .toHaveBeenCalledWith('OSX filePath does not exist: undefined', undefined);
       });
     });
 
