@@ -1,3 +1,4 @@
+const os = require('os');
 const mock = require('mock-fs');
 
 const testHelpers = {
@@ -61,27 +62,25 @@ const testHelpers = {
     verbose: true
   },
   mockfs: function () {
-    // mock-fs explodes if you use console in your code without
-    // running it once right before execution.
-    // console.log('');
-    mock({
-      // Windows
+    const Windows = {
       'C:\\file.ext': 'text',
       'C:\\folder': {},
       'C:\\Users\\DUMMY\\icon.ico': 'text',
       'C:\\Users\\DUMMY\\icon.exe': 'text',
       'C:\\Users\\DUMMY\\icon.dll': 'text',
       'C:\\Users\\DUMMY\\icon.png': 'text',
-      'C:\\Users\\DUMMY\\Desktop': {},
-      // Windows in Linux CI
+      'C:\\Users\\DUMMY\\Desktop': {}
+    };
+    let WindowsInLinuxCI = {
       'C:/file.ext': 'text',
       'C:/folder': {},
       'C:/Users/DUMMY/icon.ico': 'text',
       'C:/Users/DUMMY/icon.exe': 'text',
       'C:/Users/DUMMY/icon.dll': 'text',
       'C:/Users/DUMMY/icon.png': 'text',
-      'C:/Users/DUMMY/Desktop': {},
-      // Linux
+      'C:/Users/DUMMY/Desktop': {}
+    };
+    const Linux = {
       '/home/DUMMY': {
         'file.ext': 'text',
         'icon.png': 'text',
@@ -90,6 +89,18 @@ const testHelpers = {
         'Desktop': {},
         'folder': {}
       }
+    };
+    if (os.platform() === 'win32') {
+      WindowsInLinuxCI = {};
+    }
+
+    // mock-fs explodes if you use console in your code without
+    // running it once right before execution.
+    // console.log('');
+    mock({
+      ...Windows,
+      ...WindowsInLinuxCI,
+      ...Linux
     });
   },
   restoreMockFs: function () {
