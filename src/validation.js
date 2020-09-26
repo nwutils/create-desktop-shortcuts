@@ -70,7 +70,6 @@ const validation = {
     const correctedFilePath = path.join(...options[operatingSystem].filePath.split('\\'));
 
     const fileName = options[operatingSystem].name || path.parse(correctedFilePath).name || 'Root';
-    // const fileName = options[operatingSystem].name || path.parse(options[operatingSystem].filePath).name || 'Root';
     const fileExtensions = {
       linux: '.desktop',
       win32: '.lnk',
