@@ -322,6 +322,19 @@ const validation = {
 
     return options;
   },
+  validateWindowsComment: function (options) {
+    options = this.validateOptionalString(options, 'windows', 'comment');
+    options = this.validateOptionalString(options, 'windows', 'description');
+
+    // Accidentally showed 'description' in part of the docs that should have been comment.
+    // Just in case someone copy/pasted that in the past we should make sure it works.
+    if (options.windows && options.windows.description) {
+      options.windows.comment = options.windows.comment || options.windows.description;
+      delete options.windows.description;
+    }
+
+    return options;
+  },
   validateWindowsOptions: function (options) {
     options = this.validateWindowsFilePath(options);
 
@@ -331,7 +344,7 @@ const validation = {
 
     options = this.validateWindowsWindowMode(options);
     options = this.validateWindowsIcon(options);
-    options = this.validateOptionalString(options, 'windows', 'comment');
+    options = this.validateWindowsComment(options);
     options = this.validateOptionalString(options, 'windows', 'arguments');
     options = this.validateOptionalString(options, 'windows', 'hotkey');
 

@@ -805,6 +805,67 @@ describe('Validation', () => {
       });
     });
 
+    describe('validateWindowsComment', () => {
+      beforeEach(() => {
+        delete options.windows.filePath;
+        delete options.windows.outputPath;
+      });
+
+      test('Empty object', () => {
+        expect(validation.validateWindowsComment({}))
+          .toEqual({});
+      });
+
+      test('Comment', () => {
+        options.windows.comment = 'comment';
+
+        expect(validation.validateWindowsComment(options))
+          .toEqual({
+            ...defaults,
+            customLogger,
+            windows: {
+              comment: 'comment'
+            }
+          });
+
+        expect(customLogger)
+          .not.toHaveBeenCalled();
+      });
+
+      test('Description', () => {
+        options.windows.description = 'description';
+
+        expect(validation.validateWindowsComment(options))
+          .toEqual({
+            ...defaults,
+            customLogger,
+            windows: {
+              comment: 'description'
+            }
+          });
+
+        expect(customLogger)
+          .not.toHaveBeenCalled();
+      });
+
+      test('Comment and description', () => {
+        options.windows.comment = 'comment';
+        options.windows.description = 'description';
+
+        expect(validation.validateWindowsComment(options))
+          .toEqual({
+            ...defaults,
+            customLogger,
+            windows: {
+              comment: 'comment'
+            }
+          });
+
+        expect(customLogger)
+          .not.toHaveBeenCalled();
+      });
+    });
+
     describe('validateWindowsOptions', () => {
       test('Empty options', () => {
         expect(validation.validateWindowsOptions({}))
