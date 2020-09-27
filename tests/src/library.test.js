@@ -1,4 +1,5 @@
 jest.mock('child_process');
+jest.mock('path');
 jest.mock('os');
 
 const childProcess = require('child_process');
@@ -18,7 +19,7 @@ describe('library', () => {
     customLogger = jest.fn();
     options = {
       customLogger,
-    }
+    };
     mockfs();
   });
 
