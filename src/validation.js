@@ -5,6 +5,7 @@ const os = require('os');
 const helpers = require('./helpers.js');
 
 const validation = {
+  // SHARED
   validateOptions: function (options) {
     options = options || {};
     if (typeof(options.verbose) !== 'boolean') {
@@ -51,6 +52,7 @@ const validation = {
       } else {
         options[operatingSystem].outputPath = helpers.resolveTilde(options[operatingSystem].outputPath);
       }
+
       if (
         !fs.existsSync(options[operatingSystem].outputPath) ||
         !fs.lstatSync(options[operatingSystem].outputPath).isDirectory()
@@ -64,7 +66,10 @@ const validation = {
       options[operatingSystem].outputPath = path.join(os.homedir(), 'Desktop');
     }
 
-    const fileName = options[operatingSystem].name || path.parse(options[operatingSystem].filePath).name || 'Root';
+    // Used for cross-platform testing. 'C:\\file.ext' => 'C:/file.ext' allowing path.parse to work on Linux (CI) with Windows paths
+    const correctedFilePath = path.join(...options[operatingSystem].filePath.split('\\'));
+
+    const fileName = options[operatingSystem].name || path.parse(correctedFilePath).name || 'Root';
     const fileExtensions = {
       linux: '.desktop',
       win32: '.lnk',
@@ -79,12 +84,37 @@ const validation = {
     return options;
   },
   validateOptionalString: function (options, operatingSystem, key) {
-    if (options[operatingSystem] && options[operatingSystem][key] && typeof(options[operatingSystem][key]) !== 'string') {
+    if (
+      typeof(options[operatingSystem]) === 'object' &&
+      Object(options[operatingSystem]).hasOwnProperty(key) &&
+      typeof(options[operatingSystem][key]) !== 'string'
+    ) {
       helpers.throwError(options, 'Optional ' + operatingSystem.toUpperCase() + ' ' + key + ' must be a string');
       delete options[operatingSystem][key];
     }
     return options;
   },
+  defaultBoolean: function (options, operatingSystem, key, defaultValue) {
+    defaultValue = !!defaultValue;
+
+    if (typeof(options[operatingSystem]) === 'object') {
+      if (options[operatingSystem][key] === undefined) {
+        options[operatingSystem][key] = defaultValue;
+      }
+
+      if (
+        Object(options[operatingSystem]).hasOwnProperty(key) &&
+        typeof(options[operatingSystem][key]) !== 'boolean'
+      ) {
+        helpers.throwError(options, 'Optional ' + operatingSystem.toUpperCase() + ' ' + key + ' must be a boolean. Defaulting to ' + defaultValue);
+        options[operatingSystem][key] = defaultValue;
+      }
+    }
+
+    return options;
+  },
+
+  // LINUX
   validateLinuxFilePath: function (options) {
     if (!options.linux) {
       return options;
@@ -94,6 +124,7 @@ const validation = {
       options.linux.filePath = helpers.resolveTilde(options.linux.filePath);
     }
 
+    options = this.validateLinuxType(options);
     const type = options.linux.type;
     if (
       (!type || type === 'Application') &&
@@ -104,7 +135,7 @@ const validation = {
         fs.lstatSync(options.linux.filePath).isDirectory()
       )
     ) {
-      helpers.throwError(options, 'LINUX filePath does not exist: ' + options.linux.filePath);
+      helpers.throwError(options, 'LINUX filePath (with type of "Application") must exist and cannot be a folder: ' + options.linux.filePath);
       delete options.linux;
     } else if (
       type &&
@@ -116,7 +147,7 @@ const validation = {
         !fs.lstatSync(options.linux.filePath).isDirectory()
       )
     ) {
-      helpers.throwError(options, 'LINUX filePath directory must exist and be a folder: ' + options.linux.filePath);
+      helpers.throwError(options, 'LINUX filePath (with type of "Directory") must exist and be a folder: ' + options.linux.filePath);
       delete options.linux;
     } else if (
       type &&
@@ -126,53 +157,42 @@ const validation = {
         typeof(options.linux.filePath) !== 'string'
       )
     ) {
-      helpers.throwError(options, 'LINUX filePath url must exist a string: ' + options.linux.filePath);
-      delete options.linux;
-    }
-
-    if (options.linux && !options.linux.filePath) {
-      helpers.throwError(options, 'LINUX filePath does not exist: ' + options.linux.filePath);
+      helpers.throwError(options, 'LINUX filePath url must be a string: ' + options.linux.filePath);
       delete options.linux;
     }
 
     return options;
   },
-  validateLinuxOptions: function (options) {
-    if (!options.linux) {
-      return options;
-    }
-
-    options = this.validateLinuxFilePath(options);
-    options = this.validateOutputPath(options, 'linux');
-    options = this.validateOptionalString(options, 'linux', 'comment');
+  validateLinuxType: function (options) {
     options = this.validateOptionalString(options, 'linux', 'type');
-    options = this.validateOptionalString(options, 'linux', 'icon');
-
-    if (!options.linux) {
-      return options;
-    }
-
-    if (typeof(options.linux.terminal) !== 'boolean') {
-      options.linux.terminal = false;
-    }
-    if (typeof(options.linux.chmod) !== 'boolean') {
-      options.linux.chmod = true;
-    }
 
     const validTypes = ['Application', 'Link', 'Directory'];
-    if (options.linux.type && !validTypes.includes(options.linux.type)) {
-      helpers.throwError(options, 'Optional LINUX type must be "Application", "Link", or "Directory". Defaulting to "Application".');
-      options.linux.type = 'Application';
+
+    if (options.linux) {
+      if (options.linux.type && !validTypes.includes(options.linux.type)) {
+        helpers.throwError(options, 'Optional LINUX type must be "Application", "Link", or "Directory". Defaulting to "Application".');
+        delete options.linux.type;
+      }
+      if (!options.linux.type) {
+        options.linux.type = 'Application';
+      }
     }
 
-    if (options.linux.icon) {
+    return options;
+  },
+  validateLinuxIcon: function (options) {
+    options = this.validateOutputPath(options, 'linux');
+    options = this.validateOptionalString(options, 'linux', 'icon');
+
+    if (options.linux && options.linux.icon) {
       let iconPath = helpers.resolveTilde(options.linux.icon);
 
       if (!path.isAbsolute(iconPath)) {
         const outputDirectory = path.parse(options.linux.outputPath).dir;
-        process.chdir(outputDirectory);
+        // I don't think these process.chdir's are needed, but leaving them in case
+        // process.chdir(outputDirectory);
         iconPath = path.join(outputDirectory, iconPath);
-        process.chdir(__dirname);
+        // process.chdir(__dirname);
       }
 
       if (!iconPath.endsWith('.png') && !iconPath.endsWith('.icns')) {
@@ -186,9 +206,28 @@ const validation = {
         options.linux.icon = iconPath;
       }
     }
+    if (options.linux && !options.linux.icon) {
+      delete options.linux.icon;
+    }
 
     return options;
   },
+  validateLinuxOptions: function (options) {
+    options = this.validateLinuxFilePath(options);
+
+    if (!options.linux) {
+      return options;
+    }
+
+    options = this.validateLinuxIcon(options);
+    options = this.defaultBoolean(options, 'linux', 'terminal', false);
+    options = this.defaultBoolean(options, 'linux', 'chmod', true);
+    options = this.validateOptionalString(options, 'linux', 'comment');
+
+    return options;
+  },
+
+  // WINDOWS
   validateWindowsFilePath: function (options) {
     if (!options.windows) {
       return options;
@@ -209,45 +248,71 @@ const validation = {
 
     return options;
   },
-  validateWindowsOptions: function (options) {
-    options = this.validateWindowsFilePath(options);
-    if (!options.windows) {
-      return options;
-    }
-
-    options = this.validateOutputPath(options, 'windows');
-    options = this.validateOptionalString(options, 'windows', 'comment');
-    options = this.validateOptionalString(options, 'windows', 'icon');
-    options = this.validateOptionalString(options, 'windows', 'arguments');
+  validateWindowsWindowMode: function (options) {
     options = this.validateOptionalString(options, 'windows', 'windowMode');
-    options = this.validateOptionalString(options, 'windows', 'hotkey');
 
     const validWindowModes = ['normal', 'maximized', 'minimized'];
-    if (options.windows.windowMode && !validWindowModes.includes(options.windows.windowMode)) {
+
+    if (options.windows && options.windows.windowMode && !validWindowModes.includes(options.windows.windowMode)) {
       helpers.throwError(options, 'Optional WINDOWS windowMode must be "normal", "maximized", or "minimized". Defaulting to "normal".');
       delete options.windows.windowMode;
     }
-    if (!options.windows.windowMode) {
+
+    if (options.windows && !options.windows.windowMode) {
       options.windows.windowMode = 'normal';
     }
 
-    if (options.windows.icon) {
+    return options;
+  },
+  validateWindowsIcon: function (options) {
+    options = this.validateOutputPath(options, 'windows');
+    options = this.validateOptionalString(options, 'windows', 'icon');
+
+    if (options.windows && options.windows.icon) {
       let iconPath = helpers.resolveWindowsEnvironmentVariables(options.windows.icon);
 
-      if (!path.isAbsolute(iconPath)) {
-        const outputDirectory = path.parse(options.widnows.outputPath).dir;
-        process.chdir(outputDirectory);
+      if (!path.win32.isAbsolute(iconPath)) {
+        let outputPath = options.windows.outputPath;
+        // path.sep is forced to '/' in tests so Linux CI can validate Windows tests.
+        // Coverage ignored because we can't do ELSE on this IF.
+        /* istanbul ignore next */
+        if (path.sep !== '\\') {
+          outputPath = outputPath.split('\\').join('/');
+          iconPath = iconPath.split('\\').join('/');
+        }
+        const outputDirectory = path.parse(outputPath).dir;
+        // I don't think process.chdir is needed, but leaving it in case
+        // process.chdir(outputDirectory);
         iconPath = path.join(outputDirectory, iconPath);
-        process.chdir(__dirname);
+        // process.chdir(__dirname);
       }
 
       // anything, then either '.exe', '.ico', or '.dll', maybe ',12'.
       let iconPattern = /^.*(?:\.exe|\.ico|\.dll)(?:,\d*)?$/m;
       if (!RegExp(iconPattern).test(iconPath)) {
-        helpers.throwError(options, 'Optional WINDOWS icon must be a ICO, EXE, or DLL file. It may be followed by a comma and icon index value, like: \'C:\\file.exe,0\'');
+        iconPath = undefined;
+        helpers.throwError(options, 'Optional WINDOWS icon must be a ICO, EXE, or DLL file. It may be followed by a comma and icon index value, like: "C:\\file.exe,0"');
       }
 
-      if (!fs.existsSync(iconPath)) {
+      /**
+       * Removes the icon index from file paths.
+       * Such as 'C:\\file.exe,2' => 'C:\\file.exe'
+       *
+       * @param  {string} icon  Icon filepath
+       * @return {string}       Icon filepath without icon index
+       */
+      function removeIconIndex (icon) {
+        // 'C:\\file.dll,0' => 'dll,0'
+        const extension = path.parse(icon).ext;
+        // 'dll,0' => ['dll', '0'] => 'dll'
+        const cleaned = extension.split(',')[0];
+        // 'C:\\file.dll,0' => 'C:\\file.dll'
+        return icon.replace(extension, cleaned);
+      }
+
+      if (!iconPath) {
+        delete options.windows.icon;
+      } else if (!fs.existsSync(removeIconIndex(iconPath))) {
         helpers.throwError(options, 'Optional WINDOWS icon could not be found.');
         delete options.windows.icon;
       } else {
@@ -257,12 +322,38 @@ const validation = {
 
     return options;
   },
-  validateOSXFilePath: function (options) {
-    if (!options.osx) {
+  validateWindowsComment: function (options) {
+    options = this.validateOptionalString(options, 'windows', 'comment');
+    options = this.validateOptionalString(options, 'windows', 'description');
+
+    // Accidentally showed 'description' in part of the docs that should have been comment.
+    // Just in case someone copy/pasted that in the past we should make sure it works.
+    if (options.windows && options.windows.description) {
+      options.windows.comment = options.windows.comment || options.windows.description;
+      delete options.windows.description;
+    }
+
+    return options;
+  },
+  validateWindowsOptions: function (options) {
+    options = this.validateWindowsFilePath(options);
+
+    if (!options.windows) {
       return options;
     }
-    if (!options.osx.filePath) {
-      delete options.osx;
+
+    options = this.validateWindowsWindowMode(options);
+    options = this.validateWindowsIcon(options);
+    options = this.validateWindowsComment(options);
+    options = this.validateOptionalString(options, 'windows', 'arguments');
+    options = this.validateOptionalString(options, 'windows', 'hotkey');
+
+    return options;
+  },
+
+  // OSX
+  validateOSXFilePath: function (options) {
+    if (!options.osx) {
       return options;
     }
 
@@ -283,15 +374,13 @@ const validation = {
   },
   validateOSXOptions: function (options) {
     options = this.validateOSXFilePath(options);
+
     if (!options.osx) {
       return options;
     }
 
-    if (typeof(options.osx.overwrite) !== 'boolean') {
-      options.osx.overwrite = false;
-    }
-
     options = this.validateOutputPath(options, 'osx');
+    options = this.defaultBoolean(options, 'osx', 'overwrite', false);
 
     return options;
   }

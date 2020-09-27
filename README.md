@@ -49,12 +49,15 @@ Each OS handles the concept of a shortcut icon slightly differently. So they eac
 const createDesktopShortcut = require('create-desktop-shortcuts');
 
 const shortcutsCreated = createDesktopShortcut({
+  // OPTIONAL: defaults to true
   onlyCurrentOS: true,
+  // OPTIONAL: defaults to true
   verbose: true,
   /**
+   * OPTIONAL: console.error is called by default if verbose: true.
+   *
    * Your own custom logging function called with helpful warning/error
    * messages from the internal validators. Only used if verbose: true.
-   * If verbose: true and !customLogger, uses normal console.log.
    *
    * @param  {string} message The human readable warning/error message
    * @param  {object} error   Sometimes an error or options object is passed
@@ -63,29 +66,49 @@ const shortcutsCreated = createDesktopShortcut({
     console.log(message, error);
   },
   windows: {
+    // REQUIRED: Path must exist
     filePath: 'C:\\path\\to\\executable.exe',
+    // OPTIONAL: Defaults to the Desktop of the current user
     outputPath: 'C:\\some\\folder',
+    // OPTIONAL: defaults to the filePath file's name (without the extension)
     name: 'My App Name',
-    description: 'My App description',
+    // OPTIONAL
+    comment: 'My App description',
+    // OPTIONAL: File must exist and be ICO, EXE, or PNG
     icon: 'C:\\path\\to\\file.ico',
+    // OPTIONAL
     arguments: '--my-argument -f \'other stuff\'',
+    // OPTIONAL: defaults to 'normal'
     windowMode: 'normal',
+    // OPTIONAL
     hotkey: 'ALT+CTRL+F'
   },
   linux: {
+    // REQUIRED: Path must exist
     filePath: '/home/path/to/executable',
+    // OPTIONAL: Defaults to the Desktop of the current user
     outputPath: '/home/some/folder',
+    // OPTIONAL: defaults to the filePath file's name (without the extension)
     name: 'My App Name',
-    description: 'My comment',
+    // OPTIONAL
+    description: 'My app description',
+    // OPTIONAL: File must exist and be PNG or ICNS
     icon: '/home/path/to/file.png',
+    // OPTIONAL: defaults to 'Application'
     type: 'Application',
+    // OPTIONAL: defaults to false
     terminal: false,
+    // OPTIONAL: defaults to true
     chmod: true
   },
   osx: {
+    // REQUIRED: Path must exist
     filePath: '/Applications/My App.app',
+    // OPTIONAL: Defaults to the Desktop of the current user
     outputPath: '/home/some/folder',
+    // OPTIONAL: defaults to the filePath file's name (without the extension)
     name: 'My App Name',
+    // OPTIONAL: defaults to false
     overwrite: false
   }
 });
@@ -100,11 +123,11 @@ console.log(shortcutsCreated);
 
 ### Global Settings
 
-Key             | Type     | Allowed         | Default | Description
-:--             | :--      | :--             | :--     | :--
-`onlyCurrentOS` | Boolean  | `true`, `false` | `true`  | If true and you pass in objects for multiple OS's, this will only create a shortcut for the OS it was ran on.
-`verbose`       | Boolean  | `true`, `false` | `true`  | If true, consoles out helpful warnings and errors.
-`customLogger`  | Function | Any function    | None    | You can pass in your own custom function to log errors/warnings to. When called the function will receive a `message` string for the first argument and sometimes an `error` object for the second argument. This is useful in NW.js to see the messages logged to the regular Chromium Developer Tools instead of the background page's developer tools. But this can also be useful in other scenarios, like adding in custom wrappers or colors in a command line/terminal. This function may be called multiple times before all synchronous tasks complete.
+Key             | Type     | Allowed         | Default         | Description
+:--             | :--      | :--             | :--             | :--
+`onlyCurrentOS` | Boolean  | `true`, `false` | `true`          | If true and you pass in objects for multiple OS's, this will only create a shortcut for the OS it was ran on.
+`verbose`       | Boolean  | `true`, `false` | `true`          | If true, consoles out helpful warnings and errors using `customLogger` or `console.error`.
+`customLogger`  | Function | Any function    | `console.error` | You can pass in your own custom function to log errors/warnings to. When called the function will receive a `message` string for the first argument and sometimes an `error` object for the second argument. This is useful in NW.js to see the messages logged to the regular Chromium Developer Tools instead of the background page's developer tools. But this can also be useful in other scenarios, like adding in custom wrappers or colors in a command line/terminal. This function may be called multiple times before all synchronous tasks complete.
 
 
 ### Windows Settings

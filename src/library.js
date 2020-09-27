@@ -8,10 +8,14 @@ const helpers = require('./helpers.js');
 const library = {
   // LINUX
   generateLinuxFileData: function (options) {
+    if (!options || !options.linux || !options.linux.filePath) {
+      return '';
+    }
+
     // Set defaults
     let type = 'Type=Application';
     let terminal = 'Terminal=false';
-    let exec = '';
+    let exec = 'Exec=' + options.linux.filePath;
     let name = 'Name=' + path.parse(options.linux.filePath).name;
     let comment = '';
     let icon = '';
@@ -22,9 +26,6 @@ const library = {
     }
     if (options.linux.terminal) {
       terminal = 'Terminal=' + options.linux.terminal;
-    }
-    if (options.linux.filePath) {
-      exec = 'Exec=' + options.linux.filePath;
     }
     if (options.linux.name) {
       name = 'Name=' + options.linux.name;

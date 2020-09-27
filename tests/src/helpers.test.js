@@ -1,6 +1,9 @@
 jest.mock('os');
+const processPlatform = process.platform;
 
-const helpers = require('../../src/helpers.js');
+const helpers = require('@/helpers.js');
+
+const testHelpers = require('@@/testHelpers.js');
 
 describe('helpers', () => {
   describe('throwError', () => {
@@ -45,18 +48,12 @@ describe('helpers', () => {
   });
 
   describe('resolveTilde', () => {
-    const processPlatform = process.platform;
-
     beforeEach(() => {
-       Object.defineProperty(process, 'platform', {
-         value: 'linux'
-       });
+      testHelpers.mockPlatform('linux');
     });
 
     afterEach(() => {
-       Object.defineProperty(process, 'platform', {
-         value: processPlatform
-       });
+      testHelpers.mockPlatform(processPlatform);
     });
 
     test('Returns undefined if nothing passed in', () => {
@@ -96,18 +93,12 @@ describe('helpers', () => {
   });
 
   describe('resolveWindowsEnvironmentVariables', () => {
-    const processPlatform = process.platform;
-
     beforeEach(() => {
-       Object.defineProperty(process, 'platform', {
-         value: 'win32'
-       });
+      testHelpers.mockPlatform('win32');
     });
 
     afterEach(() => {
-       Object.defineProperty(process, 'platform', {
-         value: processPlatform
-       });
+       testHelpers.mockPlatform(processPlatform);
     });
 
     test('Returns undefined if nothing passed in', () => {

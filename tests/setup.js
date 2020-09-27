@@ -1,7 +1,11 @@
+const processPlatform = process.platform;
+const testHelpers = require('@@/testHelpers.js');
+
 global.beforeEach(() => {
 });
 
 global.afterEach(() => {
+  testHelpers.mockPlatform(processPlatform);
   jest.resetModules();
 });
 
