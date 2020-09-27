@@ -84,10 +84,13 @@ const library = {
   },
 
   // WINDOWS
+  produceWindowsVBSPath: function () {
+    return path.join(__dirname, 'windows.vbs');
+  },
   makeWindowsShortcut: function (options) {
     let success = true;
 
-    const vbsScript = path.join(__dirname, 'windows.vbs');
+    const vbsScript = this.produceWindowsVBSPath();
     const filePathName = path.parse(options.windows.filePath).name;
     if (!fs.existsSync(vbsScript)) {
       helpers.throwError(options, 'Could not locate required "windows.vbs" file.');
@@ -106,9 +109,19 @@ const library = {
     let args = options.windows.arguments || '';
     let comment = options.windows.comment || filePathName;
     let cwd = '';
-    let icon = options.windows.icon || options.windows.filePath + ',0';
+    let icon = options.windows.icon;
     let windowMode = windowModes[options.windows.windowMode] || 1;
     let hotkey = options.windows.hotkey || '';
+
+    if (
+      filePath.endsWith('.ico') ||
+      filePath.endsWith('.dll') ||
+      filePath.endsWith('.exe')
+    ) {
+      icon = options.windows.filePath + ',0';
+    } else {
+      icon = options.windows.filePath;
+    }
 
     let wscriptArguments = [
       vbsScript,

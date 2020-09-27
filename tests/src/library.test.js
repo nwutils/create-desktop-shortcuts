@@ -1,4 +1,10 @@
+jest.mock('child_process');
+jest.mock('os');
+
+const childProcess = require('child_process');
+
 const library = require('@/library.js');
+const validation = require('@/validation.js');
 const testHelpers = require('@@/testHelpers.js');
 
 const defaults = testHelpers.defaults;
@@ -8,6 +14,14 @@ let options;
 let customLogger;
 
 describe('library', () => {
+  beforeEach(() => {
+    customLogger = jest.fn();
+    options = {
+      customLogger,
+    }
+    mockfs();
+  });
+
   afterEach(() => {
     testHelpers.restoreMockFs();
   });
@@ -131,6 +145,39 @@ describe('library', () => {
   });
 
   describe('makeWindowsShortcut', () => {
+    beforeEach(() => {
+      options.windows = {
+        filePath: 'C:\\file.ext'
+      };
+    });
+
+    test('Basic instructions', () => {
+      options = validation.validateOptions(options);
+      expect(library.makeWindowsShortcut(options))
+        .toEqual(true);
+
+      expect(customLogger)
+        .not.toHaveBeenCalled();
+
+      expect(childProcess.execSync)
+        .not.toHaveBeenCalled();
+
+      expect(childProcess.spawnSync)
+        .toHaveBeenCalledWith(
+          'wscript',
+          [
+            library.produceWindowsVBSPath(),
+            'C:\\Users\\DUMMY\\Desktop\\file.lnk',
+            'C:\\file.ext',
+            '',
+            'file',
+            '',
+            'C:\\file.ext',
+            1,
+            ''
+          ]
+        );
+    });
   });
 
   describe('makeOSXShortcut', () => {

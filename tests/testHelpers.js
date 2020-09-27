@@ -1,3 +1,4 @@
+const path = require('path');
 const os = require('os');
 const mock = require('mock-fs');
 
@@ -52,8 +53,11 @@ const testHelpers = {
     onlyCurrentOS: true,
     verbose: true
   },
-  mockfs: function () {
+  mockfs: function (bool) {
+    const vbs = path.join(path.dirname(__dirname), 'src', 'windows.vbs');
+    const vbsLinux = testHelpers.slasher(vbs);
     const Windows = {
+      [vbs]: 'text',
       'C:\\file.ext': 'text',
       'C:\\folder': {},
       'C:\\Users\\DUMMY\\icon.ico': 'text',
@@ -63,6 +67,7 @@ const testHelpers = {
       'C:\\Users\\DUMMY\\Desktop': {}
     };
     let WindowsInLinuxCI = {
+      [vbsLinux]: 'text',
       'C:/file.ext': 'text',
       'C:/folder': {},
       'C:/Users/DUMMY/icon.ico': 'text',
@@ -83,6 +88,10 @@ const testHelpers = {
     };
     if (os.platform() === 'win32') {
       WindowsInLinuxCI = {};
+    }
+
+    if (bool) {
+      console.log('');
     }
 
     // mock-fs explodes if you use console in your code without
