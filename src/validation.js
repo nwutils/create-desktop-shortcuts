@@ -94,23 +94,21 @@ const validation = {
     }
     return options;
   },
-  defaultBoolean: function (options, operatingSystem, key, bool) {
-    bool = !!bool;
+  defaultBoolean: function (options, operatingSystem, key, defaultValue) {
+    defaultValue = !!defaultValue;
 
-    if (
-      typeof(options[operatingSystem]) === 'object' &&
-      (
-        Object(options[operatingSystem]).hasOwnProperty(key) ||
-        typeof(options[operatingSystem][key]) !== 'boolean'
-      )
-    ) {
-      if (
-        typeof(options[operatingSystem][key]) !== 'boolean' &&
-        options[operatingSystem][key] !== undefined
-      ) {
-        helpers.throwError(options, 'Optional ' + operatingSystem.toUpperCase() + ' ' + key + ' must be a boolean. Defaulting to ' + bool);
+    if (typeof(options[operatingSystem]) === 'object') {
+      if (options[operatingSystem][key] === undefined) {
+        options[operatingSystem][key] = defaultValue;
       }
-      options[operatingSystem][key] = bool;
+
+      if (
+        Object(options[operatingSystem]).hasOwnProperty(key) &&
+        typeof(options[operatingSystem][key]) !== 'boolean'
+      ) {
+        helpers.throwError(options, 'Optional ' + operatingSystem.toUpperCase() + ' ' + key + ' must be a boolean. Defaulting to ' + defaultValue);
+        options[operatingSystem][key] = defaultValue;
+      }
     }
 
     return options;
