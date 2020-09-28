@@ -1,4 +1,5 @@
 jest.mock('child_process');
+jest.mock('fs');
 jest.mock('path');
 jest.mock('os');
 
@@ -144,6 +145,125 @@ describe('library', () => {
   });
 
   describe('makeLinuxShortcut', () => {
+    beforeEach(() => {
+      testHelpers.mockPlatform('linux');
+      options.linux = {
+        filePath: '/home/DUMMY/file.ext'
+      };
+      options = validation.validateOptions(options);
+      options = testHelpers.optionsSlasher(options);
+    });
+
+    test('Basic instructions', () => {
+      expect(library.makeLinuxShortcut(options))
+        .toEqual(true);
+
+      expect(customLogger)
+        .not.toHaveBeenCalled();
+
+      expect(childProcess.execSync)
+        .not.toHaveBeenCalled();
+
+      expect(childProcess.spawnSync)
+        .not.toHaveBeenCalled();
+
+      expect(fs.chmodSync)
+        .toHaveBeenLastCalledWith('/home/DUMMY/Desktop/file.desktop', '755');
+
+      expect(fs.writeFileSync)
+        .toHaveBeenLastCalledWith(
+          '/home/DUMMY/Desktop/file.desktop',
+          [
+            '#!/user/bin/env xdg-open',
+            '[Desktop Entry]',
+            'Version=1.0',
+            'Type=Application',
+            'Terminal=false',
+            'Exec=/home/DUMMY/file.ext',
+            'Name=file'
+          ].join('\n')
+        );
+    });
+
+    test('Error writing file', () => {
+      options.linux.outputPath = 'Throw Error';
+
+      expect(library.makeLinuxShortcut(options))
+        .toEqual(false);
+
+      expect(customLogger)
+        .toHaveBeenLastCalledWith(
+          [
+            'ERROR: Could not create LINUX shortcut.',
+            'PATH: Throw Error',
+            'DATA:',
+            '#!/user/bin/env xdg-open',
+            '[Desktop Entry]',
+            'Version=1.0',
+            'Type=Application',
+            'Terminal=false',
+            'Exec=/home/DUMMY/file.ext',
+            'Name=file'
+          ].join('\n'),
+          'Successfully errored'
+        );
+
+      expect(childProcess.execSync)
+        .not.toHaveBeenCalled();
+
+      expect(childProcess.spawnSync)
+        .not.toHaveBeenCalled();
+
+      expect(fs.chmodSync)
+        .not.toHaveBeenCalled();
+
+      expect(fs.writeFileSync)
+        .toHaveBeenLastCalledWith(
+          'Throw Error',
+          [
+            '#!/user/bin/env xdg-open',
+            '[Desktop Entry]',
+            'Version=1.0',
+            'Type=Application',
+            'Terminal=false',
+            'Exec=/home/DUMMY/file.ext',
+            'Name=file'
+          ].join('\n')
+        );
+    });
+
+    test('Error setting permissions', () => {
+      options.linux.outputPath = 'Throw chmod';
+
+      expect(library.makeLinuxShortcut(options))
+        .toEqual(false);
+
+      expect(customLogger)
+        .toHaveBeenLastCalledWith('ERROR attempting to change permisions of Throw chmod', 'Successfully errored');
+
+      expect(childProcess.execSync)
+        .not.toHaveBeenCalled();
+
+      expect(childProcess.spawnSync)
+        .not.toHaveBeenCalled();
+
+      expect(fs.chmodSync)
+        .toHaveBeenLastCalledWith('Throw chmod', '755');
+
+      expect(fs.writeFileSync)
+        .toHaveBeenLastCalledWith(
+          'Throw chmod',
+          [
+            '#!/user/bin/env xdg-open',
+            '[Desktop Entry]',
+            'Version=1.0',
+            'Type=Application',
+            'Terminal=false',
+            'Exec=/home/DUMMY/file.ext',
+            'Name=file'
+          ].join('\n')
+        );
+    });
   });
 
   describe('makeWindowsShortcut', () => {
