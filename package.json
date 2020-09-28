@@ -16,13 +16,14 @@
   ],
   "scripts": {
     "start": "node index.js",
-    "lint": "eslint --config=.eslintrc.js index.js src manual-testing.js",
-    "fix": "eslint --fix --config=.eslintrc.js index.js src manual-testing.js",
+    "lint": "eslint --config=.eslintrc.js index.js src tests manual-testing.js",
+    "fix": "eslint --fix --config=.eslintrc.js index.js src tests manual-testing.js",
     "debug": "node --inspect-brk manual-testing.js",
     "manual-test": "node manual-testing.js",
     "test": "jest --runInBand --coverage"
   },
   "devDependencies": {
+    "babel-eslint": "^10.1.0",
     "eslint": "^7.9.0",
     "eslint-config-tjw-base": "^1.0.0",
     "eslint-config-tjw-jest": "^1.0.0",

@@ -19,7 +19,7 @@ describe('library', () => {
   beforeEach(() => {
     customLogger = jest.fn();
     options = {
-      customLogger,
+      customLogger
     };
     mockfs();
   });
@@ -81,7 +81,7 @@ describe('library', () => {
 
     test('Type', () => {
       options.linux.type = 'Directory';
-      options.linux.filePath = '/home/DUMMY'
+      options.linux.filePath = '/home/DUMMY';
 
       expect(library.generateLinuxFileData(options))
         .toEqual([
