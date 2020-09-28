@@ -148,14 +148,15 @@ describe('library', () => {
 
   describe('makeWindowsShortcut', () => {
     beforeEach(() => {
+      testHelpers.mockPlatform('win32');
       options.windows = {
         filePath: 'C:\\file.ext'
       };
+      options = validation.validateOptions(options);
+      options = testHelpers.optionsSlasher(options);
     });
 
     test('Basic instructions', () => {
-      options = validation.validateOptions(options);
-
       expect(library.makeWindowsShortcut(options))
         .toEqual(true);
 
@@ -170,12 +171,12 @@ describe('library', () => {
           'wscript',
           [
             library.produceWindowsVBSPath(),
-            'C:\\Users\\DUMMY\\Desktop\\file.lnk',
-            'C:\\file.ext',
+            'C:/Users/DUMMY/Desktop/file.lnk',
+            'C:/file.ext',
             '',
             'file',
             '',
-            'C:\\file.ext',
+            'C:/file.ext',
             1,
             ''
           ]
@@ -183,7 +184,6 @@ describe('library', () => {
     });
 
     test('Use window mode default', () => {
-      options = validation.validateOptions(options);
       delete options.windows.windowMode;
 
       expect(library.makeWindowsShortcut(options))
@@ -200,12 +200,12 @@ describe('library', () => {
           'wscript',
           [
             library.produceWindowsVBSPath(),
-            'C:\\Users\\DUMMY\\Desktop\\file.lnk',
-            'C:\\file.ext',
+            'C:/Users/DUMMY/Desktop/file.lnk',
+            'C:/file.ext',
             '',
             'file',
             '',
-            'C:\\file.ext',
+            'C:/file.ext',
             1,
             ''
           ]
@@ -213,8 +213,7 @@ describe('library', () => {
     });
 
     test('Icon', () => {
-      options.windows.icon = 'C:\\Users\\DUMMY\\icon.ico';
-      options = validation.validateOptions(options);
+      options.windows.icon = 'C:/Users/DUMMY/icon.ico';
 
       expect(library.makeWindowsShortcut(options))
         .toEqual(true);
@@ -230,12 +229,12 @@ describe('library', () => {
           'wscript',
           [
             library.produceWindowsVBSPath(),
-            'C:\\Users\\DUMMY\\Desktop\\file.lnk',
-            'C:\\file.ext',
+            'C:/Users/DUMMY/Desktop/file.lnk',
+            'C:/file.ext',
             '',
             'file',
             '',
-            'C:\\Users\\DUMMY\\icon.ico',
+            'C:/Users/DUMMY/icon.ico',
             1,
             ''
           ]
@@ -243,8 +242,7 @@ describe('library', () => {
     });
 
     test('No icon', () => {
-      options.windows.filePath = 'C:\\Users\\DUMMY\\icon.dll';
-      options = validation.validateOptions(options);
+      options.windows.filePath = 'C:/Users/DUMMY/icon.dll';
       delete options.windows.icon;
 
       expect(library.makeWindowsShortcut(options))
@@ -261,12 +259,12 @@ describe('library', () => {
           'wscript',
           [
             library.produceWindowsVBSPath(),
-            'C:\\Users\\DUMMY\\Desktop\\icon.lnk',
-            'C:\\Users\\DUMMY\\icon.dll',
+            'C:/Users/DUMMY/Desktop/file.lnk',
+            'C:/Users/DUMMY/icon.dll',
             '',
             'icon',
             '',
-            'C:\\Users\\DUMMY\\icon.dll,0',
+            'C:/Users/DUMMY/icon.dll,0',
             1,
             ''
           ]
@@ -274,8 +272,6 @@ describe('library', () => {
     });
 
     test('Windows.vbs not found', () => {
-      options = validation.validateOptions(options);
-
       const fsExistsSync = fs.existsSync;
       fs.existsSync = jest.fn(() => {
         return false;
@@ -297,7 +293,6 @@ describe('library', () => {
     });
 
     test('Catch error', () => {
-      options = validation.validateOptions(options);
       options.windows.filePath = 'Throw Error';
 
       expect(library.makeWindowsShortcut(options))
@@ -319,7 +314,7 @@ describe('library', () => {
           'wscript',
           [
             library.produceWindowsVBSPath(),
-            'C:\\Users\\DUMMY\\Desktop\\file.lnk',
+            'C:/Users/DUMMY/Desktop/file.lnk',
             'Throw Error',
             '',
             'Throw Error',
