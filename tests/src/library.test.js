@@ -2,6 +2,7 @@ jest.mock('child_process');
 jest.mock('path');
 jest.mock('os');
 
+const fs = require('fs');
 const childProcess = require('child_process');
 
 const library = require('@/library.js');
@@ -154,6 +155,7 @@ describe('library', () => {
 
     test('Basic instructions', () => {
       options = validation.validateOptions(options);
+
       expect(library.makeWindowsShortcut(options))
         .toEqual(true);
 
@@ -164,7 +166,7 @@ describe('library', () => {
         .not.toHaveBeenCalled();
 
       expect(childProcess.spawnSync)
-        .toHaveBeenCalledWith(
+        .toHaveBeenLastCalledWith(
           'wscript',
           [
             library.produceWindowsVBSPath(),
@@ -174,6 +176,155 @@ describe('library', () => {
             'file',
             '',
             'C:\\file.ext',
+            1,
+            ''
+          ]
+        );
+    });
+
+    test('Use window mode default', () => {
+      options = validation.validateOptions(options);
+      delete options.windows.windowMode;
+
+      expect(library.makeWindowsShortcut(options))
+        .toEqual(true);
+
+      expect(customLogger)
+        .not.toHaveBeenCalled();
+
+      expect(childProcess.execSync)
+        .not.toHaveBeenCalled();
+
+      expect(childProcess.spawnSync)
+        .toHaveBeenLastCalledWith(
+          'wscript',
+          [
+            library.produceWindowsVBSPath(),
+            'C:\\Users\\DUMMY\\Desktop\\file.lnk',
+            'C:\\file.ext',
+            '',
+            'file',
+            '',
+            'C:\\file.ext',
+            1,
+            ''
+          ]
+        );
+    });
+
+    test('Icon', () => {
+      options.windows.icon = 'C:\\Users\\DUMMY\\icon.ico';
+      options = validation.validateOptions(options);
+
+      expect(library.makeWindowsShortcut(options))
+        .toEqual(true);
+
+      expect(customLogger)
+        .not.toHaveBeenCalled();
+
+      expect(childProcess.execSync)
+        .not.toHaveBeenCalled();
+
+      expect(childProcess.spawnSync)
+        .toHaveBeenLastCalledWith(
+          'wscript',
+          [
+            library.produceWindowsVBSPath(),
+            'C:\\Users\\DUMMY\\Desktop\\file.lnk',
+            'C:\\file.ext',
+            '',
+            'file',
+            '',
+            'C:\\Users\\DUMMY\\icon.ico',
+            1,
+            ''
+          ]
+        );
+    });
+
+    test('No icon', () => {
+      options.windows.filePath = 'C:\\Users\\DUMMY\\icon.dll';
+      options = validation.validateOptions(options);
+      delete options.windows.icon;
+
+      expect(library.makeWindowsShortcut(options))
+        .toEqual(true);
+
+      expect(customLogger)
+        .not.toHaveBeenCalled();
+
+      expect(childProcess.execSync)
+        .not.toHaveBeenCalled();
+
+      expect(childProcess.spawnSync)
+        .toHaveBeenLastCalledWith(
+          'wscript',
+          [
+            library.produceWindowsVBSPath(),
+            'C:\\Users\\DUMMY\\Desktop\\icon.lnk',
+            'C:\\Users\\DUMMY\\icon.dll',
+            '',
+            'icon',
+            '',
+            'C:\\Users\\DUMMY\\icon.dll,0',
+            1,
+            ''
+          ]
+        );
+    });
+
+    test('Windows.vbs not found', () => {
+      options = validation.validateOptions(options);
+
+      const fsExistsSync = fs.existsSync;
+      fs.existsSync = jest.fn(() => {
+        return false;
+      });
+
+      expect(library.makeWindowsShortcut(options))
+        .toEqual(false);
+
+      fs.existsSync = fsExistsSync;
+
+      expect(customLogger)
+        .toHaveBeenCalledWith('Could not locate required "windows.vbs" file.', undefined);
+
+      expect(childProcess.execSync)
+        .not.toHaveBeenCalled();
+
+      expect(childProcess.spawnSync)
+        .not.toHaveBeenCalled();
+    });
+
+    test('Catch error', () => {
+      options = validation.validateOptions(options);
+      options.windows.filePath = 'Throw Error';
+
+      expect(library.makeWindowsShortcut(options))
+        .toEqual(false);
+
+      expect(customLogger)
+        .toHaveBeenCalledWith(
+          'ERROR: Could not create WINDOWS shortcut.' + '\n' +
+          'TARGET: ' + options.windows.filePath + '\n' +
+          'PATH: ' + options.windows.outputPath + '\n',
+          'Successfully errored'
+        );
+
+      expect(childProcess.execSync)
+        .not.toHaveBeenCalled();
+
+      expect(childProcess.spawnSync)
+        .toHaveBeenLastCalledWith(
+          'wscript',
+          [
+            library.produceWindowsVBSPath(),
+            'C:\\Users\\DUMMY\\Desktop\\file.lnk',
+            'Throw Error',
+            '',
+            'Throw Error',
+            '',
+            'Throw Error',
             1,
             ''
           ]

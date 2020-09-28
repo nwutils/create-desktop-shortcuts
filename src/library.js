@@ -113,14 +113,15 @@ const library = {
     let windowMode = windowModes[options.windows.windowMode] || 1;
     let hotkey = options.windows.hotkey || '';
 
-    if (
-      filePath.endsWith('.ico') ||
-      filePath.endsWith('.dll') ||
-      filePath.endsWith('.exe')
-    ) {
-      icon = options.windows.filePath + ',0';
-    } else {
-      icon = options.windows.filePath;
+    if (!icon) {
+      if (
+        filePath.endsWith('.dll') ||
+        filePath.endsWith('.exe')
+      ) {
+        icon = options.windows.filePath + ',0';
+      } else {
+        icon = options.windows.filePath;
+      }
     }
 
     let wscriptArguments = [
