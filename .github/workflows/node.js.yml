@@ -12,11 +12,11 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: [ubuntu-latest, windows-latest, macos-latest]
 
     strategy:
       matrix:
-        node-version: [8.3.0, 10.x, 12.x, 14.x]
+        node-version: [8.3.0, 14.x]
 
     steps:
     - uses: actions/checkout@v2
@@ -34,3 +34,4 @@ jobs:
     - if: ${{ matrix.node-version != '8.3.0' }}
       run: npm run lint
     - run: npm t
+    - run: npm run e2e

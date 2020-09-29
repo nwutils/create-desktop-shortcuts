@@ -37,7 +37,7 @@ const shortcutsCreated = createDesktopShortcut({
 if (shortcutsCreated) {
   console.log('Everything worked correctly!');
 } else {
-  console.log('Could not create the icon or set its permissions (Linux)');
+  console.log('Could not create the icon or set its permissions (in Linux if "chmod" is set to true, or not set)');
 }
 ```
 

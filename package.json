@@ -20,7 +20,8 @@
     "fix": "eslint --fix --config=.eslintrc.js index.js src tests manual-testing.js",
     "debug": "node --inspect-brk manual-testing.js",
     "manual-test": "node manual-testing.js",
-    "test": "jest --runInBand --coverage"
+    "test": "jest --runInBand --coverage",
+    "e2e": "node ./tests/e2e.js"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
