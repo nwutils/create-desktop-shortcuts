@@ -3,6 +3,7 @@ let createDesktopShortcuts = require('../index.js');
 let success = createDesktopShortcuts({
   linux: {
     filePath: './src',
+    type: 'Directory',
     chmod: false
   },
   osx: {
