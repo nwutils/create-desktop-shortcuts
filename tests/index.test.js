@@ -1,34 +1,20 @@
 const createDesktopShortcut = require('../index.js');
 const testHelpers = require('@@/testHelpers.js');
 
-const mockfs = testHelpers.mockfs;
-
-let options;
-let customLogger;
+let customLogger = jest.fn();
 
 describe('createDesktopShortcut', () => {
-  beforeEach(() => {
-    customLogger = jest.fn();
-    options = {
-      customLogger
-    };
-    mockfs(true);
-  });
+  test('Empty options', () => {
+    expect(createDesktopShortcut({ customLogger }))
+      .toEqual(false);
 
-  afterEach(() => {
-    testHelpers.restoreMockFs();
-  });
-
-  describe('generateLinuxFileData', () => {
-    test('Empty options', () => {
-      expect(createDesktopShortcut(options))
-        .toEqual(false);
-
-      expect(customLogger)
-        .toHaveBeenLastCalledWith(
-          'No shortcuts were created due to lack of accurate details passed in to options object',
-          options
-        );
-    });
+    expect(customLogger)
+      .toHaveBeenLastCalledWith(
+        'No shortcuts were created due to lack of accurate details passed in to options object',
+        {
+          ...testHelpers.defaults,
+          customLogger
+        }
+      );
   });
 });
