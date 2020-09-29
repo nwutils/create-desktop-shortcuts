@@ -17,7 +17,7 @@ if (success) {
   const fs = require('fs');
   const os = require('os');
   const path = require('path');
-  ext = '';
+  let ext = '';
   if (process.platform === 'linux') {
     ext = '.desktop';
   }
