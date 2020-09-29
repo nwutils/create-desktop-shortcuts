@@ -550,5 +550,284 @@ describe('library', () => {
   });
 
   describe('runCorrectOSs', () => {
+    beforeEach(() => {
+      options.windows = { filePath: 'C:\\file.ext' };
+      options.linux = { filePath: '/home/DUMMY/file.ext' };
+      options.osx = { filePath: '/home/DUMMY/file.ext' };
+    });
+
+    test('No OS', () => {
+      testHelpers.mockPlatform('linux');
+      options = validation.validateOptions(options);
+      options = testHelpers.optionsSlasher(options);
+      delete options.windows;
+      delete options.linux;
+      delete options.osx;
+
+      expect(library.runCorrectOSs(options))
+        .toEqual(false);
+
+      expect(customLogger)
+        .toHaveBeenLastCalledWith('No shortcuts were created due to lack of accurate details passed in to options object', options);
+
+      expect(childProcess.execSync)
+        .not.toHaveBeenCalled();
+
+      expect(childProcess.spawnSync)
+        .not.toHaveBeenCalled();
+
+      expect(fs.chmodSync)
+        .not.toHaveBeenCalled();
+
+      expect(fs.writeFileSync)
+        .not.toHaveBeenCalled();
+    });
+
+    test('Windows only', () => {
+      testHelpers.mockPlatform('win32');
+      options = validation.validateOptions(options);
+      options = testHelpers.optionsSlasher(options);
+
+      expect(library.runCorrectOSs(options))
+        .toEqual(true);
+
+      expect(customLogger)
+        .not.toHaveBeenCalled();
+
+      expect(childProcess.execSync)
+        .not.toHaveBeenCalled();
+
+      expect(childProcess.spawnSync)
+        .toHaveBeenLastCalledWith(
+          'wscript',
+          [
+            library.produceWindowsVBSPath(),
+            'C:/Users/DUMMY/Desktop/file.lnk',
+            'C:/file.ext',
+            '',
+            'file',
+            '',
+            'C:/file.ext',
+            1,
+            ''
+          ]
+        );
+
+      expect(fs.chmodSync)
+        .not.toHaveBeenCalled();
+
+      expect(fs.writeFileSync)
+        .not.toHaveBeenCalled();
+    });
+
+    test('Linux only', () => {
+      testHelpers.mockPlatform('linux');
+      options = validation.validateOptions(options);
+      options = testHelpers.optionsSlasher(options);
+
+      expect(library.runCorrectOSs(options))
+        .toEqual(true);
+
+      expect(customLogger)
+        .not.toHaveBeenCalled();
+
+      expect(childProcess.execSync)
+        .not.toHaveBeenCalled();
+
+      expect(childProcess.spawnSync)
+        .not.toHaveBeenCalled();
+
+      expect(fs.chmodSync)
+        .toHaveBeenLastCalledWith('/home/DUMMY/Desktop/file.desktop', '755');
+
+      expect(fs.writeFileSync)
+        .toHaveBeenLastCalledWith(
+          '/home/DUMMY/Desktop/file.desktop',
+          [
+            '#!/user/bin/env xdg-open',
+            '[Desktop Entry]',
+            'Version=1.0',
+            'Type=Application',
+            'Terminal=false',
+            'Exec=/home/DUMMY/file.ext',
+            'Name=file'
+          ].join('\n')
+        );
+    });
+
+    test('OSX only', () => {
+      testHelpers.mockPlatform('darwin');
+      options = validation.validateOptions(options);
+      options = testHelpers.optionsSlasher(options);
+
+      expect(library.runCorrectOSs(options))
+        .toEqual(true);
+
+      expect(customLogger)
+        .not.toHaveBeenCalled();
+
+      expect(childProcess.execSync)
+        .toHaveBeenLastCalledWith('ln -s "/home/DUMMY/file.ext" "/home/DUMMY/Desktop/file"');
+
+      expect(childProcess.spawnSync)
+        .not.toHaveBeenCalled();
+
+      expect(fs.chmodSync)
+        .not.toHaveBeenCalled();
+
+      expect(fs.writeFileSync)
+        .not.toHaveBeenCalled();
+    });
+
+    test('Unsupported platform', () => {
+      testHelpers.mockPlatform('kitten');
+      options = validation.validateOptions(options);
+      options = testHelpers.optionsSlasher(options);
+      options.windows = {};
+
+      expect(library.runCorrectOSs(options))
+        .toEqual(false);
+
+      expect(customLogger)
+        .toHaveBeenLastCalledWith('Unsupported platform. This library only supports process.platform of "win32", "linux" and "darwin".', options);
+
+      expect(childProcess.execSync)
+        .not.toHaveBeenCalled();
+
+      expect(childProcess.spawnSync)
+        .not.toHaveBeenCalled();
+
+      expect(fs.chmodSync)
+        .not.toHaveBeenCalled();
+
+      expect(fs.writeFileSync)
+        .not.toHaveBeenCalled();
+    });
+
+    test('Every OS', () => {
+      testHelpers.mockPlatform('linux');
+      options.onlyCurrentOS = false;
+      options = validation.validateOptions(options);
+      options = testHelpers.optionsSlasher(options);
+
+      expect(library.runCorrectOSs(options))
+        .toEqual(true);
+
+      expect(customLogger)
+        .not.toHaveBeenCalled();
+
+      expect(childProcess.execSync)
+        .toHaveBeenLastCalledWith('ln -s "/home/DUMMY/file.ext" "/home/DUMMY/Desktop/file.desktop"');
+
+      expect(childProcess.spawnSync)
+        .toHaveBeenLastCalledWith(
+          'wscript',
+          [
+            library.produceWindowsVBSPath(),
+            '/home/DUMMY/Desktop/file.desktop',
+            'C:/file.ext',
+            '',
+            'file',
+            '',
+            'C:/file.ext',
+            1,
+            ''
+          ]
+        );
+
+      expect(fs.chmodSync)
+        .toHaveBeenLastCalledWith('/home/DUMMY/Desktop/file.desktop', '755');
+
+      expect(fs.writeFileSync)
+        .toHaveBeenLastCalledWith(
+          '/home/DUMMY/Desktop/file.desktop',
+          [
+            '#!/user/bin/env xdg-open',
+            '[Desktop Entry]',
+            'Version=1.0',
+            'Type=Application',
+            'Terminal=false',
+            'Exec=/home/DUMMY/file.ext',
+            'Name=file'
+          ].join('\n')
+        );
+    });
+
+    test('Every OS except linux', () => {
+      testHelpers.mockPlatform('linux');
+      delete options.linux;
+      options.onlyCurrentOS = false;
+      options = validation.validateOptions(options);
+      options = testHelpers.optionsSlasher(options);
+
+      expect(library.runCorrectOSs(options))
+        .toEqual(true);
+
+      expect(customLogger)
+        .not.toHaveBeenCalled();
+
+      expect(childProcess.execSync)
+        .toHaveBeenLastCalledWith('ln -s "/home/DUMMY/file.ext" "/home/DUMMY/Desktop/file.desktop"');
+
+      expect(childProcess.spawnSync)
+        .toHaveBeenLastCalledWith(
+          'wscript',
+          [
+            library.produceWindowsVBSPath(),
+            '/home/DUMMY/Desktop/file.desktop',
+            'C:/file.ext',
+            '',
+            'file',
+            '',
+            'C:/file.ext',
+            1,
+            ''
+          ]
+        );
+
+      expect(fs.chmodSync)
+        .not.toHaveBeenCalled();
+
+      expect(fs.writeFileSync)
+        .not.toHaveBeenCalled();
+    });
+
+    test('Every OS except windows and osx', () => {
+      testHelpers.mockPlatform('linux');
+      delete options.windows;
+      delete options.osx;
+      options.onlyCurrentOS = false;
+      options = validation.validateOptions(options);
+      options = testHelpers.optionsSlasher(options);
+
+      expect(library.runCorrectOSs(options))
+        .toEqual(true);
+
+      expect(customLogger)
+        .not.toHaveBeenCalled();
+
+      expect(childProcess.execSync)
+        .not.toHaveBeenCalled();
+
+      expect(childProcess.spawnSync)
+        .not.toHaveBeenCalled();
+
+      expect(fs.chmodSync)
+        .toHaveBeenLastCalledWith('/home/DUMMY/Desktop/file.desktop', '755');
+
+      expect(fs.writeFileSync)
+        .toHaveBeenLastCalledWith(
+          '/home/DUMMY/Desktop/file.desktop',
+          [
+            '#!/user/bin/env xdg-open',
+            '[Desktop Entry]',
+            'Version=1.0',
+            'Type=Application',
+            'Terminal=false',
+            'Exec=/home/DUMMY/file.ext',
+            'Name=file'
+          ].join('\n')
+        );
+    });
   });
 });

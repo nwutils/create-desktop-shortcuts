@@ -167,7 +167,7 @@ const library = {
       overwrite = '-f';
     }
 
-    if (options.osx.overwrite || (!options.osx.overwrite && !fs.existsSync(options.osx.outputPath))) {
+    if (overwrite || (!overwrite && !fs.existsSync(options.osx.outputPath))) {
       // https://ss64.com/osx/ln.html
       let command = [
         link,
@@ -212,6 +212,8 @@ const library = {
       if (process.platform === 'darwin' && options.osx) {
         return this.makeOSXShortcut(options);
       }
+      helpers.throwError(options, 'Unsupported platform. This library only supports process.platform of "win32", "linux" and "darwin".', options);
+      return false;
     } else {
       let windowsSuccess = true;
       let linuxSuccess = true;
