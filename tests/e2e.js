@@ -1,23 +1,29 @@
-let createDesktopShortcuts = require('../index.js');
+const fs = require('fs');
+const path = require('path');
+
+const createDesktopShortcuts = require('../index.js');
+
+const filePath = path.join(__dirname, 'src');
+const outputPath = path.join(__dirname, '__mocks__');
 
 let success = createDesktopShortcuts({
   linux: {
-    filePath: './src',
+    filePath,
+    outputPath,
     type: 'Directory',
     chmod: false
   },
   osx: {
-    filePath: './src'
+    filePath,
+    outputPath
   },
   windows: {
-    filePath: '.\\src'
+    filePath,
+    outputPath
   }
 });
 
 if (success) {
-  const fs = require('fs');
-  const os = require('os');
-  const path = require('path');
   let ext = '';
   if (process.platform === 'linux') {
     ext = '.desktop';
@@ -25,7 +31,7 @@ if (success) {
   if (process.platform === 'win32') {
     ext = '.lnk';
   }
-  let outputDir = path.join(os.homedir(), 'Desktop', 'src' + ext);
+  let outputDir = path.join(__dirname, '__mocks__', 'src' + ext);
   console.log(outputDir);
   if (!fs.existsSync(outputDir)) {
     throw 'E2E: COULD NOT FIND DESKTOP SHORTCUT';
