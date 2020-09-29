@@ -94,7 +94,7 @@ const shortcutsCreated = createDesktopShortcut({
     description: 'My app description',
     // OPTIONAL: File must exist and be PNG or ICNS
     icon: '/home/path/to/file.png',
-    // OPTIONAL: defaults to 'Application'
+    // OPTIONAL: 'Application', 'Directory', or 'Link' (must logically match filePath)
     type: 'Application',
     // OPTIONAL: defaults to false
     terminal: false,
@@ -153,7 +153,7 @@ Key          | Type    | Allowed                                  | Default     
 `name`       | String  | Any file system safe string              | Uses name from filePath      | The name of the shortcut file.
 `comment`    | String  | Any string                               | Not used if not supplied     | Metadata file "comment" property. Description of what the shortcut would open.
 `icon`       | String  | Valid path to PNG or ICNS file           | Uses OS default icon         | The image shown on the shortcut icon. Preferably a 256x256 PNG.
-`type`       | String  | `'Application'`, `'Link'`, `'Directory'` | `'Application'`              | Type of shortcut. Must be an exact match to this string.
+`type`       | String  | `'Application'`, `'Link'`, `'Directory'` | Based on `filePath`          | Type of shortcut. Defaults to `'Link'` if `filePath` starts with `'http://'` or `'https://'`. Defaults to `'Directory'` if filePath exists and is a folder. Defaults to Application otherwise.
 `terminal`   | Boolean | `true`, `false`                          | `false`                      | If true, will run in a terminal.
 `chmod`      | Boolean | `true`, `false`                          | `true`                       | If true, will apply a `chmod +x` (755) to the shortcut after creation to allow execution permission.
 

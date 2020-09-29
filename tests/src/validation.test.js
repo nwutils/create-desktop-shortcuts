@@ -430,6 +430,7 @@ describe('Validation', () => {
 
       test('Application type cannot be a folder', () => {
         options.linux.filePath = '/home/DUMMY';
+        options.linux.type = 'Application';
 
         expect(validation.validateLinuxFilePath(options))
           .toEqual({
@@ -504,6 +505,40 @@ describe('Validation', () => {
 
         expect(customLogger)
           .toHaveBeenCalledWith('Optional LINUX type must be "Application", "Link", or "Directory". Defaulting to "Application".', undefined);
+      });
+
+      test('Default to link based on file path', () => {
+        options.linux.filePath = 'https://xpda.net';
+
+        expect(validation.validateLinuxType(options))
+          .toEqual({
+            ...defaults,
+            customLogger,
+            linux: {
+              filePath: 'https://xpda.net',
+              type: 'Link'
+            }
+          });
+
+        expect(customLogger)
+          .not.toHaveBeenCalled();
+      });
+
+      test('Default to directory based on file path', () => {
+        options.linux.filePath = '/home/DUMMY/';
+
+        expect(validation.validateLinuxType(options))
+          .toEqual({
+            ...defaults,
+            customLogger,
+            linux: {
+              filePath: '/home/DUMMY/',
+              type: 'Directory'
+            }
+          });
+
+        expect(customLogger)
+          .not.toHaveBeenCalled();
       });
     });
 
