@@ -32,7 +32,6 @@ if (success) {
     ext = '.lnk';
   }
   let outputDir = path.join(__dirname, '__mocks__', 'src' + ext);
-  console.log(outputDir);
   if (!fs.existsSync(outputDir)) {
     throw 'E2E: COULD NOT FIND DESKTOP SHORTCUT';
   } else {
