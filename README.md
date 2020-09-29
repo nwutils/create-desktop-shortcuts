@@ -1,13 +1,13 @@
 
 # create-desktop-shortcuts
 
-[![Build Status](https://github.com/nwutils/create-desktop-shortcuts/workflows/Build%20Status/badge.svg)](https://github.com/nwutils/create-desktop-shortcuts/actions?query=workflow%3A%22Build+Status%22+branch%3Amaster)
+[![Build Status](https://github.com/nwutils/create-desktop-shortcuts/workflows/Build%20Status/badge.svg)](https://github.com/nwutils/create-desktop-shortcuts/actions?query=workflow%3A%22Build+Status%22+branch%3Amaster) [![Unit Test Coverage: 100%](https://img.shields.io/badge/Test%20Coverage-100%25-brightgreen.svg?logo=jest)](https://github.com/nwutils/create-desktop-shortcuts/actions?query=workflow%3A%22Build+Status%22+branch%3Amaster) [![End-to-End Windows Passing](https://img.shields.io/badge/E2E-Passing-brightgreen.svg?logo=windows)](https://github.com/nwutils/create-desktop-shortcuts/actions?query=workflow%3A%22Build+Status%22+branch%3Amaster) [![End-to-End Linux Passing](https://img.shields.io/badge/E2E-Passing-brightgreen.svg?logo=ubuntu)](https://github.com/nwutils/create-desktop-shortcuts/actions?query=workflow%3A%22Build+Status%22+branch%3Amaster) [![End-to-End OSX Passing](https://img.shields.io/badge/E2E-Passing-brightgreen.svg?logo=apple)](https://github.com/nwutils/create-desktop-shortcuts/actions?query=workflow%3A%22Build+Status%22+branch%3Amaster) [![Lint Coverage: 100%](https://img.shields.io/badge/Lint%20Coverage-100%25-brightgreen.svg?logo=eslint)](https://github.com/tjw-lint) [![Compatible with Node 8.3+](https://img.shields.io/badge/Node-%3E%3D8.3.0-brightgreen.svg?logo=Node.js)](/package.json) [![Code of Conduct: No Ideologies](https://img.shields.io/badge/CoC-No%20Ideologies-blue)](/CODE_OF_CONDUCT.md) [![MIT Licensed](https://img.shields.io/badge/License-MIT-brightgreen)](/LICENSE)
 
 
 ## Small, lightweight, cross-platform, built in validation!
 
 
-### Zero Dependencies
+### Zero Dependencies, 100% Test Coverage, Automated Cross-Platform End-to-End testing 
 
 An easy, cross-platform, API to create desktop shortcuts with Node. (*Works in [NW.js](https://nwjs.io) too!*)
 
