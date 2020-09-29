@@ -37,7 +37,7 @@ const shortcutsCreated = createDesktopShortcut({
 if (shortcutsCreated) {
   console.log('Everything worked correctly!');
 } else {
-  console.log('Could not create the icon or set its permissions (Linux)');
+  console.log('Could not create the icon or set its permissions (in Linux if "chmod" is set to true, or not set)');
 }
 ```
 
@@ -162,14 +162,14 @@ Key          | Type    | Allowed                                  | Default     
 
 OSX will automatically inherit the icon of the target you point to. It doesn't care if you point to a folder, file, or application.
 
-If overwrite is set to false and a matching file already exists, a console log will occur to inform you of this, however `create-desktop-shortcuts` will still report successful. This console log can be hidden by setting verbose to false.
+**NOTE:** If `overwrite` is set to `false` and a matching file already exists, a `console.error` will occur to inform you of this, however `create-desktop-shortcuts` will still report successful. This `console.error` can be hidden by setting `verbose` to `false`, or using a `customLogger` to intercept it.
 
 Key          | Type    | Allowed                     | Default                      | Description
 :--          | :--     | :--                         | :--                          | :--
 `filePath`   | String  | Any valid path or URL       | **This is a required field** | This is the target the shortcut points to.
 `outputPath` | String  | Any valid path to a folder  | Current user's desktop       | Path where the shortcut will be placed.
 `name`       | String  | Any file system safe string | Uses name from filePath      | The name of the shortcut file.
-`overwrite`  | Boolean | `true`, `false`             | false                        | If true, will replace any existing file in the `outputPath` with matching `name`
+`overwrite`  | Boolean | `true`, `false`             | false                        | If true, will replace any existing file in the `outputPath` with matching `name`. See above note for more details.
 
 
 * * *

@@ -44,7 +44,7 @@ describe('Validation', () => {
         });
     });
 
-    test('Inverted defaults', () => {
+    test('Defaults', () => {
       const consoleError = console.error;
       console.error = jest.fn();
 
@@ -168,7 +168,7 @@ describe('Validation', () => {
           ...defaults,
           customLogger,
           windows: {
-            filePath: 'C:\\file.ext',
+            filePath: 'C:\\file.ext'
           }
         };
       });
@@ -378,7 +378,7 @@ describe('Validation', () => {
         linux: {
           filePath: '/home/DUMMY/file.ext'
         }
-      }
+      };
     });
 
     describe('validateLinuxFilePath', () => {
@@ -625,7 +625,7 @@ describe('Validation', () => {
           filePath: 'C:\\file.ext',
           outputPath: 'C:\\Users\\DUMMY\\Desktop'
         }
-      }
+      };
     });
 
     describe('validateWindowsFilePath', () => {
@@ -884,7 +884,7 @@ describe('Validation', () => {
         osx: {
           filePath: '/home/DUMMY/file.ext'
         }
-      }
+      };
     });
 
     describe('validateOSXFilePath', () => {

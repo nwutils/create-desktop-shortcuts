@@ -84,10 +84,13 @@ const library = {
   },
 
   // WINDOWS
+  produceWindowsVBSPath: function () {
+    return path.join(__dirname, 'windows.vbs');
+  },
   makeWindowsShortcut: function (options) {
     let success = true;
 
-    const vbsScript = path.join(__dirname, 'windows.vbs');
+    const vbsScript = this.produceWindowsVBSPath();
     const filePathName = path.parse(options.windows.filePath).name;
     if (!fs.existsSync(vbsScript)) {
       helpers.throwError(options, 'Could not locate required "windows.vbs" file.');
@@ -106,9 +109,20 @@ const library = {
     let args = options.windows.arguments || '';
     let comment = options.windows.comment || filePathName;
     let cwd = '';
-    let icon = options.windows.icon || options.windows.filePath + ',0';
+    let icon = options.windows.icon;
     let windowMode = windowModes[options.windows.windowMode] || 1;
     let hotkey = options.windows.hotkey || '';
+
+    if (!icon) {
+      if (
+        filePath.endsWith('.dll') ||
+        filePath.endsWith('.exe')
+      ) {
+        icon = options.windows.filePath + ',0';
+      } else {
+        icon = options.windows.filePath;
+      }
+    }
 
     let wscriptArguments = [
       vbsScript,
@@ -153,7 +167,7 @@ const library = {
       overwrite = '-f';
     }
 
-    if (options.osx.overwrite || (!options.osx.overwrite && !fs.existsSync(options.osx.outputPath))) {
+    if (overwrite || (!overwrite && !fs.existsSync(options.osx.outputPath))) {
       // https://ss64.com/osx/ln.html
       let command = [
         link,
@@ -198,6 +212,8 @@ const library = {
       if (process.platform === 'darwin' && options.osx) {
         return this.makeOSXShortcut(options);
       }
+      helpers.throwError(options, 'Unsupported platform. This library only supports process.platform of "win32", "linux" and "darwin".', options);
+      return false;
     } else {
       let windowsSuccess = true;
       let linuxSuccess = true;

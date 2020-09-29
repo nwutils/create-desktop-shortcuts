@@ -98,7 +98,7 @@ describe('helpers', () => {
     });
 
     afterEach(() => {
-       testHelpers.mockPlatform(processPlatform);
+      testHelpers.mockPlatform(processPlatform);
     });
 
     test('Returns undefined if nothing passed in', () => {
