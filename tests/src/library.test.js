@@ -448,6 +448,105 @@ describe('library', () => {
   });
 
   describe('makeOSXShortcut', () => {
+    beforeEach(() => {
+      testHelpers.mockPlatform('darwin');
+      options.osx = {
+        filePath: '/home/DUMMY/file.ext'
+      };
+      options = validation.validateOptions(options);
+      options = testHelpers.optionsSlasher(options);
+    });
+
+    test('Basic instructions', () => {
+      expect(library.makeOSXShortcut(options))
+        .toEqual(true);
+
+      expect(customLogger)
+        .not.toHaveBeenCalled();
+
+      expect(childProcess.execSync)
+        .toHaveBeenLastCalledWith('ln -s "/home/DUMMY/file.ext" "/home/DUMMY/Desktop/file"');
+
+      expect(childProcess.spawnSync)
+        .not.toHaveBeenCalled();
+
+      expect(fs.chmodSync)
+        .not.toHaveBeenCalled();
+
+      expect(fs.writeFileSync)
+        .not.toHaveBeenCalled();
+    });
+
+    test('Overwrite', () => {
+      options.osx.overwrite = true;
+
+      expect(library.makeOSXShortcut(options))
+        .toEqual(true);
+
+      expect(customLogger)
+        .not.toHaveBeenCalled();
+
+      expect(childProcess.execSync)
+        .toHaveBeenLastCalledWith('ln -f -s "/home/DUMMY/file.ext" "/home/DUMMY/Desktop/file"');
+
+      expect(childProcess.spawnSync)
+        .not.toHaveBeenCalled();
+
+      expect(fs.chmodSync)
+        .not.toHaveBeenCalled();
+
+      expect(fs.writeFileSync)
+        .not.toHaveBeenCalled();
+    });
+
+    test('File exists', () => {
+      options.osx.outputPath = '/home/DUMMY/file.ext';
+
+      expect(library.makeOSXShortcut(options))
+        .toEqual(true);
+
+      expect(customLogger)
+        .toHaveBeenLastCalledWith('Could not create OSX shortcut because matching outputPath already exists and overwrite is false.', undefined);
+
+      expect(childProcess.execSync)
+        .not.toHaveBeenCalled();
+
+      expect(childProcess.spawnSync)
+        .not.toHaveBeenCalled();
+
+      expect(fs.chmodSync)
+        .not.toHaveBeenCalled();
+
+      expect(fs.writeFileSync)
+        .not.toHaveBeenCalled();
+    });
+
+    test('Throw Error', () => {
+      options.osx.filePath = 'Throw Error';
+
+      expect(library.makeOSXShortcut(options))
+        .toEqual(false);
+
+      expect(customLogger)
+        .toHaveBeenLastCalledWith(
+          'ERROR: Could not create OSX shortcut.\n' +
+          'TARGET: Throw Error\n' +
+          'PATH: /home/DUMMY/Desktop/file\n',
+          'Successfully errored'
+        );
+
+      expect(childProcess.execSync)
+        .toHaveBeenLastCalledWith('ln -s "Throw Error" "/home/DUMMY/Desktop/file"');
+
+      expect(childProcess.spawnSync)
+        .not.toHaveBeenCalled();
+
+      expect(fs.chmodSync)
+        .not.toHaveBeenCalled();
+
+      expect(fs.writeFileSync)
+        .not.toHaveBeenCalled();
+    });
   });
 
   describe('runCorrectOSs', () => {
