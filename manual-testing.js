@@ -6,7 +6,7 @@ let success = createDesktopShortcuts({
     comment: 'Truly commented',
     filePath: '~/Downloads/Koa11y/Koa11y',
     chmod: true,
-    icon: '~/Downloads/Koa11y/package.nw/_img/logo.png'
+    icon: '../Downloads/Koa11y/package.nw/_img/logo.png'
   },
   osx: {
     filePath: '~/Downloads/Koa11y.app'

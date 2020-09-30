@@ -189,10 +189,7 @@ const validation = {
 
       if (!path.isAbsolute(iconPath)) {
         const outputDirectory = path.parse(options.linux.outputPath).dir;
-        // I don't think these process.chdir's are needed, but leaving them in case
-        // process.chdir(outputDirectory);
         iconPath = path.join(outputDirectory, iconPath);
-        // process.chdir(__dirname);
       }
 
       if (!iconPath.endsWith('.png') && !iconPath.endsWith('.icns')) {
