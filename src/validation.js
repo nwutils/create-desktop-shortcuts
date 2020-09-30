@@ -169,13 +169,30 @@ const validation = {
     const validTypes = ['Application', 'Link', 'Directory'];
 
     if (options.linux) {
+      if (
+        !options.linux.type &&
+        options.linux.filePath &&
+        typeof(options.linux.filePath) === 'string'
+      ) {
+        if (
+          options.linux.filePath.startsWith('http://') ||
+          options.linux.filePath.startsWith('https://')
+        ) {
+          options.linux.type = 'Link';
+        } else if (
+          fs.existsSync(options.linux.filePath) &&
+          fs.lstatSync(options.linux.filePath).isDirectory()
+        ) {
+          options.linux.type = 'Directory';
+        }
+      }
+
       if (options.linux.type && !validTypes.includes(options.linux.type)) {
         helpers.throwError(options, 'Optional LINUX type must be "Application", "Link", or "Directory". Defaulting to "Application".');
         delete options.linux.type;
       }
-      if (!options.linux.type) {
-        options.linux.type = 'Application';
-      }
+
+      options.linux.type = options.linux.type || 'Application';
     }
 
     return options;
