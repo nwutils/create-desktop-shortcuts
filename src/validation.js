@@ -295,10 +295,7 @@ const validation = {
           iconPath = iconPath.split('\\').join('/');
         }
         const outputDirectory = path.parse(outputPath).dir;
-        // I don't think process.chdir is needed, but leaving it in case
-        // process.chdir(outputDirectory);
         iconPath = path.join(outputDirectory, iconPath);
-        // process.chdir(__dirname);
       }
 
       // anything, then either '.exe', '.ico', or '.dll', maybe ',12'.
