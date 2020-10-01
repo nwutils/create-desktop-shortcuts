@@ -6,7 +6,7 @@ let success = createDesktopShortcuts({
     comment: 'Truly commented',
     filePath: '~/Downloads/Koa11y/Koa11y',
     chmod: true,
-    icon: '~/Downloads/Koa11y/package.nw/_img/logo.png'
+    icon: '../Downloads/Koa11y/package.nw/_img/logo.png'
   },
   osx: {
     filePath: '~/Downloads/Koa11y.app'
@@ -14,8 +14,8 @@ let success = createDesktopShortcuts({
   windows: {
     name: 'My App Name',
     comment: 'My App description',
-    icon: 'D:\\folder.ico',
-    filePath: 'C:\\PortableApps\\Koa11y_3.0.0\\Koa11y.exe',
+    icon: '..\\..\\..\\PortableApps\\Koa11y_v3.0.0\\package.nw\\_img\\fav.ico',
+    filePath: 'C:\\PortableApps\\Koa11y_v3.0.0\\Koa11y.exe',
     outputPath: '%USERPROFILE%\\Desktop',
     arguments: '--my-argument -f \'other stuff\'',
     windowMode: 'maximized',
