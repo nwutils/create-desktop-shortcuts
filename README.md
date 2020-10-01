@@ -7,7 +7,7 @@
 ## Small, lightweight, cross-platform, built in validation!
 
 
-### Zero Dependencies, 100% Test Coverage, Automated Cross-Platform End-to-End testing 
+### Zero Dependencies, 100% Test Coverage, Automated Cross-Platform End-to-End tested 
 
 An easy, cross-platform, API to create desktop shortcuts with Node. (*Works in [NW.js](https://nwjs.io) too!*)
 
@@ -195,7 +195,6 @@ Parts of the `windows.vbs` were copied/modified based on:
 * Fix reported bugs with a PR
 * Offer an async and sync mode, instead of just sync.
   * Note: Make sure it can still run in older versions of NW.js
-* Write unit tests. Preferably in Jest.
 * Help with any of the known issues listed below:
 
 
