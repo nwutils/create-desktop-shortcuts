@@ -262,6 +262,17 @@ const validation = {
 
     return options;
   },
+  validateWindowsScript: function (options) {
+    options = this.validateOutputPath(options, "windows");
+    options = this.validateOptionalString(options, "windows", "vbsPath");
+
+    options.windows.vbsPath =
+      "vbsPath" in options.windows
+        ? options.windows.vbsPath
+        : path.join(__dirname, "windows.vbs");
+
+    return options;
+  },
   validateWindowsWindowMode: function (options) {
     options = this.validateOptionalString(options, 'windows', 'windowMode');
 
@@ -356,6 +367,7 @@ const validation = {
     options = this.validateWindowsWindowMode(options);
     options = this.validateWindowsIcon(options);
     options = this.validateWindowsComment(options);
+    options = this.validateWindowsScript(options);
     options = this.validateOptionalString(options, 'windows', 'arguments');
     options = this.validateOptionalString(options, 'windows', 'hotkey');
 

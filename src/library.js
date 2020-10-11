@@ -84,13 +84,13 @@ const library = {
   },
 
   // WINDOWS
-  produceWindowsVBSPath: function () {
-    return path.join(__dirname, 'windows.vbs');
+  produceWindowsVBSPath: function (options) {
+    return options.windows.vbsPath;
   },
   makeWindowsShortcut: function (options) {
     let success = true;
 
-    const vbsScript = this.produceWindowsVBSPath();
+    const vbsScript = this.produceWindowsVBSPath(options);
     const filePathName = path.parse(options.windows.filePath).name;
     if (!fs.existsSync(vbsScript)) {
       helpers.throwError(options, 'Could not locate required "windows.vbs" file.');
