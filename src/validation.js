@@ -263,13 +263,13 @@ const validation = {
     return options;
   },
   validateWindowsScript: function (options) {
-    options = this.validateOutputPath(options, "windows");
-    options = this.validateOptionalString(options, "windows", "vbsPath");
+    options = this.validateOutputPath(options, 'windows');
+    options = this.validateOptionalString(options, 'windows', 'vbsPath');
 
     options.windows.vbsPath =
-      "vbsPath" in options.windows
+      'vbsPath' in options.windows
         ? options.windows.vbsPath
-        : path.join(__dirname, "windows.vbs");
+        : path.join(__dirname, 'windows.vbs');
 
     return options;
   },
