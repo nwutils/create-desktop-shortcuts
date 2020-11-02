@@ -132,16 +132,17 @@ Key             | Type     | Allowed         | Default         | Description
 
 ### Windows Settings
 
-Key          | Type   | Allowed                                  | Default                      | Description
-:--          | :--    | :--                                      | :--                          | :--
-`filePath`   | String | Any valid path or URL                    | **This is a required field** | This is the target the shortcut points to.
-`outputPath` | String | Any valid path to a folder               | `'%USERPROFILE%\\Desktop'`   | Path where the shortcut will be placed.
-`name`       | String | Any file system safe string              | Uses name from filePath      | The name of the shortcut file.
-`comment`    | String | Any string                               | Not used if not supplied     | Metadata file "comment" property. Description of what the shortcut would open.
-`icon`       | String | Valid path to file (ICO, EXE, or DLL)    | Uses OS default icon         | The image shown on the shortcut icon. You can also pass in an index if multiple icons, like `'C:\\file.exe,0'`
-`arguments`  | String | Any string                               | None                         | Additional arguments passed in to the end of your target `filePath`
-`windowMode` | String | `'normal'`, `'maximized'`, `'minimized'` | `'normal'`                   | How the window should be displayed by default
-`hotkey`     | String | Any string                               | None                         | A global hotkey to associate to opening this shortcut, like `'CTRL+ALT+F'`
+Key                | Type   | Allowed                                  | Default                      | Description
+:--                | :--    | :--                                      | :--                          | :--
+`filePath`         | String | Any valid path or URL                    | **This is a required field** | This is the target the shortcut points to.
+`outputPath`       | String | Any valid path to a folder               | `'%USERPROFILE%\\Desktop'`   | Path where the shortcut will be placed.
+`name`             | String | Any file system safe string              | Uses name from filePath      | The name of the shortcut file.
+`comment`          | String | Any string                               | Not used if not supplied     | Metadata file "comment" property. Description of what the shortcut would open.
+`icon`             | String | Valid path to file (ICO, EXE, or DLL)    | Uses OS default icon         | The image shown on the shortcut icon. You can also pass in an index if multiple icons, like `'C:\\file.exe,0'`
+`arguments`        | String | Any string                               | None                         | Additional arguments passed in to the end of your target `filePath`
+`windowMode`       | String | `'normal'`, `'maximized'`, `'minimized'` | `'normal'`                   | How the window should be displayed by default
+`hotkey`           | String | Any string                               | None                         | A global hotkey to associate to opening this shortcut, like `'CTRL+ALT+F'`
+`workingDirectory` | String | Any valid path to a folder               | None                         | The working directory for the shortcut when it launches
 
 
 ### Linux Settings
