@@ -348,7 +348,7 @@ const validation = {
   },
   validateWindowsWorkingDirectory: function (options) {
     options = this.validateOptionalString(options, 'windows', 'workingDirectory');
-    if (!options.windows || !options.window.workingDirectory) {
+    if (!options.windows || !Object(options.windows).hasOwnProperty('workingDirectory')) {
       return options;
     }
 
