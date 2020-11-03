@@ -346,6 +346,28 @@ const validation = {
 
     return options;
   },
+  validateWindowsWorkingDirectory: function (options) {
+    options = this.validateOptionalString(options, 'windows', 'workingDirectory');
+    if (!options.windows || !Object(options.windows).hasOwnProperty('workingDirectory')) {
+      return options;
+    }
+
+    options.windows.workingDirectory = helpers.resolveWindowsEnvironmentVariables(options.windows.workingDirectory);
+
+    if (!fs.existsSync(options.windows.workingDirectory)) {
+      helpers.throwError(options, 'Optional WINDOWS workingDirectory path does not exist: ' + options.windows.workingDirectory);
+      delete options.windows.workingDirectory;
+      return options;
+    }
+
+    if (!fs.lstatSync(options.windows.workingDirectory).isDirectory()) {
+      helpers.throwError(options, 'Optional WINDOWS workingDirectory path must be a directory: ' + options.windows.workingDirectory);
+      delete options.windows.workingDirectory;
+      return options;
+    }
+
+    return options;
+  },
   validateWindowsOptions: function (options) {
     options = this.validateWindowsFilePath(options);
 
@@ -356,6 +378,7 @@ const validation = {
     options = this.validateWindowsWindowMode(options);
     options = this.validateWindowsIcon(options);
     options = this.validateWindowsComment(options);
+    options = this.validateWindowsWorkingDirectory(options);
     options = this.validateOptionalString(options, 'windows', 'arguments');
     options = this.validateOptionalString(options, 'windows', 'hotkey');
 
