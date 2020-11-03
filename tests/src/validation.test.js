@@ -901,6 +901,74 @@ describe('Validation', () => {
       });
     });
 
+    describe('validateWindowsWorkingDirectory', () => {
+      beforeEach(() => {
+        delete options.windows.filePath;
+        delete options.windows.outputPath;
+      });
+
+      test('Empty object', () => {
+        expect(validation.validateWindowsWorkingDirectory({}))
+          .toEqual({});
+      });
+
+      test('Empty windows object', () => {
+        expect(validation.validateWindowsWorkingDirectory(options))
+          .toEqual({
+            ...defaults,
+            customLogger,
+            windows: {}
+          });
+
+        expect(customLogger)
+          .not.toHaveBeenCalled();
+      });
+
+      test('Path does not exist', () => {
+        options.windows.workingDirectory = 'C:\\fake\\path';
+
+        expect(validation.validateWindowsWorkingDirectory(options))
+          .toEqual({
+            ...defaults,
+            customLogger,
+            windows: {}
+          });
+
+        expect(customLogger)
+          .toHaveBeenCalledWith('Optional WINDOWS workingDirectory path does not exist: C:\\fake\\path', undefined);
+      });
+
+      test('Path is not a directory', () => {
+        options.windows.workingDirectory = 'C:\\file.ext';
+
+        expect(validation.validateWindowsWorkingDirectory(options))
+          .toEqual({
+            ...defaults,
+            customLogger,
+            windows: {}
+          });
+
+        expect(customLogger)
+          .toHaveBeenCalledWith('Optional WINDOWS workingDirectory path must be a directory: C:\\file.ext', undefined);
+      });
+
+      test('Working directory exists', () => {
+        options.windows.workingDirectory = 'C:\\Users\\DUMMY\\Desktop';
+
+        expect(validation.validateWindowsWorkingDirectory(options))
+          .toEqual({
+            ...defaults,
+            customLogger,
+            windows: {
+              workingDirectory: 'C:\\Users\\DUMMY\\Desktop'
+            }
+          });
+
+        expect(customLogger)
+          .not.toHaveBeenCalled();
+      });
+    });
+
     describe('validateWindowsOptions', () => {
       test('Empty options', () => {
         expect(validation.validateWindowsOptions({}))
