@@ -20,7 +20,7 @@ module.exports = {
     'jsdoc/check-access': 1,
     'jsdoc/check-alignment': 1,
     'jsdoc/check-examples': 1,
-    'jsdoc/check-indentation': 1,
+    'jsdoc/check-indentation': 0,
     'jsdoc/check-line-alignment': 1,
     'jsdoc/check-param-names': 1,
     'jsdoc/check-property-names': 1,
