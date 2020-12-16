@@ -1,3 +1,5 @@
+' @file    This script is what actually produces the shortcut on Windows.
+' @author  TheJaredWilcurt
 ' Code based on https://forums.techguy.org/threads/solved-vbscript-create-a-shortcut-within-a-folder.886401/
 ' and https://www.vbsedit.com/html/a239a3ac-e51c-4e70-859e-d2d8c2eb3135.asp
 

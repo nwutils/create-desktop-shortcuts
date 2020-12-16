@@ -1,3 +1,8 @@
+/**
+ * @file    Helper functions used by unit tests.
+ * @author  TheJaredWilcurt
+ */
+
 const path = require('path');
 const os = require('os');
 const mock = require('mock-fs');
@@ -6,7 +11,7 @@ const testHelpers = {
   /**
    * Sets the process.platform to specified value.
    *
-   * @param  {string}  platform  'win32', 'linux', or 'darwin'
+   * @param  {string}  platform  'win32', 'linux', or 'darwin'.
    */
   mockPlatform: function (platform) {
     platform = platform || 'win32';
@@ -17,8 +22,8 @@ const testHelpers = {
   /**
    * Converts from Windows Slashes to Unix slashes.
    *
-   * @param  {string} str  Any string
-   * @return {string}      Converted string
+   * @param  {string} str  Any string.
+   * @return {string}      Converted string.
    */
   slasher: function (str) {
     return str.split('\\').join('/');

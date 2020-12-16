@@ -1,3 +1,8 @@
+/**
+ * @file    Tests the library's core functionality, to ensure 100% coverage.
+ * @author  TheJaredWilcurt
+ */
+
 jest.mock('child_process');
 jest.mock('fs');
 jest.mock('path');

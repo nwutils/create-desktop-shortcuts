@@ -1,3 +1,8 @@
+/**
+ * @file    File contains helper functions used by different files in the library.
+ * @author  TheJaredWilcurt
+ */
+
 const os = require('os');
 
 const helpers = {
@@ -34,10 +39,10 @@ const helpers = {
   },
   /**
    * Replaces all environment variables with their actual value.
-   * Keeps intact non-environment variables using '%'
+   * Keeps intact non-environment variables using '%'.
    *
-   * @param  {string} filePath The input file path with percents
-   * @return {string}          The resolved file path;
+   * @param  {string} filePath The input file path with percents.
+   * @return {string}          The resolved file path.
    */
   resolveWindowsEnvironmentVariables: function (filePath) {
     if (!filePath || typeof(filePath) !== 'string') {

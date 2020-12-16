@@ -1,3 +1,8 @@
+/**
+ * @file    Tests the library API validation scripts, to ensure 100% coverage.
+ * @author  TheJaredWilcurt
+ */
+
 jest.mock('path');
 jest.mock('os');
 
