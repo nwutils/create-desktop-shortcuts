@@ -1,3 +1,8 @@
+/**
+ * @file    The core functionality of the library.
+ * @author  TheJaredWilcurt
+ */
+
 const fs = require('fs');
 const path = require('path');
 const exec = require('child_process').execSync;

@@ -1,3 +1,8 @@
+/**
+ * @file    Mock the child_process so execSync and spawnSync not actually called when simulating creating an OSX or Windows shortcut.
+ * @author  TheJaredWilcurt
+ */
+
 const childProcess = jest.requireActual('child_process');
 
 const childProcessMock = Object.assign({}, childProcess, {

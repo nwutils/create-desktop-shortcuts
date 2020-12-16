@@ -1,3 +1,8 @@
+/**
+ * @file    This file creates an shortcut on the computer (or VM) it is ran on, then verifies it worked.
+ * @author  TheJaredWilcurt
+ */
+
 const fs = require('fs');
 const path = require('path');
 

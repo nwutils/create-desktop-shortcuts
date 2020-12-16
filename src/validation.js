@@ -1,3 +1,8 @@
+/**
+ * @file    This file validates the options object passed in by the user of this library to ensure it meets the expectations of the code.
+ * @author  TheJaredWilcurt
+ */
+
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
@@ -307,10 +312,14 @@ const validation = {
 
       /**
        * Removes the icon index from file paths.
-       * Such as 'C:\\file.exe,2' => 'C:\\file.exe'
+       * Such as 'C:\\file.exe,2' => 'C:\\file.exe'.
        *
-       * @param  {string} icon  Icon filepath
-       * @return {string}       Icon filepath without icon index
+       * @example
+       * // 'C:\\file.exe'
+       * removeIconIndex('C:\\file.exe,2');
+       *
+       * @param  {string} icon  Icon filepath.
+       * @return {string}       Icon filepath without icon index.
        */
       function removeIconIndex (icon) {
         // 'C:\\file.dll,0' => 'dll,0'

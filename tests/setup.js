@@ -1,3 +1,8 @@
+/**
+ * @file    The global setup for all Jest tests.
+ * @author  TheJaredWilcurt
+ */
+
 const processPlatform = process.platform;
 const testHelpers = require('@@/testHelpers.js');
 

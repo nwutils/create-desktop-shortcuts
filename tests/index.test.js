@@ -1,3 +1,8 @@
+/**
+ * @file    Tests the library entry point, to ensure 100% coverage.
+ * @author  TheJaredWilcurt
+ */
+
 const createDesktopShortcut = require('../index.js');
 const testHelpers = require('@@/testHelpers.js');
 

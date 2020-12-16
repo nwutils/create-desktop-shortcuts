@@ -1,3 +1,8 @@
+/**
+ * @file    Tests the library helpers, to ensure 100% coverage.
+ * @author  TheJaredWilcurt
+ */
+
 jest.mock('os');
 const processPlatform = process.platform;
 

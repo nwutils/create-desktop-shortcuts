@@ -1,3 +1,8 @@
+/**
+ * @file    Used during local development to manually test the functionality of different features.
+ * @author  TheJaredWilcurt
+ */
+
 let createDesktopShortcuts = require('./index.js');
 
 let success = createDesktopShortcuts({
