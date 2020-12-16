@@ -314,6 +314,10 @@ const validation = {
        * Removes the icon index from file paths.
        * Such as 'C:\\file.exe,2' => 'C:\\file.exe'.
        *
+       * @example
+       * // 'C:\\file.exe'
+       * removeIconIndex('C:\\file.exe,2');
+       *
        * @param  {string} icon  Icon filepath.
        * @return {string}       Icon filepath without icon index.
        */

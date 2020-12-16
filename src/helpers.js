@@ -22,6 +22,10 @@ const helpers = {
    * Resolves paths that start with a tilde to the user's
    * home directory.
    *
+   * @example
+   * // '/home/bob/GitHub/Repo/file.png'
+   * resolveTilde('~/GitHub/Repo/file.png');
+   *
    * @param  {string} filePath '~/GitHub/Repo/file.png'
    * @return {string}          '/home/bob/GitHub/Repo/file.png'
    */
@@ -41,6 +45,10 @@ const helpers = {
    * Replaces all environment variables with their actual value.
    * Keeps intact non-environment variables using '%'.
    *
+   * @example
+   * // 'C:\Users\bob\Desktop\AMD64'
+   * resolveWindowsEnvironmentVariables('C:\Users\%USERNAME%\Desktop\%PROCESSOR_ARCHITECTURE%');
+   *
    * @param  {string} filePath The input file path with percents.
    * @return {string}          The resolved file path.
    */
@@ -53,6 +61,9 @@ const helpers = {
      * Returns the value stored in the process.env for a given
      * environment variable. Or the original '%ASDF%' string if
      * not found.
+     *
+     * @example
+     * replaceEnvironmentVariable('%USERNAME%', 'USERNAME');
      *
      * @param  {string} withPercents    '%USERNAME%'
      * @param  {string} withoutPercents 'USERNAME'

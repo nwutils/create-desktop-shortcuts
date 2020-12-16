@@ -10,6 +10,13 @@ const library = require('./src/library.js');
 /**
  * Creates OS based shortcuts for files, folders, and applications.
  *
+ * @example
+ * createDesktopShortcut({
+ *   windows: { filePath: 'C:\\path\\to\\executable.exe' },
+ *   linux: { filePath: '/home/path/to/executable' },
+ *   osx: { filePath: '/home/path/to/executable' }
+ * });
+ *
  * @param  {object}  options Options object for each OS.
  * @return {boolean}         True = success, false = failed to create the icon or set its permissions (Linux).
  */

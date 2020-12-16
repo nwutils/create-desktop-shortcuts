@@ -11,6 +11,9 @@ const testHelpers = {
   /**
    * Sets the process.platform to specified value.
    *
+   * @example
+   * mockPlatform('win32');
+   *
    * @param  {string}  platform  'win32', 'linux', or 'darwin'.
    */
   mockPlatform: function (platform) {
@@ -21,6 +24,10 @@ const testHelpers = {
   },
   /**
    * Converts from Windows Slashes to Unix slashes.
+   *
+   * @example
+   * // 'C:/Folder/file.ext'
+   * slasher('C:\\Folder\\file.ext');
    *
    * @param  {string} str  Any string.
    * @return {string}      Converted string.
