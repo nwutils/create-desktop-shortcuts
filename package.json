@@ -21,7 +21,8 @@
     "debug": "node --inspect-brk manual-testing.js",
     "manual-test": "node manual-testing.js",
     "test": "jest --runInBand --coverage",
-    "e2e": "node ./tests/e2e.js"
+    "e2e": "node ./tests/e2e.js",
+    "validate": "npm run lint && npm test && npm run e2e && git status"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
@@ -29,6 +30,7 @@
     "eslint-config-tjw-base": "^1.0.0",
     "eslint-config-tjw-jest": "^1.0.0",
     "eslint-plugin-jsdoc": "^31.2.1",
+    "fs-extra": "^9.1.0",
     "jest": "24.9.0",
     "mock-fs": "^4.13.0"
   },
