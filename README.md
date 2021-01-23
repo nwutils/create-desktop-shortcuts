@@ -7,7 +7,7 @@
 ## Small, lightweight, cross-platform, built in validation!
 
 
-### Zero Dependencies, 100% Test Coverage, Automated Cross-Platform End-to-End tested 
+### Zero Dependencies, 100% Test Coverage, Automated Cross-Platform End-to-End tested
 
 An easy, cross-platform, API to create desktop shortcuts with Node. (*Works in [NW.js](https://nwjs.io) too!*)
 
@@ -171,6 +171,24 @@ Key          | Type    | Allowed                     | Default                  
 `outputPath` | String  | Any valid path to a folder  | Current user's desktop       | Path where the shortcut will be placed.
 `name`       | String  | Any file system safe string | Uses name from filePath      | The name of the shortcut file.
 `overwrite`  | Boolean | `true`, `false`             | false                        | If true, will replace any existing file in the `outputPath` with matching `name`. See above note for more details.
+
+
+### Add to start menu
+
+Here are the documented paths you can use for the `outputPath` to create a shortcut in the start menu.
+
+OS     | Type         | `outputPath`                                              | Note
+:--    | :--          | :--                                                       | :--
+Win 7+ | All Users    | `%AllUsersProfile%\Microsoft\Windows\Start Menu\Programs` | `C:\ProgramData\Microsoft\WindowsStart Menu\Programs`
+Win 7+ | All Users    | `%ProgramData%\Microsoft\Windows\Start Menu\Programs`     | Should be exactly same as above
+Win 7+ | Current User | `%AppData%\Microsoft\Windows\Start Menu\Programs`         | Should work fine\reliably
+Linux  | All Users    | `/usr/share/applications`                                 | According to Arch and Gnome
+Linux  | All Users    | `/usr/local/share/applications/`                          | According to Arch
+Linux  | Current User | `~/.local/share/applications`                             | According to Gnome docs
+
+OSX doesn't have a "Start menu" nor an official means of [adding items to the dock](https://developer.apple.com/forums/thread/122743).
+
+In Windows 8+ it might be possible to pin a "tile" in the start menu, but that looks difficult, and out of scope for this library. If someone else created a Node library for pinning tiles to the start menu this line of the README should be updated to link to it.
 
 
 * * *
