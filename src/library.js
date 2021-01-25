@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * @file    The core functionality of the library.
  * @author  TheJaredWilcurt

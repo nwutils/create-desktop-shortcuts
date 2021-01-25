@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * @file    File contains helper functions used by different files in the library.
  * @author  TheJaredWilcurt
