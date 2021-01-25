@@ -12,6 +12,16 @@ const helpers = require('./helpers.js');
 
 const library = {
   // LINUX
+  /**
+   * Creates the text to be stored in the shortcut file based on
+   * the user's options.
+   *
+   * @example
+   * let fileData = generateLinuxFileData(options);
+   *
+   * @param  {object} options  User's options object
+   * @return {string}          The data to be stored in the shortcut file
+   */
   generateLinuxFileData: function (options) {
     if (!options || !options.linux || !options.linux.filePath) {
       return '';
@@ -58,6 +68,17 @@ const library = {
 
     return fileContents;
   },
+  /**
+   * Saves a file to disk with the correct content based on
+   * the User's options. Optionally runs chmod to adjust
+   * execution permissions on the shortcut.
+   *
+   * @example
+   * let success = makeLinuxShortcut(options);
+   *
+   * @param  {object}  options  User's options object
+   * @return {boolean}          true = successfully made Linux shortcut
+   */
   makeLinuxShortcut: function (options) {
     const fileContents = this.generateLinuxFileData(options);
 
@@ -89,9 +110,27 @@ const library = {
   },
 
   // WINDOWS
+  /**
+   * Returns the path to the windows.vbs file. Usefull for unit tests.
+   *
+   * @example
+   * let vbsPath = produceWindowsVBSPath();
+   *
+   * @return {string}  The file path to the windows.vbs file
+   */
   produceWindowsVBSPath: function () {
     return path.join(__dirname, 'windows.vbs');
   },
+  /**
+   * Creates the data to be passed in to the VBScript based on user options.
+   * Spawns a wscript child process to create the shortcut and log if error.
+   *
+   * @example
+   * let success = makeWindowsShortcut(options);
+   *
+   * @param  {object}  options  User's options object
+   * @return {boolean}          true = successfully made Windows shortcut
+   */
   makeWindowsShortcut: function (options) {
     let success = true;
 
@@ -115,7 +154,7 @@ const library = {
     let comment = options.windows.comment || filePathName;
     let cwd = options.windows.workingDirectory || '';
     let icon = options.windows.icon;
-    let windowMode = windowModes[options.windows.windowMode] || 1;
+    let windowMode = windowModes[options.windows.windowMode] || windowModes.normal;
     let hotkey = options.windows.hotkey || '';
 
     if (!icon) {
@@ -160,6 +199,16 @@ const library = {
   },
 
   // OSX
+  /**
+   * Creates the CLI arguments based on user options. Executes command.
+   * Handles errors.
+   *
+   * @example
+   * let success = makeOSXShortcut(options);
+   *
+   * @param  {object}  options  User's options object
+   * @return {boolean}          true = successfully made OSX shortcut
+   */
   makeOSXShortcut: function (options) {
     let success = true;
 
@@ -203,11 +252,24 @@ const library = {
   },
 
   // RUN
+  /**
+   * Checks the user's options and runs all desired OS scripts to create
+   * shortcuts. Returns true if all shortcuts were created successfully
+   * or false if any failed.
+   *
+   * @example
+   * let success = runCorrectOSs(options);
+   *
+   * @param  {object}  options  User's options object
+   * @return {boolean}          true = all shortcuts created successfully
+   */
   runCorrectOSs: function (options) {
     if (!options.windows && !options.linux && !options.osx) {
       helpers.throwError(options, 'No shortcuts were created due to lack of accurate details passed in to options object', options);
       return false;
-    } else if (options.onlyCurrentOS) {
+    }
+
+    if (options.onlyCurrentOS) {
       if (process.platform === 'win32' && options.windows) {
         return this.makeWindowsShortcut(options);
       }
@@ -219,23 +281,23 @@ const library = {
       }
       helpers.throwError(options, 'Unsupported platform. This library only supports process.platform of "win32", "linux" and "darwin".', options);
       return false;
-    } else {
-      let windowsSuccess = true;
-      let linuxSuccess = true;
-      let osxSuccess = true;
-
-      if (options.windows) {
-        windowsSuccess = this.makeWindowsShortcut(options);
-      }
-      if (options.linux) {
-        linuxSuccess = this.makeLinuxShortcut(options);
-      }
-      if (options.osx) {
-        osxSuccess = this.makeOSXShortcut(options);
-      }
-
-      return windowsSuccess && linuxSuccess && osxSuccess;
     }
+
+    let windowsSuccess = true;
+    let linuxSuccess = true;
+    let osxSuccess = true;
+
+    if (options.windows) {
+      windowsSuccess = this.makeWindowsShortcut(options);
+    }
+    if (options.linux) {
+      linuxSuccess = this.makeLinuxShortcut(options);
+    }
+    if (options.osx) {
+      osxSuccess = this.makeOSXShortcut(options);
+    }
+
+    return windowsSuccess && linuxSuccess && osxSuccess;
   }
 };
 

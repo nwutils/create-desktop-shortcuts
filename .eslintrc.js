@@ -42,7 +42,25 @@ module.exports = {
     'jsdoc/require-example': 1,
     'jsdoc/require-file-overview': 1,
     'jsdoc/require-hyphen-before-param-description': 0,
-    'jsdoc/require-jsdoc': 1,
+    'jsdoc/require-jsdoc': [
+      1,
+      {
+        'publicOnly': {
+          'ancestorsOnly': false,
+          'cjs': true,
+          'esm': true,
+          'window': true
+        },
+        'require': {
+          'ArrowFunctionExpression': true,
+          'ClassDeclaration': true,
+          'ClassExpression': true,
+          'FunctionDeclaration': true,
+          'FunctionExpression': true,
+          'MethodDefinition': true
+        }
+      }
+    ],
     'jsdoc/require-param': 1,
     'jsdoc/require-param-description': 1,
     'jsdoc/require-param-name': 1,

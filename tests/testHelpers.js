@@ -35,6 +35,16 @@ const testHelpers = {
   slasher: function (str) {
     return str.split('\\').join('/');
   },
+  /**
+   * Converts all Window slasses (\) to Unix slashes (/)
+   * in filePaths, outputPaths, and icons.
+   *
+   * @example
+   * optionsSlasher(options);
+   *
+   * @param  {object} options  The user's options
+   * @return {object}          The user's mutated options
+   */
   optionsSlasher: function (options) {
     const operatingSystems = [
       'windows',
@@ -65,6 +75,17 @@ const testHelpers = {
     onlyCurrentOS: true,
     verbose: true
   },
+  /**
+   * Sets up a fake file system with paths used by tests so we
+   * can test the library without creating actual shortcuts on
+   * the current machine. Also helps when testing OS specific
+   * code when not on that OS.
+   *
+   * @example
+   * mockfs(true);
+   *
+   * @param  {boolean} bool  mockfs causes weird issues with console.log unless it is called first from this function, true resolves this
+   */
   mockfs: function (bool) {
     const vbs = path.join(path.dirname(__dirname), 'src', 'windows.vbs');
     const vbsLinux = testHelpers.slasher(vbs);
@@ -115,6 +136,13 @@ const testHelpers = {
       ...Linux
     });
   },
+  /**
+   * Stops mocking calls to the filesystem,
+   * restoring it back to normal.
+   *
+   * @example
+   * restoreMockFs();
+   */
   restoreMockFs: function () {
     mock.restore();
   }
