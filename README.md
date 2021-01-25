@@ -179,7 +179,7 @@ Here are the documented paths you can use for the `outputPath` to create a short
 
 OS     | Type         | `outputPath`                                              | Note
 :--    | :--          | :--                                                       | :--
-Win 7+ | All Users    | `%AllUsersProfile%\Microsoft\Windows\Start Menu\Programs` | `C:\ProgramData\Microsoft\WindowsStart Menu\Programs`
+Win 7+ | All Users    | `%AllUsersProfile%\Microsoft\Windows\Start Menu\Programs` | `C:\ProgramData\Microsoft\Windows\Start Menu\Programs`
 Win 7+ | All Users    | `%ProgramData%\Microsoft\Windows\Start Menu\Programs`     | Should be exactly same as above
 Win 7+ | Current User | `%AppData%\Microsoft\Windows\Start Menu\Programs`         | Should work fine\reliably
 Linux  | All Users    | `/usr/share/applications`                                 | According to Arch and Gnome
