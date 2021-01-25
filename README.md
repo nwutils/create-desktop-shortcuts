@@ -194,6 +194,30 @@ In Windows 8+ it might be possible to pin a "tile" in the start menu, but that l
 * * *
 
 
+## OS Support
+
+**End-to-end tests run on every commit using:**
+
+* Ubuntu latest with Node v8.3.0
+* Ubuntu latest with Node v14.x.x
+* Windows latest with Node v8.3.0
+* Windows latest with Node v14.x.x
+* OSX latest with Node v8.3.0
+* OSX latest with Node v14.x.x
+
+**Manually Tested on:**
+
+* Windows XP with Node v4.4.5
+* Windows 7 with Node v8, v10, v12
+* Windows 10 with Node v12, v14, v15
+* Ubuntu 16, 20 with Node v12
+* OSX 10.11 with Node v7.3.0
+* NW.js v0.14.7 (LTS), v0.30.0, v0.50.0
+
+
+* * *
+
+
 ## Credits
 
 Author: The Jared Wilcurt

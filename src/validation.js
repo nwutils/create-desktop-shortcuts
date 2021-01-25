@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * @file    This file validates the options object passed in by the user of this library to ensure it meets the expectations of the code.
  * @author  TheJaredWilcurt
@@ -72,7 +74,8 @@ const validation = {
     }
 
     // Used for cross-platform testing. 'C:\\file.ext' => 'C:/file.ext' allowing path.parse to work on Linux (CI) with Windows paths
-    const correctedFilePath = path.join(...options[operatingSystem].filePath.split('\\'));
+    // path.join.apply(null, ['C:', 'file.ext']) is same as path.join(...['C:', 'file.ext']); but works in older Node versions
+    const correctedFilePath = path.join.apply(null, options[operatingSystem].filePath.split('\\'));
 
     const fileName = options[operatingSystem].name || path.parse(correctedFilePath).name || 'Root';
     const fileExtensions = {
