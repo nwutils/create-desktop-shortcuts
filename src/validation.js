@@ -13,6 +13,16 @@ const helpers = require('./helpers.js');
 
 const validation = {
   // SHARED
+  /**
+   * Creates, validates, and/or defaults the options object
+   * and its values, including global settings, and each OS.
+   *
+   * @example
+   * options = validateOptions(options);
+   *
+   * @param  {object} options  User's options
+   * @return {object}          Validated or mutated user options
+   */
   validateOptions: function (options) {
     options = options || {};
     if (typeof(options.verbose) !== 'boolean') {
@@ -46,6 +56,19 @@ const validation = {
 
     return options;
   },
+  /**
+   * Resolves the Environment Variables or tilde from outputPaths
+   * to absolute paths. Verifies the outputPath exists and is a
+   * folder. If path is not provided, does not exist, or is
+   * otherwise invalid, defaults to the current user's desktop.
+   *
+   * @example
+   * options = validateOutputPath(options);
+   *
+   * @param  {object} options          User's options
+   * @param  {string} operatingSystem  'windows', 'linux', or 'osx'
+   * @return {object}                  Validated or mutated user options
+   */
   validateOutputPath: function (options, operatingSystem) {
     options = this.validateOptionalString(options, operatingSystem, 'name');
 
@@ -91,6 +114,18 @@ const validation = {
 
     return options;
   },
+  /**
+   * Generic validation method to ensure a specific key on a specific OS
+   * object is either a string, or removed.
+   *
+   * @example
+   * options = validateOptionalString(options);
+   *
+   * @param  {object} options          User's options
+   * @param  {string} operatingSystem  'windows', 'linux', or 'osx'
+   * @param  {string} key              The key within the OS object to be validated as an optional string
+   * @return {object}                  Validated or mutated user options
+   */
   validateOptionalString: function (options, operatingSystem, key) {
     if (
       typeof(options[operatingSystem]) === 'object' &&
@@ -102,6 +137,19 @@ const validation = {
     }
     return options;
   },
+  /**
+   * Generic validation method to ensure a specific key on a specific OS
+   * object is a boolean, and if not, give it the correct default value.
+   *
+   * @example
+   * options = defaultBoolean(options);
+   *
+   * @param  {object}  options          User's options
+   * @param  {string}  operatingSystem  'windows', 'linux', or 'osx'
+   * @param  {string}  key              The key within the OS object to be validated or defaulted
+   * @param  {boolean} defaultValue     The default value if no value set
+   * @return {object}                   Validated or mutated user options
+   */
   defaultBoolean: function (options, operatingSystem, key, defaultValue) {
     defaultValue = !!defaultValue;
 
@@ -123,6 +171,17 @@ const validation = {
   },
 
   // LINUX
+  /**
+   * Ensures the Linux file path is valid and exists as a file,
+   * folder, or url based on `type`. Resolves tilde to absolute paths.
+   * If no valide filePath is presented, deleted "linux" object.
+   *
+   * @example
+   * options = validateLinuxFilePath(options);
+   *
+   * @param  {object} options  User's options
+   * @return {object}          Validated or mutated user options
+   */
   validateLinuxFilePath: function (options) {
     if (!options.linux) {
       return options;
@@ -171,6 +230,19 @@ const validation = {
 
     return options;
   },
+  /**
+   * Validates or defaults the `type` of Linux shortcut
+   * based on the `filePath` to 'Link' if filePath starts
+   * with 'http://' or 'https://', to 'Directory' if it exists
+   * as a folder or 'Application', if the `filePath` exists as
+   * a file.
+   *
+   * @example
+   * options = validateLinuxType(options);
+   *
+   * @param  {object} options  User's options
+   * @return {object}          Validated or mutated user options
+   */
   validateLinuxType: function (options) {
     options = this.validateOptionalString(options, 'linux', 'type');
 
@@ -205,6 +277,18 @@ const validation = {
 
     return options;
   },
+  /**
+   * Validates the Linux shortcut icon exists and
+   * is either a ICNS or PNG file, or removes it.
+   * If path is relative, converts it to absolute base
+   * on the outputPath.
+   *
+   * @example
+   * options = validateLinuxIcon(options);
+   *
+   * @param  {object} options  User's options
+   * @return {object}          Validated or mutated user options
+   */
   validateLinuxIcon: function (options) {
     options = this.validateOutputPath(options, 'linux');
     options = this.validateOptionalString(options, 'linux', 'icon');
@@ -234,6 +318,16 @@ const validation = {
 
     return options;
   },
+  /**
+   * Ensures all Linux settings are valid, or defaulted.
+   * If no Linux options, it removes the "linux" object.
+   *
+   * @example
+   * options = validateLinuxOptions(options);
+   *
+   * @param  {object} options  User's options
+   * @return {object}          Validated or mutated user options
+   */
   validateLinuxOptions: function (options) {
     options = this.validateLinuxFilePath(options);
 
@@ -250,6 +344,17 @@ const validation = {
   },
 
   // WINDOWS
+  /**
+   * Ensures the Windows file path is valid and exists.
+   * Resolves any environment variables to absolute paths.
+   * If no valide filePath is presented, deleted "windows" object.
+   *
+   * @example
+   * options = validateWindowsFilePath(options);
+   *
+   * @param  {object} options  User's options
+   * @return {object}          Validated or mutated user options
+   */
   validateWindowsFilePath: function (options) {
     if (!options.windows) {
       return options;
@@ -270,6 +375,15 @@ const validation = {
 
     return options;
   },
+  /**
+   * Verifies or defaults the windowMode.
+   *
+   * @example
+   * options = validateWindowsWindowMode(options);
+   *
+   * @param  {object} options  User's options
+   * @return {object}          Validated or mutated user options
+   */
   validateWindowsWindowMode: function (options) {
     options = this.validateOptionalString(options, 'windows', 'windowMode');
 
@@ -286,6 +400,19 @@ const validation = {
 
     return options;
   },
+  /**
+   * Validates optional Windows shortcut icon, or removes it.
+   * Resolves environment paths to absolute paths. Resolves
+   * relative paths ('../a.ico') to absolute paths based on
+   * outputPath. Verifies correct file extension and icon
+   * index via regex. Verifies exists.
+   *
+   * @example
+   * options = validateWindowsIcon(options);
+   *
+   * @param  {object} options  User's options
+   * @return {object}          Validated or mutated user options
+   */
   validateWindowsIcon: function (options) {
     options = this.validateOutputPath(options, 'windows');
     options = this.validateOptionalString(options, 'windows', 'icon');
@@ -345,6 +472,17 @@ const validation = {
 
     return options;
   },
+  /**
+   * Validates the optional string "comment" for a windows shortcut.
+   * Also handles old API "description" in case that is still passed
+   * in.
+   *
+   * @example
+   * options = validateWindowsComment(options);
+   *
+   * @param  {object} options  User's options
+   * @return {object}          Validated or mutated user options
+   */
   validateWindowsComment: function (options) {
     options = this.validateOptionalString(options, 'windows', 'comment');
     options = this.validateOptionalString(options, 'windows', 'description');
@@ -358,6 +496,17 @@ const validation = {
 
     return options;
   },
+  /**
+   * Resolves environement variables to absolute paths. Validates
+   * the working directory for a Windows shortcut exists and is a
+   * folder, or removes it.
+   *
+   * @example
+   * options = validateWindowsWorkingDirectory(options);
+   *
+   * @param  {object} options  User's options
+   * @return {object}          Validated or mutated user options
+   */
   validateWindowsWorkingDirectory: function (options) {
     options = this.validateOptionalString(options, 'windows', 'workingDirectory');
     if (!options.windows || !Object(options.windows).hasOwnProperty('workingDirectory')) {
@@ -380,6 +529,15 @@ const validation = {
 
     return options;
   },
+  /**
+   * Validates or removes the Windows object from the user's options.
+   *
+   * @example
+   * options = validateWindowsOptions(options);
+   *
+   * @param  {object} options  User's options
+   * @return {object}          Validated or mutated user options
+   */
   validateWindowsOptions: function (options) {
     options = this.validateWindowsFilePath(options);
 
@@ -398,6 +556,15 @@ const validation = {
   },
 
   // OSX
+  /**
+   * Validates the OSX filePath exists or removes the OSX object.
+   *
+   * @example
+   * options = validateOSXFilePath(options);
+   *
+   * @param  {object} options  User's options
+   * @return {object}          Validated or mutated user options
+   */
   validateOSXFilePath: function (options) {
     if (!options.osx) {
       return options;
@@ -418,6 +585,15 @@ const validation = {
 
     return options;
   },
+  /**
+   * Validates or deletes the OSX object from the user's options.
+   *
+   * @example
+   * options = validateOSXOptions(options);
+   *
+   * @param  {object} options  User's options
+   * @return {object}          Validated or mutated user options
+   */
   validateOSXOptions: function (options) {
     options = this.validateOSXFilePath(options);
 
