@@ -1,7 +1,7 @@
 {
   "name": "create-desktop-shortcuts",
   "main": "index.js",
-  "version": "1.2.1",
+  "version": "1.3.0",
   "description": "Easy API to create desktop shortcuts with Node",
   "author": "The Jared Wilcurt",
   "keywords": [
@@ -29,7 +29,7 @@
     "eslint": "^7.18.0",
     "eslint-config-tjw-base": "^1.0.0",
     "eslint-config-tjw-jest": "^1.0.0",
-    "eslint-plugin-jsdoc": "^31.2.1",
+    "eslint-plugin-jsdoc": "^31.3.3",
     "fs-extra": "^9.1.0",
     "jest": "24.9.0",
     "mock-fs": "^4.13.0"
