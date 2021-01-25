@@ -21,7 +21,8 @@ module.exports = {
     'jsdoc/check-alignment': 1,
     'jsdoc/check-examples': 1,
     'jsdoc/check-indentation': 0,
-    'jsdoc/check-line-alignment': 1,
+    // Waiting on bug fix: https://github.com/gajus/eslint-plugin-jsdoc/issues/680
+    // 'jsdoc/check-line-alignment': [1, 'always'],
     'jsdoc/check-param-names': 1,
     'jsdoc/check-property-names': 1,
     'jsdoc/check-syntax': 1,

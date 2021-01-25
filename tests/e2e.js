@@ -3,13 +3,21 @@
  * @author  TheJaredWilcurt
  */
 
-const fs = require('fs');
+const fs = require('fs-extra');
 const path = require('path');
 
 const createDesktopShortcuts = require('../index.js');
 
+let ext = '';
+if (process.platform === 'linux') {
+  ext = '.desktop';
+}
+if (process.platform === 'win32') {
+  ext = '.lnk';
+}
 const filePath = path.join(__dirname, 'src');
 const outputPath = path.join(__dirname, '__mocks__');
+const outputFile = path.join(__dirname, '__mocks__', 'src' + ext);
 
 let success = createDesktopShortcuts({
   linux: {
@@ -28,19 +36,25 @@ let success = createDesktopShortcuts({
 });
 
 if (success) {
-  let ext = '';
-  if (process.platform === 'linux') {
-    ext = '.desktop';
-  }
-  if (process.platform === 'win32') {
-    ext = '.lnk';
-  }
-  let outputDir = path.join(__dirname, '__mocks__', 'src' + ext);
-  if (!fs.existsSync(outputDir)) {
+  if (!fs.existsSync(outputFile)) {
     throw 'E2E: COULD NOT FIND DESKTOP SHORTCUT';
   } else {
-    console.log('Automated end-to-end test completed successfully.');
+    console.log('\n ______________ _________________________________________');
+    console.log('|              |                                         |');
+    console.log('|  E2E PASSED  |  Successly created and validated file.  |');
+    console.log('|              |                                         |');
+    console.log(' ¯¯¯¯¯¯¯¯¯¯¯¯¯¯ ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n\n');
   }
 } else {
   throw 'E2E: FAILED TO CREATE DESKTOP SHORTCUT';
+}
+
+try {
+  fs.removeSync(outputFile);
+} catch (err) {
+  throw 'E2E: Error deleting end-to-end shortcut';
+}
+
+if (fs.existsSync(outputFile)) {
+  throw 'E2E: Shortcut file was not removed';
 }

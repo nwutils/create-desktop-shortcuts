@@ -17,8 +17,8 @@ const library = require('./src/library.js');
  *   osx: { filePath: '/home/path/to/executable' }
  * });
  *
- * @param  {object}  options Options object for each OS.
- * @return {boolean}         True = success, false = failed to create the icon or set its permissions (Linux).
+ * @param  {object}  options  Options object for each OS.
+ * @return {boolean}          True = success, false = failed to create the icon or set its permissions (Linux).
  */
 function createDesktopShortcut (options) {
   options = validation.validateOptions(options);

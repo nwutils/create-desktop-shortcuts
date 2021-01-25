@@ -30,9 +30,14 @@ jobs:
     # npm 5.7.1 is the first version to support npm ci
     - if: ${{ matrix.node-version == '8.3.0' }}
       run: npm install -g npm@5.7.1
+
     - run: npm ci
+    - run: npm t
+
     # ESLint 7.x uses `} catch {` which isn't supported in Node 8
     - if: ${{ matrix.node-version != '8.3.0' }}
       run: npm run lint
-    - run: npm t
-    - run: npm run e2e
+
+    # fs-extra uses `} catch {` which isn't supported in Node 8
+    - if: ${{ matrix.node-version != '8.3.0' }}
+      run: npm run e2e
