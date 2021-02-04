@@ -23,7 +23,7 @@ module.exports = {
     'jsdoc/check-indentation': 0,
     'jsdoc/check-line-alignment': [
       1,
-      'never',
+      'always',
       {
         'tags': [
           'param',
