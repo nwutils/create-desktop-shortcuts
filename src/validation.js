@@ -192,7 +192,7 @@ const validation = {
     }
 
     options = this.validateLinuxType(options);
-    if (!options.linux.validate || options.linux.validate = true) {
+    if (options.linux.validate === null || options.linux.validate === true) {
        const type = options.linux.type;
        if (
          (!type || type === 'Application') &&
