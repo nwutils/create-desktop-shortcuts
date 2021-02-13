@@ -172,6 +172,7 @@ Key          | Type    | Allowed                     | Default                  
 `filePath`   | String  | Any valid path or URL       | **This is a required field** | This is the target the shortcut points to.
 `outputPath` | String  | Any valid path to a folder  | Current user's desktop       | Path where the shortcut will be placed.
 `name`       | String  | Any file system safe string | Uses name from filePath      | The name of the shortcut file.
+`validate`   | Boolean | `true`, `false`             | `true`                       | If false won't validate filePath
 `overwrite`  | Boolean | `true`, `false`             | false                        | If true, will replace any existing file in the `outputPath` with matching `name`. See above note for more details.
 
 
