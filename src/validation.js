@@ -339,6 +339,7 @@ const validation = {
     options = this.defaultBoolean(options, 'linux', 'terminal', false);
     options = this.defaultBoolean(options, 'linux', 'chmod', true);
     options = this.validateOptionalString(options, 'linux', 'comment');
+    options = this.validateOptionalString(options, 'linux', 'arguments');
 
     return options;
   },
