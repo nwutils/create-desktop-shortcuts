@@ -192,42 +192,43 @@ const validation = {
     }
 
     options = this.validateLinuxType(options);
-    const type = options.linux.type;
-    if (
-      (!type || type === 'Application') &&
-      (
-        !options.linux.filePath ||
-        typeof(options.linux.filePath) !== 'string' ||
-        !fs.existsSync(options.linux.filePath) ||
-        fs.lstatSync(options.linux.filePath).isDirectory()
-      )
-    ) {
-      helpers.throwError(options, 'LINUX filePath (with type of "Application") must exist and cannot be a folder: ' + options.linux.filePath);
-      delete options.linux;
-    } else if (
-      type &&
-      type === 'Directory' &&
-      (
-        !options.linux.filePath ||
-        typeof(options.linux.filePath) !== 'string' ||
-        !fs.existsSync(options.linux.filePath) ||
-        !fs.lstatSync(options.linux.filePath).isDirectory()
-      )
-    ) {
-      helpers.throwError(options, 'LINUX filePath (with type of "Directory") must exist and be a folder: ' + options.linux.filePath);
-      delete options.linux;
-    } else if (
-      type &&
-      type === 'Link' &&
-      (
-        !options.linux.filePath ||
-        typeof(options.linux.filePath) !== 'string'
-      )
-    ) {
-      helpers.throwError(options, 'LINUX filePath url must be a string: ' + options.linux.filePath);
-      delete options.linux;
-    }
-
+    if (!options.linux.validate || options.linux.validate = true) {
+       const type = options.linux.type;
+       if (
+         (!type || type === 'Application') &&
+         (
+           !options.linux.filePath ||
+           typeof(options.linux.filePath) !== 'string' ||
+           !fs.existsSync(options.linux.filePath) ||
+           fs.lstatSync(options.linux.filePath).isDirectory()
+         )
+       ) {
+         helpers.throwError(options, 'LINUX filePath (with type of "Application") must exist and cannot be a folder: ' + options.linux.filePath);
+         delete options.linux;
+       } else if (
+         type &&
+         type === 'Directory' &&
+         (
+           !options.linux.filePath ||
+           typeof(options.linux.filePath) !== 'string' ||
+           !fs.existsSync(options.linux.filePath) ||
+           !fs.lstatSync(options.linux.filePath).isDirectory()
+         )
+       ) {
+         helpers.throwError(options, 'LINUX filePath (with type of "Directory") must exist and be a folder: ' + options.linux.filePath);
+         delete options.linux;
+       } else if (
+         type &&
+         type === 'Link' &&
+         (
+           !options.linux.filePath ||
+           typeof(options.linux.filePath) !== 'string'
+         )
+       ) {
+         helpers.throwError(options, 'LINUX filePath url must be a string: ' + options.linux.filePath);
+         delete options.linux;
+       }
+       }
     return options;
   },
   /**
