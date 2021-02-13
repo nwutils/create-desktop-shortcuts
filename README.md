@@ -100,6 +100,8 @@ const shortcutsCreated = createDesktopShortcut({
     terminal: false,
     // OPTIONAL: defaults to true
     chmod: true
+    // OPTIONAL: defualts to true   
+    validate: true
   },
   osx: {
     // REQUIRED: Path must exist
@@ -157,7 +159,7 @@ Key          | Type    | Allowed                                  | Default     
 `type`       | String  | `'Application'`, `'Link'`, `'Directory'` | Based on `filePath`          | Type of shortcut. Defaults to `'Link'` if `filePath` starts with `'http://'` or `'https://'`. Defaults to `'Directory'` if filePath exists and is a folder. Defaults to Application otherwise.
 `terminal`   | Boolean | `true`, `false`                          | `false`                      | If true, will run in a terminal.
 `chmod`      | Boolean | `true`, `false`                          | `true`                       | If true, will apply a `chmod +x` (755) to the shortcut after creation to allow execution permission.
-
+`validate`   | Boolean | `true`, `false`                          | `true`                       | If false won't validate filePath
 
 ### OSX Settings
 
