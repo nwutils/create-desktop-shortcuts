@@ -53,6 +53,9 @@ const library = {
     if (options.linux.icon) {
       icon = 'Icon=' + options.linux.icon;
     }
+    if (options.linux.arguments) {
+      exec = exec + ' ' + options.linux.arguments;
+    }
 
     // File format details:
     // https://wiki.archlinux.org/index.php/Desktop_entries
@@ -222,6 +225,10 @@ const library = {
     if (options.osx.overwrite) {
       overwrite = '-f';
     }
+    let args = '';
+    if (options.osx.arguments) {
+      args = ' ' + options.osx.arguments;
+    }
 
     if (overwrite || (!overwrite && !fs.existsSync(options.osx.outputPath))) {
       // https://ss64.com/osx/ln.html
@@ -229,7 +236,7 @@ const library = {
         link,
         overwrite,
         symbolic,
-        '"' + options.osx.filePath + '"',
+        '"' + options.osx.filePath + args + '"',
         '"' + options.osx.outputPath + '"'
       ].filter(Boolean).join(' ');
 

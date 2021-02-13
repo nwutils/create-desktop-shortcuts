@@ -99,7 +99,9 @@ const shortcutsCreated = createDesktopShortcut({
     // OPTIONAL: defaults to false
     terminal: false,
     // OPTIONAL: defaults to true
-    chmod: true
+    chmod: true,
+    // OPTIONAL
+    arguments: '--my-argument -f'
   },
   osx: {
     // REQUIRED: Path must exist
@@ -109,7 +111,9 @@ const shortcutsCreated = createDesktopShortcut({
     // OPTIONAL: defaults to the filePath file's name (without the extension)
     name: 'My App Name',
     // OPTIONAL: defaults to false
-    overwrite: false
+    overwrite: false,
+    // OPTIONAL: have not verified this works
+    arguments: '--my-argument -f'
   }
 });
 
@@ -157,6 +161,7 @@ Key          | Type    | Allowed                                  | Default     
 `type`       | String  | `'Application'`, `'Link'`, `'Directory'` | Based on `filePath`          | Type of shortcut. Defaults to `'Link'` if `filePath` starts with `'http://'` or `'https://'`. Defaults to `'Directory'` if filePath exists and is a folder. Defaults to Application otherwise.
 `terminal`   | Boolean | `true`, `false`                          | `false`                      | If true, will run in a terminal.
 `chmod`      | Boolean | `true`, `false`                          | `true`                       | If true, will apply a `chmod +x` (755) to the shortcut after creation to allow execution permission.
+`arguments`  | String  | Any string                               | None                         | Additional arguments passed in to the end of your target `filePath`
 
 
 ### OSX Settings
@@ -171,6 +176,7 @@ Key          | Type    | Allowed                     | Default                  
 `outputPath` | String  | Any valid path to a folder  | Current user's desktop       | Path where the shortcut will be placed.
 `name`       | String  | Any file system safe string | Uses name from filePath      | The name of the shortcut file.
 `overwrite`  | Boolean | `true`, `false`             | false                        | If true, will replace any existing file in the `outputPath` with matching `name`. See above note for more details.
+`arguments`  | String  | Any string                  | None                         | Additional arguments passed in to the end of your target `filePath`. Have not tested if this works.
 
 
 ### Add to start menu
