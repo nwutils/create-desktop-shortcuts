@@ -147,6 +147,21 @@ describe('library', () => {
           'Icon=/home/DUMMY/icon.png'
         ].join('\n'));
     });
+
+    test('Arguments', () => {
+      options.linux.arguments = '-f --version';
+
+      expect(library.generateLinuxFileData(options))
+        .toEqual([
+          '#!/user/bin/env xdg-open',
+          '[Desktop Entry]',
+          'Version=1.0',
+          'Type=Application',
+          'Terminal=false',
+          'Exec=/home/DUMMY/file.ext -f --version',
+          'Name=file'
+        ].join('\n'));
+    });
   });
 
   describe('makeLinuxShortcut', () => {
@@ -471,6 +486,28 @@ describe('library', () => {
 
       expect(childProcess.execSync)
         .toHaveBeenLastCalledWith('ln -s "/home/DUMMY/file.ext" "/home/DUMMY/Desktop/file"');
+
+      expect(childProcess.spawnSync)
+        .not.toHaveBeenCalled();
+
+      expect(fs.chmodSync)
+        .not.toHaveBeenCalled();
+
+      expect(fs.writeFileSync)
+        .not.toHaveBeenCalled();
+    });
+
+    test('Arguments', () => {
+      options.osx.arguments = '-f --version';
+
+      expect(library.makeOSXShortcut(options))
+        .toEqual(true);
+
+      expect(customLogger)
+        .not.toHaveBeenCalled();
+
+      expect(childProcess.execSync)
+        .toHaveBeenLastCalledWith('ln -s "/home/DUMMY/file.ext -f --version" "/home/DUMMY/Desktop/file"');
 
       expect(childProcess.spawnSync)
         .not.toHaveBeenCalled();
