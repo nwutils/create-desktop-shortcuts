@@ -574,14 +574,16 @@ const validation = {
     if (options.osx.filePath) {
       options.osx.filePath = helpers.resolveTilde(options.osx.filePath);
     }
-
-    if (
-      !options.osx.filePath ||
-      typeof(options.osx.filePath) !== 'string' ||
-      !fs.existsSync(options.osx.filePath)
-    ) {
-      helpers.throwError(options, 'OSX filePath does not exist: ' + options.osx.filePath);
-      delete options.osx;
+    
+    if (options.osx.validate === null || options.osx.validate === true){
+      if (
+        !options.osx.filePath ||
+        typeof(options.osx.filePath) !== 'string' ||
+        !fs.existsSync(options.osx.filePath)
+      ) {
+        helpers.throwError(options, 'OSX filePath does not exist: ' + options.osx.filePath);
+        delete options.osx;
+      }
     }
 
     return options;
