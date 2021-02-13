@@ -225,10 +225,6 @@ const library = {
     if (options.osx.overwrite) {
       overwrite = '-f';
     }
-    let args = '';
-    if (options.osx.arguments) {
-      args = ' ' + options.osx.arguments;
-    }
 
     if (overwrite || (!overwrite && !fs.existsSync(options.osx.outputPath))) {
       // https://ss64.com/osx/ln.html
@@ -236,7 +232,7 @@ const library = {
         link,
         overwrite,
         symbolic,
-        '"' + options.osx.filePath + args + '"',
+        '"' + options.osx.filePath + '"',
         '"' + options.osx.outputPath + '"'
       ].filter(Boolean).join(' ');
 

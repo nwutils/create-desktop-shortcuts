@@ -111,9 +111,7 @@ const shortcutsCreated = createDesktopShortcut({
     // OPTIONAL: defaults to the filePath file's name (without the extension)
     name: 'My App Name',
     // OPTIONAL: defaults to false
-    overwrite: false,
-    // OPTIONAL: have not verified this works
-    arguments: '--my-argument -f'
+    overwrite: false
   }
 });
 
@@ -176,7 +174,6 @@ Key          | Type    | Allowed                     | Default                  
 `outputPath` | String  | Any valid path to a folder  | Current user's desktop       | Path where the shortcut will be placed.
 `name`       | String  | Any file system safe string | Uses name from filePath      | The name of the shortcut file.
 `overwrite`  | Boolean | `true`, `false`             | false                        | If true, will replace any existing file in the `outputPath` with matching `name`. See above note for more details.
-`arguments`  | String  | Any string                  | None                         | Additional arguments passed in to the end of your target `filePath`. Have not tested if this works.
 
 
 ### Add to start menu

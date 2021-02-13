@@ -604,7 +604,6 @@ const validation = {
 
     options = this.validateOutputPath(options, 'osx');
     options = this.defaultBoolean(options, 'osx', 'overwrite', false);
-    options = this.validateOptionalString(options, 'osx', 'arguments');
 
     return options;
   }

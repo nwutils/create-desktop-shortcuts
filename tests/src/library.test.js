@@ -497,28 +497,6 @@ describe('library', () => {
         .not.toHaveBeenCalled();
     });
 
-    test('Arguments', () => {
-      options.osx.arguments = '-f --version';
-
-      expect(library.makeOSXShortcut(options))
-        .toEqual(true);
-
-      expect(customLogger)
-        .not.toHaveBeenCalled();
-
-      expect(childProcess.execSync)
-        .toHaveBeenLastCalledWith('ln -s "/home/DUMMY/file.ext -f --version" "/home/DUMMY/Desktop/file"');
-
-      expect(childProcess.spawnSync)
-        .not.toHaveBeenCalled();
-
-      expect(fs.chmodSync)
-        .not.toHaveBeenCalled();
-
-      expect(fs.writeFileSync)
-        .not.toHaveBeenCalled();
-    });
-
     test('Overwrite', () => {
       options.osx.overwrite = true;
 
