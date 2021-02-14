@@ -53,6 +53,9 @@ const library = {
     if (options.linux.icon) {
       icon = 'Icon=' + options.linux.icon;
     }
+    if (options.linux.arguments) {
+      exec = exec + ' ' + options.linux.arguments;
+    }
 
     // File format details:
     // https://wiki.archlinux.org/index.php/Desktop_entries

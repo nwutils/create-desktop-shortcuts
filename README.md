@@ -99,7 +99,9 @@ const shortcutsCreated = createDesktopShortcut({
     // OPTIONAL: defaults to false
     terminal: false,
     // OPTIONAL: defaults to true
-    chmod: true
+    chmod: true,
+    // OPTIONAL
+    arguments: '--my-argument -f'
   },
   osx: {
     // REQUIRED: Path must exist
@@ -157,6 +159,7 @@ Key          | Type    | Allowed                                  | Default     
 `type`       | String  | `'Application'`, `'Link'`, `'Directory'` | Based on `filePath`          | Type of shortcut. Defaults to `'Link'` if `filePath` starts with `'http://'` or `'https://'`. Defaults to `'Directory'` if filePath exists and is a folder. Defaults to Application otherwise.
 `terminal`   | Boolean | `true`, `false`                          | `false`                      | If true, will run in a terminal.
 `chmod`      | Boolean | `true`, `false`                          | `true`                       | If true, will apply a `chmod +x` (755) to the shortcut after creation to allow execution permission.
+`arguments`  | String  | Any string                               | None                         | Additional arguments passed in to the end of your target `filePath`
 
 
 ### OSX Settings
@@ -250,3 +253,4 @@ Parts of the `windows.vbs` were copied/modified based on:
 1. **Linux:** No real recourse if the script does not have permission to run `chmod` on Linux. You would just need to run it again with sudo or something. If you have ideas, create an issue or PR.
 1. **OSX:** I know of no way to set a custom icon image on OSX. It will just always use the same icon the executable had (or file type if linking to an `.html` file for example)
 1. **Windows/Linux:** May want to add in `overwrite` option for Windows and Linux too. This would require deleting the existing shortcut. Deleting files is something that each OS sucks at in different ways and would require pulling in something like `fs-extra` or similar dependency.
+1. **OSX:** To my knowledge there is no way to pass in arguments with a shortcut. If anyone knows how, make an issue with details.
