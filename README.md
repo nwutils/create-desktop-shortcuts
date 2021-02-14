@@ -253,3 +253,4 @@ Parts of the `windows.vbs` were copied/modified based on:
 1. **Linux:** No real recourse if the script does not have permission to run `chmod` on Linux. You would just need to run it again with sudo or something. If you have ideas, create an issue or PR.
 1. **OSX:** I know of no way to set a custom icon image on OSX. It will just always use the same icon the executable had (or file type if linking to an `.html` file for example)
 1. **Windows/Linux:** May want to add in `overwrite` option for Windows and Linux too. This would require deleting the existing shortcut. Deleting files is something that each OS sucks at in different ways and would require pulling in something like `fs-extra` or similar dependency.
+1. **OSX:** To my knowledge there is no way to pass in arguments with a shortcut. If anyone knows how, make an issue with details.
