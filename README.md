@@ -74,7 +74,7 @@ const shortcutsCreated = createDesktopShortcut({
     name: 'My App Name',
     // OPTIONAL
     comment: 'My App description',
-    // OPTIONAL: File must exist and be ICO, EXE, or PNG
+    // OPTIONAL: File must exist and be ICO, EXE, or DLL
     icon: 'C:\\path\\to\\file.ico',
     // OPTIONAL
     arguments: '--my-argument -f \'other stuff\'',
