@@ -33,7 +33,13 @@ module.exports = {
           'prop',
           'returns',
           'return'
-        ]
+        ],
+        'customSpacings': {
+          'postDelimiter': 1,
+          'postTag': 1,
+          'postType': 1,
+          'postName': 2
+        }
       }
     ],
     'jsdoc/check-param-names': 1,

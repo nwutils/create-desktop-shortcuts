@@ -29,7 +29,7 @@
     "eslint": "^7.26.0",
     "eslint-config-tjw-base": "^1.0.0",
     "eslint-config-tjw-jest": "^1.0.0",
-    "eslint-plugin-jsdoc": "^34.2.0",
+    "eslint-plugin-jsdoc": "^34.7.0",
     "fs-extra": "^10.0.0",
     "jest": "24.9.0",
     "mock-fs": "^4.14.0"
