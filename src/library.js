@@ -121,7 +121,7 @@ const library = {
    * @example
    * let vbsPath = produceWindowsVBSPath();
    *
-   * @return {string}  The file path to the windows.vbs file
+   * @return {string} The file path to the windows.vbs file
    */
   produceWindowsVBSPath: function () {
     return path.join(__dirname, 'windows.vbs');

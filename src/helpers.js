@@ -17,9 +17,9 @@ const helpers = {
    * @example
    * throwError(options, 'Message', err);
    *
-   * @param  {object} options  The user's options containing verbose and customLogger settings
-   * @param  {string} message  The text to be logged
-   * @param  {object} error    Optional object with additional details
+   * @param {object} options  The user's options containing verbose and customLogger settings
+   * @param {string} message  The text to be logged
+   * @param {object} error    Optional object with additional details
    */
   throwError: function (options, message, error) {
     if (options.verbose && options.customLogger) {
@@ -41,8 +41,8 @@ const helpers = {
    * // '/home/bob/GitHub/Repo/file.png'
    * resolveTilde('~/GitHub/Repo/file.png');
    *
-   * @param  {string} filePath '~/GitHub/Repo/file.png'
-   * @return {string}          '/home/bob/GitHub/Repo/file.png'
+   * @param  {string} filePath  '~/GitHub/Repo/file.png'
+   * @return {string}           '/home/bob/GitHub/Repo/file.png'
    */
   resolveTilde: function (filePath) {
     if (!filePath || typeof(filePath) !== 'string') {
@@ -64,8 +64,8 @@ const helpers = {
    * // 'C:\Users\bob\Desktop\AMD64'
    * resolveWindowsEnvironmentVariables('C:\Users\%USERNAME%\Desktop\%PROCESSOR_ARCHITECTURE%');
    *
-   * @param  {string} filePath The input file path with percents.
-   * @return {string}          The resolved file path.
+   * @param  {string} filePath  The input file path with percents.
+   * @return {string}           The resolved file path.
    */
   resolveWindowsEnvironmentVariables: function (filePath) {
     if (!filePath || typeof(filePath) !== 'string') {
@@ -80,9 +80,9 @@ const helpers = {
      * @example
      * replaceEnvironmentVariable('%USERNAME%', 'USERNAME');
      *
-     * @param  {string} withPercents    '%USERNAME%'
-     * @param  {string} withoutPercents 'USERNAME'
-     * @return {string}                 'bob' || '%USERNAME%'
+     * @param  {string} withPercents     '%USERNAME%'
+     * @param  {string} withoutPercents  'USERNAME'
+     * @return {string}                  'bob' || '%USERNAME%'
      */
     function replaceEnvironmentVariable (withPercents, withoutPercents) {
       let found = process.env[withoutPercents];
