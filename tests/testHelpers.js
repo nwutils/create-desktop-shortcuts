@@ -14,7 +14,7 @@ const testHelpers = {
    * @example
    * mockPlatform('win32');
    *
-   * @param  {string}  platform  'win32', 'linux', or 'darwin'.
+   * @param {string} platform  'win32', 'linux', or 'darwin'.
    */
   mockPlatform: function (platform) {
     platform = platform || 'win32';
@@ -84,7 +84,7 @@ const testHelpers = {
    * @example
    * mockfs(true);
    *
-   * @param  {boolean} bool  mockfs causes weird issues with console.log unless it is called first from this function, true resolves this
+   * @param {boolean} bool  mockfs causes weird issues with console.log unless it is called first from this function, true resolves this
    */
   mockfs: function (bool) {
     const vbs = path.join(path.dirname(__dirname), 'src', 'windows.vbs');

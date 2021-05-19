@@ -21,8 +21,27 @@ module.exports = {
     'jsdoc/check-alignment': 1,
     'jsdoc/check-examples': 1,
     'jsdoc/check-indentation': 0,
-    // Waiting on bug fix: https://github.com/gajus/eslint-plugin-jsdoc/issues/680
-    // 'jsdoc/check-line-alignment': [1, 'always'],
+    'jsdoc/check-line-alignment': [
+      1,
+      'always',
+      {
+        'tags': [
+          'param',
+          'arg',
+          'argument',
+          'property',
+          'prop',
+          'returns',
+          'return'
+        ],
+        'customSpacings': {
+          'postDelimiter': 1,
+          'postTag': 1,
+          'postType': 1,
+          'postName': 2
+        }
+      }
+    ],
     'jsdoc/check-param-names': 1,
     'jsdoc/check-property-names': 1,
     'jsdoc/check-syntax': 1,
@@ -73,6 +92,20 @@ module.exports = {
     'jsdoc/require-returns-check': 1,
     'jsdoc/require-returns-description': 1,
     'jsdoc/require-returns-type': 1,
+    'jsdoc/tag-lines': [
+      1,
+      'always',
+      {
+        'count': 0,
+        'noEndLines': true,
+        'tags': {
+          'example': {
+            'count': 1,
+            'lines': 'always'
+          }
+        }
+      }
+    ],
     'jsdoc/valid-types': 1
   },
   'settings': {
