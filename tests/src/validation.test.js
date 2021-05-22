@@ -308,6 +308,25 @@ describe('Validation', () => {
     });
   });
 
+  describe('resolvePATH', () => {
+    beforeEach(() => {
+      testHelpers.mockPlatform('win32');
+      testHelpers.mockEnvPATH();
+      mockfs();
+    });
+
+    test('Undefined', () => {
+      expect(validation.resolvePATH(undefined))
+        .toEqual(undefined);
+    });
+
+    test('Undefined', () => {
+
+      expect(testHelpers.optionsSlasher(validation.resolvePATH('icon')))
+        .toEqual('okay');
+    });
+  });
+
   describe('defaultBoolean', () => {
     beforeEach(() => {
       options = {

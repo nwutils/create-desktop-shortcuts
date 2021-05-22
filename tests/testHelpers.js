@@ -22,6 +22,12 @@ const testHelpers = {
       value: platform
     });
   },
+  mockEnvPATH: function () {
+    if (process && process.env) {
+      process.env.PATH = 'C:\\Users\\DUMMY';
+      console.log(process.env.PATH);
+    }
+  },
   /**
    * Converts from Windows Slashes to Unix slashes.
    *
