@@ -113,30 +113,32 @@ const testHelpers = {
   mockfs: function (bool) {
     const vbs = path.join(path.dirname(__dirname), 'src', 'windows.vbs');
     const vbsLinux = testHelpers.slasher(vbs);
+    const executable = mock.file({
+      content: 'Executable',
+      mode: 33206,
+      uid: 0,
+      gid: 0,
+      atime: new Date('2020-10-17T13:44:23.622Z'),
+      ctime: new Date('2020-10-17T13:45:07.979Z'),
+      mtime: new Date('2020-10-17T13:44:46.846Z'),
+      birthtime: new Date('2020-10-17T13:44:23.622Z')
+    });
     const Windows = {
       [vbs]: 'text',
       'C:\\file.ext': 'text',
       'C:\\folder': {},
+      'C:\\Program Files\\DUMMY\\app.exe': executable,
       'C:\\Users\\DUMMY\\icon.ico': 'text',
       'C:\\Users\\DUMMY\\icon.exe': 'text',
       'C:\\Users\\DUMMY\\icon.dll': 'text',
       'C:\\Users\\DUMMY\\icon.png': 'text',
-      'C:\\Users\\DUMMY\\Desktop': {},
-      'C:\\Program Files\\DUMMY\\app.exe': mock.file({
-        content: 'Executable',
-        mode: 33206,
-        uid: 0,
-        gid: 0,
-        atime: new Date('2020-10-17T13:44:23.622Z'),
-        ctime: new Date('2020-10-17T13:45:07.979Z'),
-        mtime: new Date('2020-10-17T13:44:46.846Z'),
-        birthtime: new Date('2020-10-17T13:44:23.622Z')
-      })
+      'C:\\Users\\DUMMY\\Desktop': {}
     };
     let WindowsInLinuxCI = {
       [vbsLinux]: 'text',
       'C:/file.ext': 'text',
       'C:/folder': {},
+      'C:/Program Files/DUMMY/app.exe': executable,
       'C:/Users/DUMMY/icon.ico': 'text',
       'C:/Users/DUMMY/icon.exe': 'text',
       'C:/Users/DUMMY/icon.dll': 'text',
