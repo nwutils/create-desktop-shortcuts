@@ -8,6 +8,7 @@
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
+const which = require('which');
 
 const helpers = require('./helpers.js');
 
@@ -189,6 +190,8 @@ const validation = {
 
     if (options.linux.filePath) {
       options.linux.filePath = helpers.resolveTilde(options.linux.filePath);
+      // Converts 'node' to 'C:\\Program Files\\nodejs\\node.exe' and 'asdf' to null
+      options.linux.filePath = which.sync(options.linux.filePath, { nothrow: true });
     }
 
     options = this.validateLinuxType(options);
@@ -363,6 +366,8 @@ const validation = {
 
     if (options.windows.filePath) {
       options.windows.filePath = helpers.resolveWindowsEnvironmentVariables(options.windows.filePath);
+      // converts 'node' to 'C:\\Program Files\\nodejs\\node.exe' and 'asdf' to null
+      options.windows.filePath = which.sync(options.windows.filePath, { nothrow: true });
     }
 
     if (
@@ -573,6 +578,8 @@ const validation = {
 
     if (options.osx.filePath) {
       options.osx.filePath = helpers.resolveTilde(options.osx.filePath);
+      // Converts 'node' to 'C:\\Program Files\\nodejs\\node.exe' and 'asdf' to null
+      options.osx.filePath = which.sync(options.osx.filePath, { nothrow: true });
     }
 
     if (

@@ -24,6 +24,9 @@
     "e2e": "node ./tests/e2e.js",
     "validate": "npm run lint && npm test && npm run e2e && git status"
   },
+  "dependencies": {
+    "which": "^2.0.2"
+  },
   "devDependencies": {
     "@babel/core": "^7.14.3",
     "@babel/eslint-parser": "^7.14.3",
