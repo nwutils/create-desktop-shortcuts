@@ -143,6 +143,9 @@ const validation = {
    * 'node' becomes 'C:\\Program Files\\nodejs\\node.exe'
    * If file does not exist or isn't an executable, returns the original string.
    *
+   * @example
+   * resolvePATH('node');
+   *
    * @param  {string} filePath  The executable the shortcut will link to
    * @return {string}           A resolved path, or the original string
    */

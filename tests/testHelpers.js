@@ -22,10 +22,28 @@ const testHelpers = {
       value: platform
     });
   },
+  /**
+   * Sets the global PATHs variable to equal a dummy path.
+   *
+   * @example
+   * mockEnvPATH();
+   */
   mockEnvPATH: function () {
     if (process && process.env) {
-      process.env.PATH = 'C:\\Users\\DUMMY';
-      console.log(process.env.PATH);
+      this.PATH = process.env.PATH;
+      process.env.PATH = 'C:\\Program Files\\DUMMY';
+    }
+  },
+  /**
+   * Sets the global PATHs variable back to the original value.
+   *
+   * @example
+   * restoreEnvPATH();
+   */
+  restoreEnvPATH: function () {
+    if (this.PATH && process && process.env) {
+      process.env.PATH = this.PATH;
+      this.PATH = '';
     }
   },
   /**
@@ -103,7 +121,17 @@ const testHelpers = {
       'C:\\Users\\DUMMY\\icon.exe': 'text',
       'C:\\Users\\DUMMY\\icon.dll': 'text',
       'C:\\Users\\DUMMY\\icon.png': 'text',
-      'C:\\Users\\DUMMY\\Desktop': {}
+      'C:\\Users\\DUMMY\\Desktop': {},
+      'C:\\Program Files\\DUMMY\\app.exe': mock.file({
+        content: 'Executable',
+        mode: 33206,
+        uid: 0,
+        gid: 0,
+        atime: new Date('2020-10-17T13:44:23.622Z'),
+        ctime: new Date('2020-10-17T13:45:07.979Z'),
+        mtime: new Date('2020-10-17T13:44:46.846Z'),
+        birthtime: new Date('2020-10-17T13:44:23.622Z')
+      })
     };
     let WindowsInLinuxCI = {
       [vbsLinux]: 'text',

@@ -22,6 +22,7 @@ describe('Validation', () => {
 
   afterEach(() => {
     testHelpers.restoreMockFs();
+    testHelpers.restoreEnvPATH();
   });
 
   describe('validateOptions', () => {
@@ -320,10 +321,9 @@ describe('Validation', () => {
         .toEqual(undefined);
     });
 
-    test('Undefined', () => {
-
-      expect(testHelpers.optionsSlasher(validation.resolvePATH('icon')))
-        .toEqual('okay');
+    test('Resolves PATH', async () => {
+      expect(testHelpers.optionsSlasher(validation.resolvePATH('app.exe')))
+        .toEqual('C:\\Program Files\\DUMMY\\app.exe');
     });
   });
 
