@@ -311,7 +311,9 @@ describe('Validation', () => {
 
   describe('resolvePATH', () => {
     beforeEach(() => {
-      testHelpers.mockPlatform('win32');
+      if (process.platform !== 'win32') {
+        testHelpers.mockPlatform('linux');
+      }
       testHelpers.mockEnvPATH();
       mockfs();
     });
@@ -322,8 +324,8 @@ describe('Validation', () => {
     });
 
     test('Resolves PATH', async () => {
-      expect(testHelpers.optionsSlasher(validation.resolvePATH('app.exe')))
-        .toEqual('C:\\Program Files\\DUMMY\\app.exe');
+      expect(['/home/DUMMY/app.exe', 'C:\\Program Files\\DUMMY\\app.exe'].includes(validation.resolvePATH('app.exe')))
+        .toEqual(true);
     });
   });
 

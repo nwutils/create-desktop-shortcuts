@@ -31,7 +31,11 @@ const testHelpers = {
   mockEnvPATH: function () {
     if (process && process.env) {
       this.PATH = process.env.PATH;
-      process.env.PATH = 'C:\\Program Files\\DUMMY';
+      if (process.platform === 'win32') {
+        process.env.PATH = 'C:\\Program Files\\DUMMY';
+      } else {
+        process.env.PATH = '/home/DUMMY';
+      }
     }
   },
   /**
@@ -113,21 +117,23 @@ const testHelpers = {
   mockfs: function (bool) {
     const vbs = path.join(path.dirname(__dirname), 'src', 'windows.vbs');
     const vbsLinux = testHelpers.slasher(vbs);
-    const executable = mock.file({
+    const windowsExecutable = mock.file({
       content: 'Executable',
       mode: 33206,
       uid: 0,
-      gid: 0,
-      atime: new Date('2020-10-17T13:44:23.622Z'),
-      ctime: new Date('2020-10-17T13:45:07.979Z'),
-      mtime: new Date('2020-10-17T13:44:46.846Z'),
-      birthtime: new Date('2020-10-17T13:44:23.622Z')
+      gid: 0
+    });
+    const linuxExecutable = mock.file({
+      content: 'Executable',
+      mode: 33261,
+      uid: 1000,
+      gid: 1000
     });
     const Windows = {
       [vbs]: 'text',
       'C:\\file.ext': 'text',
       'C:\\folder': {},
-      'C:\\Program Files\\DUMMY\\app.exe': executable,
+      'C:\\Program Files\\DUMMY\\app.exe': windowsExecutable,
       'C:\\Users\\DUMMY\\icon.ico': 'text',
       'C:\\Users\\DUMMY\\icon.exe': 'text',
       'C:\\Users\\DUMMY\\icon.dll': 'text',
@@ -138,7 +144,7 @@ const testHelpers = {
       [vbsLinux]: 'text',
       'C:/file.ext': 'text',
       'C:/folder': {},
-      'C:/Program Files/DUMMY/app.exe': executable,
+      'C:\\Program Files\\DUMMY\\app.exe': windowsExecutable,
       'C:/Users/DUMMY/icon.ico': 'text',
       'C:/Users/DUMMY/icon.exe': 'text',
       'C:/Users/DUMMY/icon.dll': 'text',
@@ -147,6 +153,7 @@ const testHelpers = {
     };
     const Linux = {
       '/home/DUMMY': {
+        'app.exe': linuxExecutable,
         'file.ext': 'text',
         'icon.png': 'text',
         'icon.icns': 'text',
