@@ -146,7 +146,7 @@ Key                | Type   | Allowed                                  | Default
 `outputPath`       | String | Any valid path to a folder               | `'%USERPROFILE%\\Desktop'`   | Path where the shortcut will be placed.
 `name`             | String | Any file system safe string              | Uses name from filePath      | The name of the shortcut file.
 `comment`          | String | Any string                               | Not used if not supplied     | Metadata file "comment" property. Description of what the shortcut would open.
-`icon`             | String | Valid path to file (ICO, EXE, or DLL)    | Uses OS default icon         | The image shown on the shortcut icon. You can also pass in an index if multiple icons, like `'C:\\file.exe,0'`
+`icon`             | String | Valid path to file (ICO, EXE, or DLL)    | Uses OS default icon         | The image shown on the shortcut icon. You can also pass in an index if file contains multiple icons, like `'C:\\file.exe,0'`
 `arguments`        | String | Any string                               | None                         | Additional arguments passed in to the end of your target `filePath`
 `windowMode`       | String | `'normal'`, `'maximized'`, `'minimized'` | `'normal'`                   | How the window should be displayed by default
 `hotkey`           | String | Any string                               | None                         | A global hotkey to associate to opening this shortcut, like `'CTRL+ALT+F'`
@@ -172,7 +172,7 @@ Key          | Type    | Allowed                                  | Default     
 
 OSX will automatically inherit the icon of the target you point to. It doesn't care if you point to a folder, file, or application.
 
-**NOTE:** If `overwrite` is set to `false` and a matching file already exists, a `console.error` will occur to inform you of this, however `create-desktop-shortcuts` will still report successful. This `console.error` can be hidden by setting `verbose` to `false`, or using a `customLogger` to intercept it.
+**NOTE:** If `overwrite` is set to `false` and a matching file already exists, a `console.error` will occur to inform you of this, however `create-desktop-shortcuts` will still report successful (return `true`). This `console.error` can be hidden by setting `verbose` to `false`, or using a `customLogger` to [intercept it](https://github.com/nwutils/create-desktop-shortcuts/blob/main/src/library.js#L252).
 
 Key          | Type    | Allowed                     | Default                      | Description
 :--          | :--     | :--                         | :--                          | :--
@@ -180,6 +180,15 @@ Key          | Type    | Allowed                     | Default                  
 `outputPath` | String  | Any valid path to a folder  | Current user's desktop       | Path where the shortcut will be placed.
 `name`       | String  | Any file system safe string | Uses name from filePath      | The name of the shortcut file.
 `overwrite`  | Boolean | `true`, `false`             | false                        | If true, will replace any existing file in the `outputPath` with matching `name`. See above note for more details.
+
+
+### Special paths
+
+The `filePath` for all OS's can be set to an executable name directly if it is available in the user's PATH. For example, if you set it to `'node'` or `'python'` or `'cmd'` and the user can access those from PATH variables, it will work automatically. But the file must exist and must be an actual executable, otherwise you should hard code the value.
+
+The `filePath` and `outputPath` can use environment variables on Windows, like `'%appData%'`. See the "Add to start menu" section below for more examples.
+
+The `filePath` and `outputPath` can start with `~` or `/` on Linux or OSX and the paths will be resolved automatically.
 
 
 ### Add to start menu
@@ -258,5 +267,5 @@ Parts of the `windows.vbs` were copied/modified based on:
 1. **Windows:** If WScript does not like what is passed to it, it displays a Windows Dialog with an error on the line that failed. I have no idea how to turn that off, so I've just added in tons of validation checks to prevent anything from being passed in to it that could cause this. But may still occur if you pass in junk to it that gets by the validation checks.
 1. **Linux:** No real recourse if the script does not have permission to run `chmod` on Linux. You would just need to run it again with sudo or something. If you have ideas, create an issue or PR.
 1. **OSX:** I know of no way to set a custom icon image on OSX. It will just always use the same icon the executable had (or file type if linking to an `.html` file for example)
-1. **Windows/Linux:** May want to add in `overwrite` option for Windows and Linux too. This would require deleting the existing shortcut. Deleting files is something that each OS sucks at in different ways and would require pulling in something like `fs-extra` or similar dependency.
+1. **Windows/Linux:** May want to add in `overwrite` option for Windows and Linux too. This would require deleting the existing shortcut. Deleting files is something that each OS sucks at in different ways and would require pulling in something like `fs-extra` or a similar dependency.
 1. **OSX:** To my knowledge there is no way to pass in arguments with a shortcut. If anyone knows how, make an issue with details.
