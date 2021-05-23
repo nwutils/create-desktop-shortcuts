@@ -7,11 +7,17 @@
 ## Small, lightweight, cross-platform, built in validation!
 
 
-### Zero Dependencies, 100% Test Coverage, Automated Cross-Platform End-to-End tested
+### 100% Test Coverage, Automated Cross-Platform End-to-End tested
 
 An easy, cross-platform, API to create desktop shortcuts with Node. (*Works in [NW.js](https://nwjs.io) too!*)
 
 This library is completely **synchronous**.
+
+It uses 1 dependency, which has it's own single dependency
+
+* **create-desktop-shortcuts** - small - 100% test coverage
+  * **[which](https://github.com/npm/node-which)** - small - 100% test coverage - used by 9 million projects
+    * **[isexe](https://github.com/isaacs/isexe)** - very small - used by 9 million projects
 
 
 ## Installation

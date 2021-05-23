@@ -23,6 +23,34 @@ const testHelpers = {
     });
   },
   /**
+   * Sets the global PATHs variable to equal a dummy path.
+   *
+   * @example
+   * mockEnvPATH();
+   */
+  mockEnvPATH: function () {
+    if (process && process.env) {
+      this.PATH = process.env.PATH;
+      if (process.platform === 'win32') {
+        process.env.PATH = 'C:\\Program Files\\DUMMY';
+      } else {
+        process.env.PATH = '/home/DUMMY';
+      }
+    }
+  },
+  /**
+   * Sets the global PATHs variable back to the original value.
+   *
+   * @example
+   * restoreEnvPATH();
+   */
+  restoreEnvPATH: function () {
+    if (this.PATH && process && process.env) {
+      process.env.PATH = this.PATH;
+      this.PATH = '';
+    }
+  },
+  /**
    * Converts from Windows Slashes to Unix slashes.
    *
    * @example
@@ -89,10 +117,23 @@ const testHelpers = {
   mockfs: function (bool) {
     const vbs = path.join(path.dirname(__dirname), 'src', 'windows.vbs');
     const vbsLinux = testHelpers.slasher(vbs);
+    const windowsExecutable = mock.file({
+      content: 'Executable',
+      mode: 33206,
+      uid: 0,
+      gid: 0
+    });
+    const linuxExecutable = mock.file({
+      content: 'Executable',
+      mode: 33261,
+      uid: 1000,
+      gid: 1000
+    });
     const Windows = {
       [vbs]: 'text',
       'C:\\file.ext': 'text',
       'C:\\folder': {},
+      'C:\\Program Files\\DUMMY\\app.exe': windowsExecutable,
       'C:\\Users\\DUMMY\\icon.ico': 'text',
       'C:\\Users\\DUMMY\\icon.exe': 'text',
       'C:\\Users\\DUMMY\\icon.dll': 'text',
@@ -103,6 +144,7 @@ const testHelpers = {
       [vbsLinux]: 'text',
       'C:/file.ext': 'text',
       'C:/folder': {},
+      'C:\\Program Files\\DUMMY\\app.exe': windowsExecutable,
       'C:/Users/DUMMY/icon.ico': 'text',
       'C:/Users/DUMMY/icon.exe': 'text',
       'C:/Users/DUMMY/icon.dll': 'text',
@@ -111,6 +153,7 @@ const testHelpers = {
     };
     const Linux = {
       '/home/DUMMY': {
+        'app.exe': linuxExecutable,
         'file.ext': 'text',
         'icon.png': 'text',
         'icon.icns': 'text',

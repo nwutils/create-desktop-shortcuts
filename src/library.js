@@ -140,7 +140,6 @@ const library = {
     let success = true;
 
     const vbsScript = this.produceWindowsVBSPath();
-    const filePathName = path.parse(options.windows.filePath).name;
     if (!fs.existsSync(vbsScript)) {
       helpers.throwError(options, 'Could not locate required "windows.vbs" file.');
       success = false;
@@ -156,7 +155,7 @@ const library = {
     let outputPath = options.windows.outputPath;
     let filePath = options.windows.filePath;
     let args = options.windows.arguments || '';
-    let comment = options.windows.comment || filePathName;
+    let comment = options.windows.comment || '';
     let cwd = options.windows.workingDirectory || '';
     let icon = options.windows.icon;
     let windowMode = windowModes[options.windows.windowMode] || windowModes.normal;

@@ -22,6 +22,7 @@ describe('Validation', () => {
 
   afterEach(() => {
     testHelpers.restoreMockFs();
+    testHelpers.restoreEnvPATH();
   });
 
   describe('validateOptions', () => {
@@ -305,6 +306,26 @@ describe('Validation', () => {
 
       expect(customLogger)
         .toHaveBeenCalledWith('Optional WINDOWS name must be a string', undefined);
+    });
+  });
+
+  describe('resolvePATH', () => {
+    beforeEach(() => {
+      if (process.platform !== 'win32') {
+        testHelpers.mockPlatform('linux');
+      }
+      testHelpers.mockEnvPATH();
+      mockfs();
+    });
+
+    test('Undefined', () => {
+      expect(validation.resolvePATH(undefined))
+        .toEqual(undefined);
+    });
+
+    test('Resolves PATH', async () => {
+      expect(['/home/DUMMY/app.exe', 'C:\\Program Files\\DUMMY\\app.exe'].includes(validation.resolvePATH('app.exe')))
+        .toEqual(true);
     });
   });
 

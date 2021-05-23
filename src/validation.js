@@ -8,6 +8,7 @@
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
+const which = require('which');
 
 const helpers = require('./helpers.js');
 
@@ -138,6 +139,23 @@ const validation = {
     return options;
   },
   /**
+   * Finds executables in the user's PATH and returns the full filepath to them.
+   * 'node' becomes 'C:\\Program Files\\nodejs\\node.exe'
+   * If file does not exist or isn't an executable, returns the original string.
+   *
+   * @example
+   * resolvePATH('node');
+   *
+   * @param  {string} filePath  The executable the shortcut will link to
+   * @return {string}           A resolved path, or the original string
+   */
+  resolvePATH: function (filePath) {
+    if (filePath) {
+      return which.sync(filePath, { nothrow: true }) || filePath;
+    }
+    return filePath;
+  },
+  /**
    * Generic validation method to ensure a specific key on a specific OS
    * object is a boolean, and if not, give it the correct default value.
    *
@@ -189,6 +207,7 @@ const validation = {
 
     if (options.linux.filePath) {
       options.linux.filePath = helpers.resolveTilde(options.linux.filePath);
+      options.linux.filePath = this.resolvePATH(options.linux.filePath);
     }
 
     options = this.validateLinuxType(options);
@@ -363,6 +382,7 @@ const validation = {
 
     if (options.windows.filePath) {
       options.windows.filePath = helpers.resolveWindowsEnvironmentVariables(options.windows.filePath);
+      options.windows.filePath = this.resolvePATH(options.windows.filePath);
     }
 
     if (
@@ -573,6 +593,7 @@ const validation = {
 
     if (options.osx.filePath) {
       options.osx.filePath = helpers.resolveTilde(options.osx.filePath);
+      options.osx.filePath = this.resolvePATH(options.osx.filePath);
     }
 
     if (
