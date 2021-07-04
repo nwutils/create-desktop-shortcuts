@@ -262,9 +262,9 @@ Parts of the `windows.vbs` were copied/modified based on:
 * * *
 
 
-## Known issues
+## Known issues & limitations
 
-1. **Windows:** If WScript does not like what is passed to it, it displays a Windows Dialog with an error on the line that failed. I have no idea how to turn that off, so I've just added in tons of validation checks to prevent anything from being passed in to it that could cause this. But may still occur if you pass in junk to it that gets by the validation checks.
+1. **Windows:** If WScript does not like what is passed to it, it displays a Windows Dialog with an error on the line that failed. I have no idea how to turn that off, so I've just added in tons of validation checks to prevent anything from being passed in to it that could cause this. But may still occur if you pass in junk that gets by the validation checks.
 1. **Linux:** No real recourse if the script does not have permission to run `chmod` on Linux. You would just need to run it again with sudo or something. If you have ideas, create an issue or PR.
 1. **OSX:** I know of no way to set a custom icon image on OSX. It will just always use the same icon the executable had (or file type if linking to an `.html` file for example)
 1. **Windows/Linux:** May want to add in `overwrite` option for Windows and Linux too. This would require deleting the existing shortcut. Deleting files is something that each OS sucks at in different ways and would require pulling in something like `fs-extra` or a similar dependency.
