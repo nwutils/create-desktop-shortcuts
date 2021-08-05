@@ -299,7 +299,7 @@ const validation = {
   /**
    * Validates the Linux shortcut icon exists and
    * is either a ICNS or PNG file, or removes it.
-   * If path is relative, converts it to absolute base
+   * If path is relative, converts it to absolute based
    * on the outputPath.
    *
    * @example
