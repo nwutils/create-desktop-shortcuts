@@ -12,6 +12,7 @@
     "lnk"
   ],
   "ManifestComments": [
+    "Pinned fs-extra to 8.1.0 because v9.0.0 dropped support for older node versions and we only use it for CI E2E testing",
     "Pinned jest to 24.9.0. 25.1.0 is broken on Windows. Waiting for issue #9459 to be resolved."
   ],
   "scripts": {
@@ -35,7 +36,7 @@
     "eslint-config-tjw-jest": "^1.0.0",
     "eslint-config-tjw-jsdoc": "^1.0.0",
     "eslint-plugin-jsdoc": "^36.1.0",
-    "fs-extra": "^10.0.0",
+    "fs-extra": "8.1.0",
     "jest": "24.9.0",
     "mock-fs": "^5.1.0"
   },
