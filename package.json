@@ -28,16 +28,16 @@
     "which": "^2.0.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.14.3",
-    "@babel/eslint-parser": "^7.14.3",
-    "eslint": "^7.27.0",
+    "@babel/core": "^7.15.5",
+    "@babel/eslint-parser": "^7.15.7",
+    "eslint": "^7.32.0",
     "eslint-config-tjw-base": "^1.0.0",
     "eslint-config-tjw-jest": "^1.0.0",
     "eslint-config-tjw-jsdoc": "^1.0.0",
-    "eslint-plugin-jsdoc": "^36.0.6",
+    "eslint-plugin-jsdoc": "^36.1.0",
     "fs-extra": "^10.0.0",
     "jest": "24.9.0",
-    "mock-fs": "^4.14.0"
+    "mock-fs": "^5.1.0"
   },
   "license": "MIT",
   "repository": {
