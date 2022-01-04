@@ -98,7 +98,24 @@ const validation = {
     if (!options[operatingSystem].outputPath) {
       let desktop;
       if (process.platform === 'win32') {
-        desktop = exec('[Environment]::GetFolderPath("Desktop")', { shell: 'powershell.exe' }).toString().trim();
+        /*
+         * Win XP = 5.0 or 5.1
+         * Win Vista = 6.0
+         * Win 7 = 6.1
+         * Win 8 = 6.2
+         * Win 8.1 = 6.3
+         * Win 10 = 10.0
+         * Win 11 = 10.0 (at time or writing, this will probably change)
+         */
+        // '6.1.7601' => 6.1
+        const osVersion = parseFloat(os.release());
+        const vistaVersion = 6.0;
+        const osIsWindows7orAbove = osVersion > vistaVersion;
+        const osShipsWithPowerShell = osIsWindows7orAbove;
+
+        if (osShipsWithPowerShell) {
+          desktop = exec('[Environment]::GetFolderPath("Desktop")', { shell: 'powershell.exe' }).toString().trim();
+        }
       }
       desktop = desktop || path.join(os.homedir(), 'Desktop');
       options[operatingSystem].outputPath = desktop;
