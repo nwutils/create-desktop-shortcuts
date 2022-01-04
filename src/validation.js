@@ -5,9 +5,11 @@
  * @author  TheJaredWilcurt
  */
 
+const exec = require('child_process').execSync;
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
+
 const which = require('which');
 
 const helpers = require('./helpers.js');
@@ -94,7 +96,12 @@ const validation = {
     }
 
     if (!options[operatingSystem].outputPath) {
-      options[operatingSystem].outputPath = path.join(os.homedir(), 'Desktop');
+      let desktop;
+      if (process.platform === 'win32') {
+        desktop = exec('[Environment]::GetFolderPath("Desktop")', { shell: 'powershell.exe' }).toString().trim();
+      }
+      desktop = desktop || path.join(os.homedir(), 'Desktop');
+      options[operatingSystem].outputPath = desktop;
     }
 
     // Used for cross-platform testing. 'C:\\file.ext' => 'C:/file.ext' allowing path.parse to work on Linux (CI) with Windows paths
