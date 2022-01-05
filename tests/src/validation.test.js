@@ -3,6 +3,7 @@
  * @author  TheJaredWilcurt
  */
 
+jest.mock('child_process');
 jest.mock('path');
 jest.mock('os');
 
