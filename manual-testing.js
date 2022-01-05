@@ -3,6 +3,9 @@
  * @author  TheJaredWilcurt
  */
 
+const timeLabel = 'Executed in:';
+console.time(timeLabel);
+
 let createDesktopShortcuts = require('./index.js');
 
 let success = createDesktopShortcuts({
@@ -29,3 +32,5 @@ let success = createDesktopShortcuts({
 });
 
 console.log(success);
+
+console.timeEnd(timeLabel);
