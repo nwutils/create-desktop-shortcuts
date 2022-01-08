@@ -98,12 +98,7 @@ const validation = {
     if (!options[operatingSystem].outputPath) {
       let desktop;
       if (process.platform === 'win32') {
-        let powershellExists = false;
-        try {
-          powershellExists = which.sync('powershell');
-        } catch (err) {
-          helpers.throwError(options, 'The outputPath was not set and PowerShell wasn\'t found, so we\'ll just assume the most common desktop location.');
-        }
+        const powershellExists = which.sync('powershell', { nothrow: true });
         if (powershellExists) {
           desktop = exec('[Environment]::GetFolderPath("Desktop")', { shell: 'powershell.exe' }) || '';
           desktop = desktop.toString().trim();
