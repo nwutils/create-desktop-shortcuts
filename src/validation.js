@@ -98,7 +98,7 @@ const validation = {
     if (!options[operatingSystem].outputPath) {
       let desktop;
       if (process.platform === 'win32') {
-        const powershellExists = which.sync('powershell', { nothrow: true });
+        const powershellExists = which.sync('powershell.exe', { nothrow: true });
         if (powershellExists) {
           desktop = exec('[Environment]::GetFolderPath("Desktop")', { shell: 'powershell.exe' }) || '';
           desktop = desktop.toString().trim();

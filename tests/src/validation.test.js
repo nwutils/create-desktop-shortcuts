@@ -169,6 +169,7 @@ describe('Validation', () => {
     describe('Windows', () => {
       beforeEach(() => {
         testHelpers.mockPlatform('win32');
+        testHelpers.mockEnvPATH();
         mockfs();
         process.env.KITTEN = 'folder';
         options = {
@@ -216,6 +217,24 @@ describe('Validation', () => {
             windows: {
               filePath: 'C:/file.ext',
               outputPath: 'C:/Users/DUMMY/Desktop/file.lnk'
+            }
+          });
+      });
+
+      test('Defaults to using powershell if platform supports it', () => {
+        let results = validation.validateOutputPath(options, 'windows');
+        results = testHelpers.optionsSlasher(results);
+
+        expect(customLogger)
+          .not.toHaveBeenCalled();
+
+        expect(results)
+          .toEqual({
+            ...defaults,
+            customLogger,
+            windows: {
+              filePath: 'C:/file.ext',
+              outputPath: 'C:/asdf'
             }
           });
       });

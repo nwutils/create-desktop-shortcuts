@@ -32,9 +32,13 @@ const testHelpers = {
     if (process && process.env) {
       this.PATH = process.env.PATH;
       if (process.platform === 'win32') {
-        process.env.PATH = 'C:\\Program Files\\DUMMY';
+        process.env.PATH = [
+          'C:\\Program Files\\DUMMY'
+        ].join(';');
       } else {
-        process.env.PATH = '/home/DUMMY';
+        process.env.PATH = [
+          '/home/DUMMY'
+        ].join(':');
       }
     }
   },
@@ -134,6 +138,7 @@ const testHelpers = {
       'C:\\file.ext': 'text',
       'C:\\folder': {},
       'C:\\Program Files\\DUMMY\\app.exe': windowsExecutable,
+      'C:\\Program Files\\DUMMY\\powershell.exe': windowsExecutable,
       'C:\\Users\\DUMMY\\icon.ico': 'text',
       'C:\\Users\\DUMMY\\icon.exe': 'text',
       'C:\\Users\\DUMMY\\icon.dll': 'text',

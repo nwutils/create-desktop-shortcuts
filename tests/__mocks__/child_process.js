@@ -10,6 +10,9 @@ const childProcessMock = Object.assign({}, childProcess, {
     if (executableAndArgs.includes('Throw Error')) {
       throw 'Successfully errored';
     }
+    if (executableAndArgs === '[Environment]::GetFolderPath("Desktop")') {
+      return 'FAKED DESKTOP PATH';
+    }
   }),
   spawnSync: jest.fn((executable, args) => {
     if (args.includes('Throw Error')) {

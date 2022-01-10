@@ -20,6 +20,7 @@
     "lint": "eslint --config=.eslintrc.js index.js src tests manual-testing.js",
     "fix": "eslint --fix --config=.eslintrc.js index.js src tests manual-testing.js",
     "debug": "node --inspect-brk manual-testing.js",
+    "debug-test": "node --inspect-brk ./node_modules/jest/bin/jest.js --runInBand -t \"powershell\" \"validation\"",
     "manual-test": "node manual-testing.js",
     "test": "jest --runInBand --coverage",
     "e2e": "node ./tests/e2e.js",
