@@ -201,7 +201,7 @@ describe('Validation', () => {
           });
       });
 
-      test('Output does not exist', () => {
+      test('Output and powershell does not exist', () => {
         options.windows.outputPath = 'C:\\DoesNotExist';
 
         let results = validation.validateOutputPath(options, 'windows');
@@ -234,7 +234,7 @@ describe('Validation', () => {
             customLogger,
             windows: {
               filePath: 'C:/file.ext',
-              outputPath: 'C:/asdf'
+              outputPath: 'C:/Powershell-derived-desktop/file.lnk'
             }
           });
       });

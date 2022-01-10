@@ -11,7 +11,7 @@ const childProcessMock = Object.assign({}, childProcess, {
       throw 'Successfully errored';
     }
     if (executableAndArgs === '[Environment]::GetFolderPath("Desktop")') {
-      return 'FAKED DESKTOP PATH';
+      return 'C:/Powershell-derived-desktop';
     }
   }),
   spawnSync: jest.fn((executable, args) => {
