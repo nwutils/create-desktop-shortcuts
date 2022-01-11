@@ -11,6 +11,9 @@ const childProcessMock = Object.assign({}, childProcess, {
       throw 'Successfully errored';
     }
     if (executableAndArgs === '[Environment]::GetFolderPath("Desktop")') {
+      if (global.breakPowershell) {
+        return undefined;
+      }
       return 'C:/Powershell-derived-desktop';
     }
   }),

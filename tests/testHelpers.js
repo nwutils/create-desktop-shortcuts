@@ -185,6 +185,25 @@ const testHelpers = {
     });
   },
   /**
+   * Same as mockfs, but lets you create a one-off file system
+   * for a specific test that needs to deviate from the rest of
+   * the tests.
+   *
+   * @example
+   * mockfsByHand({ 'C:\\Users\\DUMMY\\Desktop': {} }, true);
+   *
+   * @param {object}  input  Object where keys are file paths and string values are files and object values are folders
+   * @param {boolean} bool   mockfs causes weird issues with console.log unless it is called first from this function, true resolves this
+   */
+  mockfsByHand: function (input, bool) {
+    // mock-fs explodes if you use console in your code without
+    // running it once right before execution.
+    if (bool) {
+      console.log('');
+    }
+    mock(input);
+  },
+  /**
    * Stops mocking calls to the filesystem,
    * restoring it back to normal.
    *
