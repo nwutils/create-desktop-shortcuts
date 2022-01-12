@@ -7,6 +7,8 @@ jest.mock('child_process');
 jest.mock('path');
 jest.mock('os');
 
+const os = require('os');
+
 const validation = require('@/validation.js');
 const testHelpers = require('@@/testHelpers.js');
 
@@ -243,10 +245,32 @@ describe('Validation', () => {
 
       test('Output and powershell does not exist', () => {
         testHelpers.restoreMockFs();
-        testHelpers.mockfsByHand({
+
+        const Windows = {
           'C:\\file.ext': 'text',
           'C:\\Users\\DUMMY\\Desktop': {}
+        };
+        let WindowsInLinuxCI = {
+          'C:/file.ext': 'text',
+          'C:/Users/DUMMY/Desktop': {}
+        };
+        const Linux = {
+          '/home/DUMMY': {
+            'file.ext': 'text',
+            'Desktop': {}
+          }
+        };
+
+        if (os.platform() === 'win32') {
+          WindowsInLinuxCI = {};
+        }
+
+        testHelpers.mockfsByHand({
+          ...Windows,
+          ...WindowsInLinuxCI,
+          ...Linux
         });
+
         options.windows.outputPath = 'C:\\DoesNotExist';
 
         let results = validation.validateOutputPath(options, 'windows');
