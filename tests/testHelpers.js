@@ -168,7 +168,6 @@ const testHelpers = {
       'C:/file.ext': 'text',
       'C:/folder': {},
       'C:\\Program Files\\DUMMY\\app.exe': windowsExecutable,
-      'C:\\Program Files\\DUMMY\\powershell.exe': windowsExecutable,
       'C:\\Program Files\\DUMMY': {
         'powershell.exe': linuxExecutable
       },
