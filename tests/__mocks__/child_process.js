@@ -10,6 +10,12 @@ const childProcessMock = Object.assign({}, childProcess, {
     if (executableAndArgs.includes('Throw Error')) {
       throw 'Successfully errored';
     }
+    if (executableAndArgs === '[Environment]::GetFolderPath("Desktop")') {
+      if (global.breakPowershell) {
+        return undefined;
+      }
+      return 'C:/Powershell-derived-desktop';
+    }
   }),
   spawnSync: jest.fn((executable, args) => {
     if (args.includes('Throw Error')) {

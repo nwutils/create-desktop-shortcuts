@@ -32,10 +32,32 @@ const testHelpers = {
     if (process && process.env) {
       this.PATH = process.env.PATH;
       if (process.platform === 'win32') {
-        process.env.PATH = 'C:\\Program Files\\DUMMY';
+        process.env.PATH = [
+          'C:\\Program Files\\DUMMY'
+        ].join(';');
       } else {
-        process.env.PATH = '/home/DUMMY';
+        process.env.PATH = [
+          '/home/DUMMY'
+        ].join(':');
       }
+    }
+  },
+  /**
+   * Overrides the process.env.OSTYPE so 'which' will run on
+   * on a Linux CI pretending to be Windows.
+   *
+   * @example
+   * mockOsType();
+   *
+   * @param {string} type  Optional, defaults to 'cygwin'. 'msys' would also work
+   */
+  mockOsType: function (type) {
+    type = type || 'cygwin';
+    if (process && process.env) {
+      this.OSTYPE = process.env.OSTYPE;
+      Object.defineProperty(process.env, 'OSTYPE', {
+        value: type
+      });
     }
   },
   /**
@@ -134,6 +156,7 @@ const testHelpers = {
       'C:\\file.ext': 'text',
       'C:\\folder': {},
       'C:\\Program Files\\DUMMY\\app.exe': windowsExecutable,
+      'C:\\Program Files\\DUMMY\\powershell.exe': windowsExecutable,
       'C:\\Users\\DUMMY\\icon.ico': 'text',
       'C:\\Users\\DUMMY\\icon.exe': 'text',
       'C:\\Users\\DUMMY\\icon.dll': 'text',
@@ -145,6 +168,9 @@ const testHelpers = {
       'C:/file.ext': 'text',
       'C:/folder': {},
       'C:\\Program Files\\DUMMY\\app.exe': windowsExecutable,
+      'C:\\Program Files\\DUMMY': {
+        'powershell.exe': linuxExecutable
+      },
       'C:/Users/DUMMY/icon.ico': 'text',
       'C:/Users/DUMMY/icon.exe': 'text',
       'C:/Users/DUMMY/icon.dll': 'text',
@@ -178,6 +204,25 @@ const testHelpers = {
       ...WindowsInLinuxCI,
       ...Linux
     });
+  },
+  /**
+   * Same as mockfs, but lets you create a one-off file system
+   * for a specific test that needs to deviate from the rest of
+   * the tests.
+   *
+   * @example
+   * mockfsByHand({ 'C:\\Users\\DUMMY\\Desktop': {} }, true);
+   *
+   * @param {object}  input  Object where keys are file paths and string values are files and object values are folders
+   * @param {boolean} bool   mockfs causes weird issues with console.log unless it is called first from this function, true resolves this
+   */
+  mockfsByHand: function (input, bool) {
+    // mock-fs explodes if you use console in your code without
+    // running it once right before execution.
+    if (bool) {
+      console.log('');
+    }
+    mock(input);
   },
   /**
    * Stops mocking calls to the filesystem,

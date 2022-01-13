@@ -3,8 +3,13 @@
  * @author  TheJaredWilcurt
  */
 
+const os = require('os');
 const processPlatform = process.platform;
 const testHelpers = require('@@/testHelpers.js');
+
+if (os.platform() !== 'win32') {
+  testHelpers.mockOsType();
+}
 
 global.beforeEach(() => {
 });

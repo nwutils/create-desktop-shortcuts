@@ -3,8 +3,11 @@
  * @author  TheJaredWilcurt
  */
 
+jest.mock('child_process');
 jest.mock('path');
 jest.mock('os');
+
+const os = require('os');
 
 const validation = require('@/validation.js');
 const testHelpers = require('@@/testHelpers.js');
@@ -168,6 +171,7 @@ describe('Validation', () => {
     describe('Windows', () => {
       beforeEach(() => {
         testHelpers.mockPlatform('win32');
+        testHelpers.mockEnvPATH();
         mockfs();
         process.env.KITTEN = 'folder';
         options = {
@@ -199,7 +203,76 @@ describe('Validation', () => {
           });
       });
 
-      test('Output does not exist', () => {
+      test('Defaults to using powershell if platform supports it', () => {
+        testHelpers.mockOsType();
+
+        let results = validation.validateOutputPath(options, 'windows');
+        results = testHelpers.optionsSlasher(results);
+
+        expect(customLogger)
+          .not.toHaveBeenCalled();
+
+        expect(results)
+          .toEqual({
+            ...defaults,
+            customLogger,
+            windows: {
+              filePath: 'C:/file.ext',
+              outputPath: 'C:/Powershell-derived-desktop/file.lnk'
+            }
+          });
+      });
+
+      test('Powershell returns undefined', () => {
+        global.breakPowershell = true;
+
+        let results = validation.validateOutputPath(options, 'windows');
+        results = testHelpers.optionsSlasher(results);
+
+        expect(customLogger)
+          .not.toHaveBeenCalled();
+
+        expect(results)
+          .toEqual({
+            ...defaults,
+            customLogger,
+            windows: {
+              filePath: 'C:/file.ext',
+              outputPath: 'C:/Users/DUMMY/Desktop/file.lnk'
+            }
+          });
+
+        global.breakPowershell = false;
+      });
+
+      test('Output and powershell does not exist', () => {
+        testHelpers.restoreMockFs();
+
+        const Windows = {
+          'C:\\file.ext': 'text',
+          'C:\\Users\\DUMMY\\Desktop': {}
+        };
+        let WindowsInLinuxCI = {
+          'C:/file.ext': 'text',
+          'C:/Users/DUMMY/Desktop': {}
+        };
+        const Linux = {
+          '/home/DUMMY': {
+            'file.ext': 'text',
+            'Desktop': {}
+          }
+        };
+
+        if (os.platform() === 'win32') {
+          WindowsInLinuxCI = {};
+        }
+
+        testHelpers.mockfsByHand({
+          ...Windows,
+          ...WindowsInLinuxCI,
+          ...Linux
+        });
+
         options.windows.outputPath = 'C:\\DoesNotExist';
 
         let results = validation.validateOutputPath(options, 'windows');
