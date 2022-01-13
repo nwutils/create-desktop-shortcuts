@@ -143,7 +143,7 @@ Key             | Type     | Allowed         | Default         | Description
 Key                | Type   | Allowed                                  | Default                      | Description
 :--                | :--    | :--                                      | :--                          | :--
 `filePath`         | String | Any valid path or URL                    | **This is a required field** | This is the target the shortcut points to.
-`outputPath`       | String | Any valid path to a folder               | `'%USERPROFILE%\\Desktop'`   | Path where the shortcut will be placed.
+`outputPath`       | String | Any valid path to a folder               | See description.             | Path where the shortcut will be placed. On versions of Windows with Powershell, we ask Windows specifically where the User's desktop is located, otherwise default to `'%USERPROFILE%\\Desktop'`. This means it supports One Drive accounts too.
 `name`             | String | Any file system safe string              | Uses name from filePath      | The name of the shortcut file.
 `comment`          | String | Any string                               | Not used if not supplied     | Metadata file "comment" property. Description of what the shortcut would open.
 `icon`             | String | Valid path to file (ICO, EXE, or DLL)    | Uses OS default icon         | The image shown on the shortcut icon. You can also pass in an index if file contains multiple icons, like `'C:\\file.exe,0'`
