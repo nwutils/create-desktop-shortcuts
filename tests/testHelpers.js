@@ -43,6 +43,24 @@ const testHelpers = {
     }
   },
   /**
+   * Overrides the process.env.OSTYPE so 'which' will run on
+   * on a Linux CI pretending to be Windows.
+   *
+   * @example
+   * mockOsType();
+   *
+   * @param {string} type  Optional, defaults to 'cygwin'. 'msys' would also work
+   */
+  mockOsType: function (type) {
+    type = type || 'cygwin';
+    if (process && process.env) {
+      this.OSTYPE = process.env.OSTYPE;
+      Object.defineProperty(process.env, 'OSTYPE', {
+        value: type
+      });
+    }
+  },
+  /**
    * Sets the global PATHs variable back to the original value.
    *
    * @example
@@ -150,6 +168,10 @@ const testHelpers = {
       'C:/file.ext': 'text',
       'C:/folder': {},
       'C:\\Program Files\\DUMMY\\app.exe': windowsExecutable,
+      'C:\\Program Files\\DUMMY\\powershell.exe': windowsExecutable,
+      'C:\\Program Files\\DUMMY': {
+        'powershell.exe': linuxExecutable
+      },
       'C:/Users/DUMMY/icon.ico': 'text',
       'C:/Users/DUMMY/icon.exe': 'text',
       'C:/Users/DUMMY/icon.dll': 'text',

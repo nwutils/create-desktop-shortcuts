@@ -204,6 +204,8 @@ describe('Validation', () => {
       });
 
       test('Defaults to using powershell if platform supports it', () => {
+        testHelpers.mockOsType();
+
         let results = validation.validateOutputPath(options, 'windows');
         results = testHelpers.optionsSlasher(results);
 
