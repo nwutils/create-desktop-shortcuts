@@ -74,7 +74,7 @@ const shortcutsCreated = createDesktopShortcut({
   windows: {
     // REQUIRED: Path must exist
     filePath: 'C:\\path\\to\\executable.exe',
-    // OPTIONAL: Defaults to the Desktop of the current user
+    // OPTIONAL: Defaults to the Desktop of the current user (by asking Windows specifically where it is located)
     outputPath: 'C:\\some\\folder',
     // OPTIONAL: defaults to the filePath file's name (without the extension)
     name: 'My App Name',
@@ -143,7 +143,7 @@ Key             | Type     | Allowed         | Default         | Description
 Key                | Type   | Allowed                                  | Default                      | Description
 :--                | :--    | :--                                      | :--                          | :--
 `filePath`         | String | Any valid path or URL                    | **This is a required field** | This is the target the shortcut points to.
-`outputPath`       | String | Any valid path to a folder               | See description.             | Path where the shortcut will be placed. On versions of Windows with Powershell, we ask Windows specifically where the User's desktop is located, otherwise default to `'%USERPROFILE%\\Desktop'`. This means it supports One Drive accounts too.
+`outputPath`       | String | Any valid path to a folder               | See description.             | Path where the shortcut will be placed. The default value is determined by using PowerShell to ask Windows specifically where the User's desktop is located. If PowerShell is not available we default to `'%USERPROFILE%\\Desktop'`. This means it supports One Drive accounts, and other oddball setups, too.
 `name`             | String | Any file system safe string              | Uses name from filePath      | The name of the shortcut file.
 `comment`          | String | Any string                               | Not used if not supplied     | Metadata file "comment" property. Description of what the shortcut would open.
 `icon`             | String | Valid path to file (ICO, EXE, or DLL)    | Uses OS default icon         | The image shown on the shortcut icon. You can also pass in an index if file contains multiple icons, like `'C:\\file.exe,0'`
@@ -257,6 +257,7 @@ Parts of the `windows.vbs` were copied/modified based on:
 * Offer an async and sync mode, instead of just sync.
   * Note: Make sure it can still run in older versions of NW.js
 * Help with any of the known issues listed below:
+* This repo is written using `require` for imports. I would endorse anyone that wants to create a fork of this repo written in ESM that drops support for older Node versions and is written with async support (maybe promises?). Maybe call it `create-desktop-shortcuts-esm` or something.
 
 
 * * *
