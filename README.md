@@ -150,7 +150,8 @@ Key                | Type   | Allowed                                  | Default
 `arguments`        | String | Any string                               | None                         | Additional arguments passed in to the end of your target `filePath`
 `windowMode`       | String | `'normal'`, `'maximized'`, `'minimized'` | `'normal'`                   | How the window should be displayed by default
 `hotkey`           | String | Any string                               | None                         | A global hotkey to associate to opening this shortcut, like `'CTRL+ALT+F'`
-`workingDirectory` | String | Any valid path to a folder               | None                         | The working directory for the shortcut when it launches
+`workingDirectory` | String | Any valid path to an existing folder               | None                         | The working directory for the shortcut when it launches
+`vbsScriptPath` | String | Any valid path to an existing file               | None                         | A path to the script that creates a Windows shortcut.
 
 
 ### Linux Settings

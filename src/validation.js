@@ -561,6 +561,32 @@ const validation = {
 
     return options;
   },
+
+  /**
+   * Resolves environement variables to absolute paths. Validates
+   * the vbs script path for creating a Windows shortcut exists or removes it.
+   *
+   * @example
+   * options = validateVBSScriptPath(options);
+   *
+   * @param  {object} options  User's options
+   * @return {object}          Validated or mutated user options
+   */
+  validateVBSScriptPath: function (options) {
+    options = this.validateOptionalString(options, 'windows', 'vbsScriptPath');
+    if (!options.windows || !Object(options.windows).hasOwnProperty('vbsScriptPath')) {
+      return options;
+    }
+
+    options.windows.vbsScriptPath = helpers.resolveWindowsEnvironmentVariables(options.windows.vbsScriptPath);
+
+    if (!fs.existsSync(options.windows.vbsScriptPath)) {
+      helpers.throwError(options, 'Optional WINDOWS vbsScriptPath path does not exist: ' + options.windows.vbsScriptPath);
+      delete options.windows.vbsScriptPath;
+      return options;
+    }
+    return options;
+  },
   /**
    * Validates or removes the Windows object from the user's options.
    *
@@ -581,6 +607,7 @@ const validation = {
     options = this.validateWindowsIcon(options);
     options = this.validateWindowsComment(options);
     options = this.validateWindowsWorkingDirectory(options);
+    options = this.validateVBSScriptPath(options);
     options = this.validateOptionalString(options, 'windows', 'arguments');
     options = this.validateOptionalString(options, 'windows', 'hotkey');
 

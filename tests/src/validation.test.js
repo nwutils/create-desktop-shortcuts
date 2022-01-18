@@ -1000,6 +1000,61 @@ describe('Validation', () => {
       });
     });
 
+    describe('validateVBSScriptPath', () => {
+      beforeEach(() => {
+        delete options.windows.filePath;
+        delete options.windows.outputPath;
+      });
+
+      test('Empty object', () => {
+        expect(validation.validateVBSScriptPath({}))
+          .toEqual({});
+      });
+
+      test('Empty windows object', () => {
+        expect(validation.validateVBSScriptPath(options))
+          .toEqual({
+            ...defaults,
+            customLogger,
+            windows: {}
+          });
+
+        expect(customLogger)
+          .not.toHaveBeenCalled();
+      });
+
+      test('Path does not exist', () => {
+        options.windows.vbsScriptPath = 'C:\\fake\\path.vbs';
+
+        expect(validation.validateVBSScriptPath(options))
+          .toEqual({
+            ...defaults,
+            customLogger,
+            windows: {}
+          });
+
+        expect(customLogger)
+          .toHaveBeenCalledWith('Optional WINDOWS vbsScriptPath path does not exist: C:\\fake\\path.vbs', undefined);
+      });
+
+
+      test('VBS script exists', () => {
+        options.windows.workingDirectory = 'C:\\Users\\DUMMY\\Desktop\\windows.vbs';
+
+        expect(validation.validateVBSScriptPath(options))
+          .toEqual({
+            ...defaults,
+            customLogger,
+            windows: {
+              workingDirectory: 'C:\\Users\\DUMMY\\Desktop\\windows.vbs'
+            }
+          });
+
+        expect(customLogger)
+          .not.toHaveBeenCalled();
+      });
+    });
+
     describe('validateWindowsWorkingDirectory', () => {
       beforeEach(() => {
         delete options.windows.filePath;

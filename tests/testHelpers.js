@@ -161,6 +161,7 @@ const testHelpers = {
       'C:\\Users\\DUMMY\\icon.exe': 'text',
       'C:\\Users\\DUMMY\\icon.dll': 'text',
       'C:\\Users\\DUMMY\\icon.png': 'text',
+      'C:\\Users\\DUMMY\\windows.vbs': 'text',
       'C:\\Users\\DUMMY\\Desktop': {}
     };
     let WindowsInLinuxCI = {
