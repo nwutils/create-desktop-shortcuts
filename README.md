@@ -270,3 +270,11 @@ Parts of the `windows.vbs` were copied/modified based on:
 1. **OSX:** I know of no way to set a custom icon image on OSX. It will just always use the same icon the executable had (or file type if linking to an `.html` file for example)
 1. **Windows/Linux:** May want to add in `overwrite` option for Windows and Linux too. This would require deleting the existing shortcut. Deleting files is something that each OS sucks at in different ways and would require pulling in something like `fs-extra` or a similar dependency. If you need this, you can reference this [implementation code example](https://github.com/nwutils/create-desktop-shortcuts/issues/54).
 1. **OSX:** To my knowledge there is no way to pass in arguments with a shortcut. If anyone knows how, make an issue with details.
+
+
+* * *
+
+
+## Related Libraries
+
+* [get-windows-shortcut-properties](https://github.com/nwutils/get-windows-shortcut-properties)
