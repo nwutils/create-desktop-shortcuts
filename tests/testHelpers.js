@@ -186,6 +186,9 @@ const testHelpers = {
         'icon.bmp': 'text',
         'Desktop': {},
         'folder': {}
+      },
+      '/home/DUMMY/foo bar': {
+        'file.ext': 'text'
       }
     };
     if (os.platform() === 'win32') {

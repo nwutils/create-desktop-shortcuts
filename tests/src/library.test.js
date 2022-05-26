@@ -162,6 +162,22 @@ describe('library', () => {
           'Name=file'
         ].join('\n'));
     });
+
+    test('Arguments with file path space', () => {
+      options.linux.filePath = '/home/DUMMY/foo bar/file.ext';
+      options.linux.arguments = '-f --version';
+
+      expect(library.generateLinuxFileData(options))
+        .toEqual([
+          '#!/user/bin/env xdg-open',
+          '[Desktop Entry]',
+          'Version=1.0',
+          'Type=Application',
+          'Terminal=false',
+          'Exec="/home/DUMMY/foo bar/file.ext" -f --version',
+          'Name=file'
+        ].join('\n'));
+    });
   });
 
   describe('makeLinuxShortcut', () => {
