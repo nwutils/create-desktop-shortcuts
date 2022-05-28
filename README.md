@@ -260,6 +260,23 @@ Parts of the `windows.vbs` were copied/modified based on:
 * This repo is written using `require` for imports. I would endorse anyone that wants to create a fork of this repo written in ESM that drops support for older Node versions and is written with async support (maybe promises?). Maybe call it `create-desktop-shortcuts-esm` or something.
 
 
+## Running locally for development
+
+1. Use a Node version manager to download Node.js and npm
+   * Linux/OSX - [nvm](https://github.com/nvm-sh/nvm)
+   * Windows 8+ - [nvm-windows](https://github.com/coreybutler/nvm-windows)
+   * Windows 7 - [nodist](https://github.com/nullivex/nodist)
+   * Win/Lin/OSX - [volta](https://volta.sh/)
+1. Use the above tool to install Node (14+) (comes with npm)
+1. Fork/Clone the repo with `git`
+1. `npm install`
+1. You can run `npm t` to run all unit tests
+1. You can edit the `manual-testing.js` file to try things out locally with `npm run manual-test`
+1. `npm run lint` to see linting errors, `npm run fix` to attempt to fix them automatically
+1. `npm run debug` to run Node's debugger tool with your manual test
+1. `npm run debug-test` to run the debugger against a specific test
+
+
 * * *
 
 
