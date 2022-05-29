@@ -171,7 +171,7 @@ const validation = {
    * object is a boolean, and if not, give it the correct default value.
    *
    * @example
-   * options = defaultBoolean(options);
+   * options = defaultBoolean(options, 'linux', 'chmod', true);
    *
    * @param  {object}  options          User's options
    * @param  {string}  operatingSystem  'windows', 'linux', or 'osx'
