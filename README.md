@@ -262,7 +262,7 @@ Parts of the `windows.vbs` were copied/modified based on:
 
 ## Running locally for development
 
-1. Use a Node version manager to download Node.js and npm
+1. Pick and install a Node version manager
    * Linux/OSX - [nvm](https://github.com/nvm-sh/nvm)
    * Windows 8+ - [nvm-windows](https://github.com/coreybutler/nvm-windows)
    * Windows 7 - [nodist](https://github.com/nullivex/nodist)
