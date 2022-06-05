@@ -1,7 +1,7 @@
 {
   "name": "create-desktop-shortcuts",
   "main": "index.js",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "Easy API to create desktop shortcuts with Node",
   "author": "The Jared Wilcurt",
   "keywords": [
@@ -12,7 +12,6 @@
     "lnk"
   ],
   "ManifestComments": [
-    "Pinned eslint to 7.32.0 because 8+ requires ESM I think",
     "Pinned fs-extra to 8.1.0 because v9.0.0 dropped support for older node versions and we only use it for CI E2E testing",
     "Pinned jest to 24.9.0. 25.1.0 is broken on Windows. Waiting for issue #9459 to be resolved."
   ],
@@ -31,13 +30,13 @@
     "which": "^2.0.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.16.7",
-    "@babel/eslint-parser": "^7.16.5",
-    "eslint": "7.32.0",
-    "eslint-config-tjw-base": "^1.0.0",
-    "eslint-config-tjw-jest": "^1.0.0",
-    "eslint-config-tjw-jsdoc": "^1.0.0",
-    "eslint-plugin-jsdoc": "^37.6.1",
+    "@babel/core": "^7.18.2",
+    "@babel/eslint-parser": "^7.18.2",
+    "eslint": "^8.17.0",
+    "eslint-config-tjw-base": "^2.0.0",
+    "eslint-config-tjw-jest": "^2.0.0",
+    "eslint-config-tjw-jsdoc": "^1.0.1",
+    "eslint-plugin-jsdoc": "^39.3.2",
     "fs-extra": "8.1.0",
     "jest": "24.9.0",
     "mock-fs": "^5.1.2"

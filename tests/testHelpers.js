@@ -184,8 +184,8 @@ const testHelpers = {
         'icon.png': 'text',
         'icon.icns': 'text',
         'icon.bmp': 'text',
-        'Desktop': {},
-        'folder': {}
+        Desktop: {},
+        folder: {}
       }
     };
     if (os.platform() === 'win32') {
