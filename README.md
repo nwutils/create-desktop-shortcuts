@@ -217,16 +217,16 @@ In Windows 8+ it might be possible to pin a "tile" in the start menu, but that l
 **End-to-end tests run on every commit using:**
 
 * Ubuntu latest with Node v8.3.0
-* Ubuntu latest with Node v14.x.x
+* Ubuntu latest with Node v18.x.x
 * Windows latest with Node v8.3.0
-* Windows latest with Node v14.x.x
+* Windows latest with Node v18.x.x
 * OSX latest with Node v8.3.0
-* OSX latest with Node v14.x.x
+* OSX latest with Node v18.x.x
 
 **Manually Tested on:**
 
 * Windows XP with Node v4.4.5
-* Windows 7 with Node v4.0.0, v8, v10, v12
+* Windows 7 with Node v4.0.0, v8, v10, v12, v13.13.0 (last supported Node version for Win 7)
 * Windows 10 with Node v12, v14, v15
 * Ubuntu 16, 20 with Node v12
 * OSX 10.11 with Node v7.3.0
@@ -263,10 +263,8 @@ Parts of the `windows.vbs` were copied/modified based on:
 ## Running locally for development
 
 1. Pick and install a Node version manager
+   * Win 7+/Lin/OSX - [Volta](https://volta.sh)
    * Linux/OSX - [nvm](https://github.com/nvm-sh/nvm)
-   * Windows 8+ - [nvm-windows](https://github.com/coreybutler/nvm-windows)
-   * Windows 7 - [nodist](https://github.com/nullivex/nodist)
-   * Win/Lin/OSX - [volta](https://volta.sh/)
 1. Use the above tool to install Node (14+) (comes with npm)
 1. Fork/Clone the repo with `git`
 1. `npm install`

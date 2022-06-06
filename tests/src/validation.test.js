@@ -259,7 +259,7 @@ describe('Validation', () => {
         const Linux = {
           '/home/DUMMY': {
             'file.ext': 'text',
-            'Desktop': {}
+            Desktop: {}
           }
         };
 
