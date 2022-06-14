@@ -65,7 +65,7 @@ describe('library', () => {
           'Version=1.0',
           'Type=Application',
           'Terminal=false',
-          'Exec=/home/DUMMY/file.ext',
+          'Exec="/home/DUMMY/file.ext"',
           'Name=file'
         ].join('\n'));
     });
@@ -80,7 +80,7 @@ describe('library', () => {
           'Version=1.0',
           'Type=Application',
           'Terminal=true',
-          'Exec=/home/DUMMY/file.ext',
+          'Exec="/home/DUMMY/file.ext"',
           'Name=file'
         ].join('\n'));
     });
@@ -96,7 +96,7 @@ describe('library', () => {
           'Version=1.0',
           'Type=Directory',
           'Terminal=false',
-          'Exec=/home/DUMMY',
+          'Exec="/home/DUMMY"',
           'Name=DUMMY'
         ].join('\n'));
     });
@@ -111,7 +111,7 @@ describe('library', () => {
           'Version=1.0',
           'Type=Application',
           'Terminal=false',
-          'Exec=/home/DUMMY/file.ext',
+          'Exec="/home/DUMMY/file.ext"',
           'Name=Test'
         ].join('\n'));
     });
@@ -126,7 +126,7 @@ describe('library', () => {
           'Version=1.0',
           'Type=Application',
           'Terminal=false',
-          'Exec=/home/DUMMY/file.ext',
+          'Exec="/home/DUMMY/file.ext"',
           'Name=file',
           'comment=Test'
         ].join('\n'));
@@ -142,7 +142,7 @@ describe('library', () => {
           'Version=1.0',
           'Type=Application',
           'Terminal=false',
-          'Exec=/home/DUMMY/file.ext',
+          'Exec="/home/DUMMY/file.ext"',
           'Name=file',
           'Icon=/home/DUMMY/icon.png'
         ].join('\n'));
@@ -158,7 +158,7 @@ describe('library', () => {
           'Version=1.0',
           'Type=Application',
           'Terminal=false',
-          'Exec=/home/DUMMY/file.ext -f --version',
+          'Exec="/home/DUMMY/file.ext" -f --version',
           'Name=file'
         ].join('\n'));
     });
@@ -215,7 +215,7 @@ describe('library', () => {
             'Version=1.0',
             'Type=Application',
             'Terminal=false',
-            'Exec=/home/DUMMY/file.ext',
+            'Exec="/home/DUMMY/file.ext"',
             'Name=file'
           ].join('\n')
         );
@@ -238,7 +238,7 @@ describe('library', () => {
             'Version=1.0',
             'Type=Application',
             'Terminal=false',
-            'Exec=/home/DUMMY/file.ext',
+            'Exec="/home/DUMMY/file.ext"',
             'Name=file'
           ].join('\n'),
           'Successfully errored'
@@ -262,7 +262,7 @@ describe('library', () => {
             'Version=1.0',
             'Type=Application',
             'Terminal=false',
-            'Exec=/home/DUMMY/file.ext',
+            'Exec="/home/DUMMY/file.ext"',
             'Name=file'
           ].join('\n')
         );
@@ -295,7 +295,7 @@ describe('library', () => {
             'Version=1.0',
             'Type=Application',
             'Terminal=false',
-            'Exec=/home/DUMMY/file.ext',
+            'Exec="/home/DUMMY/file.ext"',
             'Name=file'
           ].join('\n')
         );
@@ -714,7 +714,7 @@ describe('library', () => {
             'Version=1.0',
             'Type=Application',
             'Terminal=false',
-            'Exec=/home/DUMMY/file.ext',
+            'Exec="/home/DUMMY/file.ext"',
             'Name=file'
           ].join('\n')
         );
@@ -812,7 +812,7 @@ describe('library', () => {
             'Version=1.0',
             'Type=Application',
             'Terminal=false',
-            'Exec=/home/DUMMY/file.ext',
+            'Exec="/home/DUMMY/file.ext"',
             'Name=file'
           ].join('\n')
         );
@@ -889,7 +889,7 @@ describe('library', () => {
             'Version=1.0',
             'Type=Application',
             'Terminal=false',
-            'Exec=/home/DUMMY/file.ext',
+            'Exec="/home/DUMMY/file.ext"',
             'Name=file'
           ].join('\n')
         );
