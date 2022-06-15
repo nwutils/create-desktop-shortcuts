@@ -65,7 +65,7 @@ describe('library', () => {
           'Version=1.0',
           'Type=Application',
           'Terminal=false',
-          'Exec=/home/DUMMY/file.ext',
+          'Exec="/home/DUMMY/file.ext"',
           'Name=file'
         ].join('\n'));
     });
@@ -80,7 +80,7 @@ describe('library', () => {
           'Version=1.0',
           'Type=Application',
           'Terminal=true',
-          'Exec=/home/DUMMY/file.ext',
+          'Exec="/home/DUMMY/file.ext"',
           'Name=file'
         ].join('\n'));
     });
@@ -96,7 +96,7 @@ describe('library', () => {
           'Version=1.0',
           'Type=Directory',
           'Terminal=false',
-          'Exec=/home/DUMMY',
+          'Exec="/home/DUMMY"',
           'Name=DUMMY'
         ].join('\n'));
     });
@@ -111,7 +111,7 @@ describe('library', () => {
           'Version=1.0',
           'Type=Application',
           'Terminal=false',
-          'Exec=/home/DUMMY/file.ext',
+          'Exec="/home/DUMMY/file.ext"',
           'Name=Test'
         ].join('\n'));
     });
@@ -126,7 +126,7 @@ describe('library', () => {
           'Version=1.0',
           'Type=Application',
           'Terminal=false',
-          'Exec=/home/DUMMY/file.ext',
+          'Exec="/home/DUMMY/file.ext"',
           'Name=file',
           'comment=Test'
         ].join('\n'));
@@ -142,7 +142,7 @@ describe('library', () => {
           'Version=1.0',
           'Type=Application',
           'Terminal=false',
-          'Exec=/home/DUMMY/file.ext',
+          'Exec="/home/DUMMY/file.ext"',
           'Name=file',
           'Icon=/home/DUMMY/icon.png'
         ].join('\n'));
@@ -158,7 +158,23 @@ describe('library', () => {
           'Version=1.0',
           'Type=Application',
           'Terminal=false',
-          'Exec=/home/DUMMY/file.ext -f --version',
+          'Exec="/home/DUMMY/file.ext" -f --version',
+          'Name=file'
+        ].join('\n'));
+    });
+
+    test('Arguments with file path space', () => {
+      options.linux.filePath = '/home/DUMMY/foo bar/file.ext';
+      options.linux.arguments = '-f --version';
+
+      expect(library.generateLinuxFileData(options))
+        .toEqual([
+          '#!/user/bin/env xdg-open',
+          '[Desktop Entry]',
+          'Version=1.0',
+          'Type=Application',
+          'Terminal=false',
+          'Exec="/home/DUMMY/foo bar/file.ext" -f --version',
           'Name=file'
         ].join('\n'));
     });
@@ -199,7 +215,7 @@ describe('library', () => {
             'Version=1.0',
             'Type=Application',
             'Terminal=false',
-            'Exec=/home/DUMMY/file.ext',
+            'Exec="/home/DUMMY/file.ext"',
             'Name=file'
           ].join('\n')
         );
@@ -222,7 +238,7 @@ describe('library', () => {
             'Version=1.0',
             'Type=Application',
             'Terminal=false',
-            'Exec=/home/DUMMY/file.ext',
+            'Exec="/home/DUMMY/file.ext"',
             'Name=file'
           ].join('\n'),
           'Successfully errored'
@@ -246,7 +262,7 @@ describe('library', () => {
             'Version=1.0',
             'Type=Application',
             'Terminal=false',
-            'Exec=/home/DUMMY/file.ext',
+            'Exec="/home/DUMMY/file.ext"',
             'Name=file'
           ].join('\n')
         );
@@ -279,7 +295,7 @@ describe('library', () => {
             'Version=1.0',
             'Type=Application',
             'Terminal=false',
-            'Exec=/home/DUMMY/file.ext',
+            'Exec="/home/DUMMY/file.ext"',
             'Name=file'
           ].join('\n')
         );
@@ -405,6 +421,35 @@ describe('library', () => {
             '',
             '',
             'C:/Users/DUMMY/icon.dll,0',
+            1,
+            ''
+          ]
+        );
+    });
+
+    test('Windows arguments', () => {
+      options.windows.arguments = '--force';
+
+      expect(library.makeWindowsShortcut(options))
+        .toEqual(true);
+
+      expect(customLogger)
+        .not.toHaveBeenCalled();
+
+      expect(childProcess.execSync)
+        .not.toHaveBeenCalled();
+
+      expect(childProcess.spawnSync)
+        .toHaveBeenLastCalledWith(
+          'wscript',
+          [
+            library.produceWindowsVBSPath(),
+            'C:/Users/DUMMY/Desktop/file.lnk',
+            'C:/file.ext',
+            '--force',
+            '',
+            '',
+            'C:/file.ext',
             1,
             ''
           ]
@@ -669,7 +714,7 @@ describe('library', () => {
             'Version=1.0',
             'Type=Application',
             'Terminal=false',
-            'Exec=/home/DUMMY/file.ext',
+            'Exec="/home/DUMMY/file.ext"',
             'Name=file'
           ].join('\n')
         );
@@ -767,7 +812,7 @@ describe('library', () => {
             'Version=1.0',
             'Type=Application',
             'Terminal=false',
-            'Exec=/home/DUMMY/file.ext',
+            'Exec="/home/DUMMY/file.ext"',
             'Name=file'
           ].join('\n')
         );
@@ -844,7 +889,7 @@ describe('library', () => {
             'Version=1.0',
             'Type=Application',
             'Terminal=false',
-            'Exec=/home/DUMMY/file.ext',
+            'Exec="/home/DUMMY/file.ext"',
             'Name=file'
           ].join('\n')
         );

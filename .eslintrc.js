@@ -20,8 +20,6 @@ module.exports = {
     'tjw-jsdoc'
   ],
   rules: {
-    // Turn on after https://github.com/eslint/eslint/issues/14745 resolved
-    'jsdoc/check-examples': 0,
     'jsdoc/require-example': 1
   }
 };

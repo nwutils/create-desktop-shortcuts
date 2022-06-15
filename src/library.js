@@ -32,7 +32,7 @@ const library = {
     // Set defaults
     let type = 'Type=Application';
     let terminal = 'Terminal=false';
-    let exec = 'Exec=' + options.linux.filePath;
+    let exec = 'Exec="' + options.linux.filePath + '"';
     let name = 'Name=' + path.parse(options.linux.filePath).name;
     let comment = '';
     let icon = '';

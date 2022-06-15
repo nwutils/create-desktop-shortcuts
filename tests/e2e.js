@@ -3,6 +3,9 @@
  * @author  TheJaredWilcurt
  */
 
+const timeLabel = '|              |  Executed in';
+console.time(timeLabel);
+
 const fs = require('fs-extra');
 const path = require('path');
 
@@ -74,6 +77,7 @@ function alert (pass, message) {
   console.log('\n ______________ ' + fill('_'));
   console.log('|              |' + fill(' ') + '|');
   console.log('|  E2E ' + state + '  |  ' + message + '  |');
+  console.timeEnd(timeLabel);
   console.log('|              |' + fill(' ') + '|');
   console.log(' ¯¯¯¯¯¯¯¯¯¯¯¯¯¯ ' + fill('¯') + '\n\n');
 
