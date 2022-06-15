@@ -35,7 +35,7 @@
     "eslint": "^8.17.0",
     "eslint-config-tjw-base": "^2.0.0",
     "eslint-config-tjw-jest": "^2.0.0",
-    "eslint-config-tjw-jsdoc": "^1.0.1",
+    "eslint-config-tjw-jsdoc": "^1.0.2",
     "eslint-plugin-jsdoc": "^39.3.2",
     "fs-extra": "8.1.0",
     "jest": "24.9.0",
