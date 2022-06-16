@@ -456,6 +456,35 @@ describe('library', () => {
         );
     });
 
+
+    test('Windows arguments contains double quotes', () => {
+      options.windows.arguments = '-m "Some text"';
+
+      expect(library.makeWindowsShortcut(options))
+        .toEqual(true);
+
+      expect(customLogger)
+        .not.toHaveBeenCalled();
+
+      expect(childProcess.execSync)
+        .not.toHaveBeenCalled();
+
+      expect(childProcess.spawnSync)
+        .toHaveBeenLastCalledWith(
+          'wscript',
+          [
+            library.produceWindowsVBSPath(),
+            'C:/Users/DUMMY/Desktop/file.lnk',
+            'C:/file.ext',
+            '-m ""Some text""',
+            '',
+            '',
+            'C:/file.ext',
+            1,
+            ''
+          ]
+        );
+    });
     test('Windows.vbs not found', () => {
       const fsExistsSync = fs.existsSync;
       fs.existsSync = jest.fn(() => {
