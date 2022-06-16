@@ -456,7 +456,6 @@ describe('library', () => {
         );
     });
 
-
     test('Windows arguments contains double quotes', () => {
       options.windows.arguments = '-m "Some text"';
 
@@ -485,6 +484,7 @@ describe('library', () => {
           ]
         );
     });
+
     test('Windows.vbs not found', () => {
       const fsExistsSync = fs.existsSync;
       fs.existsSync = jest.fn(() => {
