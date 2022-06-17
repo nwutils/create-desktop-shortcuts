@@ -161,6 +161,11 @@ const library = {
     let windowMode = windowModes[options.windows.windowMode] || windowModes.normal;
     let hotkey = options.windows.hotkey || '';
 
+    // Double quotes must be escaped, VBScript uses double quotes as the escape character
+    args = args.split('"').join('""');
+    comment = comment.split('"').join('""');
+    hotkey = hotkey.split('"').join('""');
+
     if (!icon) {
       if (
         filePath.endsWith('.dll') ||

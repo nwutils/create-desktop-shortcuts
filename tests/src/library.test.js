@@ -456,6 +456,93 @@ describe('library', () => {
         );
     });
 
+    test('Windows arguments contains double quotes', () => {
+      options.windows.arguments = '-m "Some text"';
+
+      expect(library.makeWindowsShortcut(options))
+        .toEqual(true);
+
+      expect(customLogger)
+        .not.toHaveBeenCalled();
+
+      expect(childProcess.execSync)
+        .not.toHaveBeenCalled();
+
+      expect(childProcess.spawnSync)
+        .toHaveBeenLastCalledWith(
+          'wscript',
+          [
+            library.produceWindowsVBSPath(),
+            'C:/Users/DUMMY/Desktop/file.lnk',
+            'C:/file.ext',
+            '-m ""Some text""',
+            '',
+            '',
+            'C:/file.ext',
+            1,
+            ''
+          ]
+        );
+    });
+
+    test('Windows comment contains double quotes', () => {
+      options.windows.comment = 'Look at what "I" made.';
+
+      expect(library.makeWindowsShortcut(options))
+        .toEqual(true);
+
+      expect(customLogger)
+        .not.toHaveBeenCalled();
+
+      expect(childProcess.execSync)
+        .not.toHaveBeenCalled();
+
+      expect(childProcess.spawnSync)
+        .toHaveBeenLastCalledWith(
+          'wscript',
+          [
+            library.produceWindowsVBSPath(),
+            'C:/Users/DUMMY/Desktop/file.lnk',
+            'C:/file.ext',
+            '',
+            'Look at what ""I"" made.',
+            '',
+            'C:/file.ext',
+            1,
+            ''
+          ]
+        );
+    });
+
+    test('Windows hotkey contains double quotes', () => {
+      options.windows.hotkey = 'CTRL+SHIFT+"';
+
+      expect(library.makeWindowsShortcut(options))
+        .toEqual(true);
+
+      expect(customLogger)
+        .not.toHaveBeenCalled();
+
+      expect(childProcess.execSync)
+        .not.toHaveBeenCalled();
+
+      expect(childProcess.spawnSync)
+        .toHaveBeenLastCalledWith(
+          'wscript',
+          [
+            library.produceWindowsVBSPath(),
+            'C:/Users/DUMMY/Desktop/file.lnk',
+            'C:/file.ext',
+            '',
+            '',
+            '',
+            'C:/file.ext',
+            1,
+            'CTRL+SHIFT+""'
+          ]
+        );
+    });
+
     test('Windows.vbs not found', () => {
       const fsExistsSync = fs.existsSync;
       fs.existsSync = jest.fn(() => {
