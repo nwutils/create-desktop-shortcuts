@@ -163,6 +163,8 @@ const library = {
 
     // Double quotes must be escaped, VBScript uses double quotes as the escape character
     args = args.split('"').join('""');
+    comment = comment.split('"').join('""');
+    hotkey = hotkey.split('"').join('""');
 
     if (!icon) {
       if (
