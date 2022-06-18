@@ -30,6 +30,7 @@ let success = createDesktopShortcuts({
   linux: {
     filePath,
     outputPath,
+    arguments: Arguments,
     chmod: false
   },
   osx: {
