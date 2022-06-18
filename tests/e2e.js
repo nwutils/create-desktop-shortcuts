@@ -86,7 +86,7 @@ function alert (pass, message) {
   console.log('\n ______________ ' + fill('_'));
   console.log('|              |' + fill(' ') + '|');
   console.log('|  E2E ' + state + '  |  ' + message + '  |');
-  if (process.platform !== 'win32') {
+  if (process.platform === 'darwin') {
     console.timeEnd(timeLabel);
   }
   console.log('|              |' + fill(' ') + '|');
@@ -96,6 +96,8 @@ function alert (pass, message) {
     throw 'Error';
   }
 }
+
+const successMessage = 'Successly created and validated file.';
 
 if (success) {
   if (!fs.existsSync(outputFile)) {
@@ -123,13 +125,35 @@ if (success) {
     };
     const windowsShortcutVerified = JSON.stringify(expected) === JSON.stringify(outputProperties);
     if (windowsShortcutVerified) {
-      alert(true, 'Successly created and validated file.');
+      alert(true, successMessage);
     } else {
       alert(false, 'Windows Shortcut properties mismatch');
       console.log({ expected, outputProperties });
     }
+  } else if (process.platform === 'linux') {
+    console.log('\n ______________ __________________________');
+    console.log('|              |                          |');
+    console.log('|  LINUX TIME  |                          |');
+    console.timeEnd(timeLabel);
+    console.log(' ¯¯¯¯¯¯¯¯¯¯¯¯¯¯ ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯' + '\n\n');
+    const expected = [
+      '#!/user/bin/env xdg-open',
+      '[Desktop Entry]',
+      'Version=1.0',
+      'Type=Directory',
+      'Terminal=false',
+      'Exec="/home/owner/GitHub/create-desktop-shortcuts/tests/src"',
+      'Name=src'
+    ].join('\n');
+    const output = String(fs.readFileSync(outputFile));
+    if (expected === output) {
+      alert(true, successMessage);
+    } else {
+      alert(false, 'Linux Shortcut properties mismatch');
+      console.log({ expected, output });
+    }
   } else {
-    alert(true, 'Successly created and validated file.');
+    alert(true, successMessage);
   }
 } else {
   alert(false, 'Failed to create desktop shortcut.');
