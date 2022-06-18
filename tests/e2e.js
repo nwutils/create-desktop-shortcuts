@@ -22,7 +22,7 @@ let extension = extensions[process.platform] || '';
 const filePath = path.join(__dirname, 'src');
 const outputPath = path.join(__dirname, '__mocks__');
 const outputFile = path.join(__dirname, '__mocks__', 'src' + extension);
-const Arguments = '"test"';
+const Arguments = '-m "test"';
 const hotkey = 'Ctrl+Shift+P';
 const comment = 'Some "very" good text.';
 
@@ -97,6 +97,11 @@ function alert (pass, message) {
   }
 }
 
+/**
+ * Logs out the time it took for the shortcut to be created.
+ *
+ * @param  {string} osBlock  Block of text to show containing the OS name
+ */
 function endTime (osBlock) {
   console.log('\n ______________ __________________________');
   console.log('|              |                          |');
@@ -142,7 +147,7 @@ if (success) {
       'Version=1.0',
       'Type=Directory',
       'Terminal=false',
-      'Exec="/home/owner/GitHub/create-desktop-shortcuts/tests/src"',
+      'Exec="' + filePath + '" ' + Arguments'',
       'Name=src'
     ].join('\n');
     const output = String(fs.readFileSync(outputFile));
