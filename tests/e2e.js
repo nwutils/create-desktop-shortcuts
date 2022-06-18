@@ -97,6 +97,14 @@ function alert (pass, message) {
   }
 }
 
+function endTime (osBlock) {
+  console.log('\n ______________ __________________________');
+  console.log('|              |                          |');
+  console.log(osBlock + '                          |');
+  console.timeEnd(timeLabel);
+  console.log(' ¯¯¯¯¯¯¯¯¯¯¯¯¯¯ ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯' + '\n\n');
+}
+
 const successMessage = 'Successly created and validated file.';
 
 if (success) {
@@ -105,11 +113,7 @@ if (success) {
   } else if (process.platform === 'win32') {
     // We need to log the Windows time now to be accurate, as the
     // getWindowsShortcutProperties step adds ~200-400ms that we don't care about
-    console.log('\n ______________ __________________________');
-    console.log('|              |                          |');
-    console.log('| WINDOWS TIME |                          |');
-    console.timeEnd(timeLabel);
-    console.log(' ¯¯¯¯¯¯¯¯¯¯¯¯¯¯ ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯' + '\n\n');
+    endTime('| WINDOWS TIME |');
     // This is here to validate the VBS script outputted a shortcut as expected
     const outputProperties = getWindowsShortcutProperties.sync(outputFile)[0];
     const expected = {
@@ -131,11 +135,7 @@ if (success) {
       alert(false, 'Windows Shortcut properties mismatch');
     }
   } else if (process.platform === 'linux') {
-    console.log('\n ______________ __________________________');
-    console.log('|              |                          |');
-    console.log('|  LINUX TIME  |                          |');
-    console.timeEnd(timeLabel);
-    console.log(' ¯¯¯¯¯¯¯¯¯¯¯¯¯¯ ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯' + '\n\n');
+    endTime('|  LINUX TIME  |');
     const expected = [
       '#!/user/bin/env xdg-open',
       '[Desktop Entry]',
