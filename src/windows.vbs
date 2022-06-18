@@ -5,15 +5,21 @@
 
 option explicit
 
+' Double quotes are stripped out of arguments, so we replace them with this keyword, before passing them in
+' Then re-insert them in a way that VBScript permits, via Chr(34)
+Function replaceDoubleQuotes(str)
+  replaceDoubleQuotes = Replace(str, "__DOUBLEQUOTE__", Chr(34))
+End Function
+
 dim strOutputPath, strFilePath, strArgs, strComment, strCwd, strIcon, strWindowMode, strHotkey
 strOutputPath = Wscript.Arguments(0)
 strFilePath = Wscript.Arguments(1)
-strArgs = Wscript.Arguments(2)
-strComment = Wscript.Arguments(3)
+strArgs = replaceDoubleQuotes(Wscript.Arguments(2))
+strComment = replaceDoubleQuotes(Wscript.Arguments(3))
 strCwd = Wscript.Arguments(4)
 strIcon = Wscript.Arguments(5)
 strWindowMode = Wscript.Arguments(6)
-strHotkey = Wscript.Arguments(7)
+strHotkey = replaceDoubleQuotes(Wscript.Arguments(7))
 
 sub createFile()
   dim objShell, objLink

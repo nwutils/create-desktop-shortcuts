@@ -3,11 +3,15 @@
  * @author  TheJaredWilcurt
  */
 
-const timeLabel = 'Executed in:';
+const timeLabel = 'Executed in';
 console.time(timeLabel);
 
-let createDesktopShortcuts = require('./index.js');
+const os = require('os');
+const path = require('path');
 
+const createDesktopShortcuts = require('./index.js');
+const getWindowsShortcutProperties = require('get-windows-shortcut-properties');
+/*
 let success = createDesktopShortcuts({
   linux: {
     name: 'Koala A11y',
@@ -25,12 +29,23 @@ let success = createDesktopShortcuts({
     icon: '..\\..\\..\\PortableApps\\Koa11y_v3.0.0\\package.nw\\_img\\fav.ico',
     filePath: 'C:\\PortableApps\\Koa11y_v3.0.0\\Koa11y.exe',
     outputPath: '%USERPROFILE%\\Desktop',
-    arguments: '--my-argument -f \'other stuff\'',
+    arguments: '--my-argument -f "other stuff"',
     windowMode: 'maximized',
     hotkey: 'ALT+CTRL+F'
   }
 });
 
 console.log(success);
+*/
+
+const place = 'C:\\Users\\wilcurtj\\Desktop\\My App Name.lnk';
+
+const output = getWindowsShortcutProperties.sync(place);
+
+if (output) {
+  console.log(output);
+} else {
+  console.log('There was an error');
+}
 
 console.timeEnd(timeLabel);

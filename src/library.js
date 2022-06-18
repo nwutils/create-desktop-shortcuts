@@ -161,10 +161,13 @@ const library = {
     let windowMode = windowModes[options.windows.windowMode] || windowModes.normal;
     let hotkey = options.windows.hotkey || '';
 
-    // Double quotes must be escaped, VBScript uses double quotes as the escape character
-    args = args.split('"').join('""');
-    comment = comment.split('"').join('""');
-    hotkey = hotkey.split('"').join('""');
+    // Double quotes (") are used as an escape character in VBScript, and are stripped out of any arguments passed in
+    function replaceDoubleQuotes (str) {
+      return str.split('"').join('__DOUBLEQUOTE__');
+    }
+    args = replaceDoubleQuotes(args);
+    comment = replaceDoubleQuotes(comment);
+    hotkey = replaceDoubleQuotes(hotkey);
 
     if (!icon) {
       if (
