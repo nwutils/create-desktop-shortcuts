@@ -101,7 +101,10 @@ function alert (pass, message) {
 /**
  * Logs out the time it took for the shortcut to be created.
  *
- * @param  {string} osBlock  Block of text to show containing the OS name
+ * @example
+ * endTime('|  LINUX TIME  |');
+ *
+ * @param {string} osBlock  Block of text to show containing the OS name
  */
 function endTime (osBlock) {
   console.log('\n ______________ __________________________');
