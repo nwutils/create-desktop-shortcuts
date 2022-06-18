@@ -6,12 +6,8 @@
 const timeLabel = 'Executed in';
 console.time(timeLabel);
 
-const os = require('os');
-const path = require('path');
-
 const createDesktopShortcuts = require('./index.js');
-const getWindowsShortcutProperties = require('get-windows-shortcut-properties');
-/*
+
 let success = createDesktopShortcuts({
   linux: {
     name: 'Koala A11y',
@@ -36,16 +32,7 @@ let success = createDesktopShortcuts({
 });
 
 console.log(success);
-*/
 
 const place = 'C:\\Users\\wilcurtj\\Desktop\\My App Name.lnk';
-
-const output = getWindowsShortcutProperties.sync(place);
-
-if (output) {
-  console.log(output);
-} else {
-  console.log('There was an error');
-}
 
 console.timeEnd(timeLabel);
