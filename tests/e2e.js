@@ -103,7 +103,7 @@ if (success) {
   } else if (process.platform === 'win32') {
     // We need to log the Windows time now to be accurate, as the
     // getWindowsShortcutProperties step adds ~200-400ms that we don't care about
-    console.log('\n ______________ __________________________')
+    console.log('\n ______________ __________________________');
     console.log('|              |                          |');
     console.log('| WINDOWS TIME |                          |');
     console.timeEnd(timeLabel);
