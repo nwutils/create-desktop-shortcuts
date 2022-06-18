@@ -475,7 +475,7 @@ describe('library', () => {
             library.produceWindowsVBSPath(),
             'C:/Users/DUMMY/Desktop/file.lnk',
             'C:/file.ext',
-            '-m ""Some text""',
+            '-m __DOUBLEQUOTE__Some text__DOUBLEQUOTE__',
             '',
             '',
             'C:/file.ext',
@@ -505,7 +505,7 @@ describe('library', () => {
             'C:/Users/DUMMY/Desktop/file.lnk',
             'C:/file.ext',
             '',
-            'Look at what ""I"" made.',
+            'Look at what __DOUBLEQUOTE__I__DOUBLEQUOTE__ made.',
             '',
             'C:/file.ext',
             1,
@@ -538,7 +538,7 @@ describe('library', () => {
             '',
             'C:/file.ext',
             1,
-            'CTRL+SHIFT+""'
+            'CTRL+SHIFT+__DOUBLEQUOTE__'
           ]
         );
     });

@@ -3,10 +3,10 @@
  * @author  TheJaredWilcurt
  */
 
-const timeLabel = 'Executed in:';
+const timeLabel = 'Executed in';
 console.time(timeLabel);
 
-let createDesktopShortcuts = require('./index.js');
+const createDesktopShortcuts = require('./index.js');
 
 let success = createDesktopShortcuts({
   linux: {
@@ -25,7 +25,7 @@ let success = createDesktopShortcuts({
     icon: '..\\..\\..\\PortableApps\\Koa11y_v3.0.0\\package.nw\\_img\\fav.ico',
     filePath: 'C:\\PortableApps\\Koa11y_v3.0.0\\Koa11y.exe',
     outputPath: '%USERPROFILE%\\Desktop',
-    arguments: '--my-argument -f \'other stuff\'',
+    arguments: '--my-argument -f "other stuff"',
     windowMode: 'maximized',
     hotkey: 'ALT+CTRL+F'
   }
