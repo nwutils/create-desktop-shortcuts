@@ -127,8 +127,8 @@ if (success) {
     if (windowsShortcutVerified) {
       alert(true, successMessage);
     } else {
-      alert(false, 'Windows Shortcut properties mismatch');
       console.log({ expected, outputProperties });
+      alert(false, 'Windows Shortcut properties mismatch');
     }
   } else if (process.platform === 'linux') {
     console.log('\n ______________ __________________________');
@@ -149,8 +149,8 @@ if (success) {
     if (expected === output) {
       alert(true, successMessage);
     } else {
-      alert(false, 'Linux Shortcut properties mismatch');
       console.log({ expected, output });
+      alert(false, 'Linux Shortcut properties mismatch');
     }
   } else {
     alert(true, successMessage);
