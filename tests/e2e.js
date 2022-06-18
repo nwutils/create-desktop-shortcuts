@@ -147,7 +147,7 @@ if (success) {
       'Version=1.0',
       'Type=Directory',
       'Terminal=false',
-      'Exec="' + filePath + '" ' + Arguments'',
+      'Exec="' + filePath + '" ' + Arguments,
       'Name=src'
     ].join('\n');
     const output = String(fs.readFileSync(outputFile));
