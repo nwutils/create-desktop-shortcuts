@@ -8,6 +8,7 @@ console.time(timeLabel);
 
 const fs = require('fs-extra');
 const path = require('path');
+const getWindowsShortcutProperties = require('get-windows-shortcut-properties');
 
 const createDesktopShortcuts = require('../index.js');
 
@@ -21,6 +22,9 @@ let extension = extensions[process.platform] || '';
 const filePath = path.join(__dirname, 'src');
 const outputPath = path.join(__dirname, '__mocks__');
 const outputFile = path.join(__dirname, '__mocks__', 'src' + extension);
+const Arguments = '"test"';
+const hotkey = 'Ctrl+Shift+P';
+const comment = 'Some "very" good text.';
 
 let success = createDesktopShortcuts({
   linux: {
@@ -34,7 +38,12 @@ let success = createDesktopShortcuts({
   },
   windows: {
     filePath,
-    outputPath
+    outputPath,
+    hotkey,
+    comment,
+    arguments: Arguments,
+    workingDirectory: outputPath,
+    windowMode: 'maximized'
   }
 });
 
@@ -77,7 +86,9 @@ function alert (pass, message) {
   console.log('\n ______________ ' + fill('_'));
   console.log('|              |' + fill(' ') + '|');
   console.log('|  E2E ' + state + '  |  ' + message + '  |');
-  console.timeEnd(timeLabel);
+  if (process.platform !== 'win32') {
+    console.timeEnd(timeLabel);
+  }
   console.log('|              |' + fill(' ') + '|');
   console.log(' ¯¯¯¯¯¯¯¯¯¯¯¯¯¯ ' + fill('¯') + '\n\n');
 
@@ -89,6 +100,34 @@ function alert (pass, message) {
 if (success) {
   if (!fs.existsSync(outputFile)) {
     alert(false, 'Could not find desktop shortcut.');
+  } else if (process.platform === 'win32') {
+    // We need to log the Windows time now to be accurate, as the
+    // getWindowsShortcutProperties step adds ~200-400ms that we don't care about
+    console.log('\n ______________ __________________________')
+    console.log('|              |                          |');
+    console.log('| WINDOWS TIME |                          |');
+    console.timeEnd(timeLabel);
+    console.log(' ¯¯¯¯¯¯¯¯¯¯¯¯¯¯ ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯' + '\n\n');
+    // This is here to validate the VBS script outputted a shortcut as expected
+    const outputProperties = getWindowsShortcutProperties.sync(outputFile)[0];
+    const expected = {
+      FullName: outputFile,
+      Arguments: Arguments,
+      Description: comment,
+      Hotkey: hotkey,
+      IconLocation: filePath + ',0',
+      RelativePath: '',
+      TargetPath: filePath,
+      WindowStyle: '3',
+      WorkingDirectory: outputPath
+    };
+    const windowsShortcutVerified = JSON.stringify(expected) === JSON.stringify(outputProperties);
+    if (windowsShortcutVerified) {
+      alert(true, 'Successly created and validated file.');
+    } else {
+      alert(false, 'Windows Shortcut properties mismatch');
+      console.log({ expected, outputProperties });
+    }
   } else {
     alert(true, 'Successly created and validated file.');
   }
