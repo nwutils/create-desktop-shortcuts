@@ -33,6 +33,4 @@ let success = createDesktopShortcuts({
 
 console.log(success);
 
-const place = 'C:\\Users\\wilcurtj\\Desktop\\My App Name.lnk';
-
 console.timeEnd(timeLabel);
