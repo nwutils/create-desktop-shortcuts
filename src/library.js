@@ -139,7 +139,7 @@ const library = {
   makeWindowsShortcut: function (options) {
     let success = true;
 
-    const vbsScript = this.produceWindowsVBSPath();
+    const vbsScript = options.windows.VBScriptPath || this.produceWindowsVBSPath();
     if (!fs.existsSync(vbsScript)) {
       helpers.throwError(options, 'Could not locate required "windows.vbs" file.');
       success = false;

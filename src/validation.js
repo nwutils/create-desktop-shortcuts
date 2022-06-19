@@ -378,7 +378,7 @@ const validation = {
   /**
    * Ensures the Windows file path is valid and exists.
    * Resolves any environment variables to absolute paths.
-   * If no valide filePath is presented, deleted "windows" object.
+   * If no valid filePath is presented, deleted "windows" object.
    *
    * @example
    * options = validateWindowsFilePath(options);
@@ -403,6 +403,36 @@ const validation = {
     ) {
       helpers.throwError(options, 'WINDOWS filePath does not exist: ' + options.windows.filePath);
       delete options.windows;
+    }
+
+    return options;
+  },
+  /**
+   * Ensures the windows.vbs file path is valid and exists.
+   * Resolves any environment variables to absolute paths.
+   * If no valid path is presented, use the default.
+   *
+   * @example
+   * options = validateWindowsVBScript(options);
+   *
+   * @param  {object} options  User's options
+   * @return {object}          Validated or mutated user options
+   */
+  validateWindowsVBScriptPath: function (options) {
+    if (!options.windows) {
+      return options;
+    }
+
+    if (options.windows.VBScriptPath) {
+      options.windows.VBScriptPath = helpers.resolveWindowsEnvironmentVariables(options.windows.VBScriptPath);
+      options.windows.VBScriptPath = fs.existsSync(options.windows.VBScriptPath) ? options.windows.VBScriptPath : undefined;
+    }
+
+    if (
+      !options.windows.VBScriptPath ||
+      typeof(options.windows.VBScriptPath) !== 'string'
+    ) {
+      options.windows.VBScriptPath = undefined;
     }
 
     return options;
@@ -577,6 +607,7 @@ const validation = {
       return options;
     }
 
+	  options = this.validateWindowsVBScriptPath(options);
     options = this.validateWindowsWindowMode(options);
     options = this.validateWindowsIcon(options);
     options = this.validateWindowsComment(options);
