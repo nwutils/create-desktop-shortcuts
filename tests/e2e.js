@@ -9,6 +9,7 @@ console.time(timeLabel);
 const fs = require('fs-extra');
 const path = require('path');
 const getWindowsShortcutProperties = require('get-windows-shortcut-properties');
+const pathType = require('path-type');
 
 const createDesktopShortcuts = require('../index.js');
 
@@ -160,6 +161,12 @@ if (success) {
     } else {
       console.log({ expected, output });
       alert(false, 'Linux Shortcut properties mismatch');
+    }
+  } else if (process.platform === 'darwin') {
+    if (pathType.isSymlinkSync(outputFile)) {
+      alert(true, successMessage);
+    } else {
+      alert(false, 'Output was not a symlink');
     }
   } else {
     alert(true, successMessage);

@@ -13,7 +13,8 @@
   ],
   "ManifestComments": [
     "Pinned fs-extra to 8.1.0 because v9.0.0 dropped support for older node versions and we only use it for CI E2E testing",
-    "Pinned jest to 24.9.0. 25.1.0 is broken on Windows. Waiting for issue #9459 to be resolved."
+    "Pinned jest to 24.9.0. 25.1.0 is broken on Windows. Waiting for issue #9459 to be resolved.",
+    "Pinned path-type to 4.0.0 because 5+ requires ESM import"
   ],
   "scripts": {
     "start": "node index.js",
@@ -40,7 +41,8 @@
     "fs-extra": "8.1.0",
     "get-windows-shortcut-properties": "^1.1.0",
     "jest": "24.9.0",
-    "mock-fs": "^5.1.2"
+    "mock-fs": "^5.1.2",
+    "path-type": "4.0.0"
   },
   "license": "MIT",
   "repository": {
