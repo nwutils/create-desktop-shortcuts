@@ -795,6 +795,74 @@ describe('Validation', () => {
       });
     });
 
+    describe('validateWindowsVBScriptPath', () => {
+      beforeEach(() => {
+        delete options.windows.filePath;
+        delete options.windows.outputPath;
+      });
+
+      test('Empty options', () => {
+        expect(validation.validateWindowsVBScriptPath({}))
+          .toEqual({});
+      });
+
+      test('Empty windows object', () => {
+        expect(validation.validateWindowsVBScriptPath(options))
+          .toEqual({
+            ...defaults,
+            customLogger,
+            windows: {}
+          });
+
+        expect(customLogger)
+          .not.toHaveBeenCalled();
+      });
+
+      test('Path does not exist', () => {
+        options.windows.VBScriptPath = 'C:\\fake\\path';
+
+        expect(validation.validateWindowsVBScriptPath(options))
+          .toEqual({
+            ...defaults,
+            customLogger,
+            windows: {}
+          });
+
+        expect(customLogger)
+          .toHaveBeenCalledWith('Optional WINDOWS VBScriptPath path does not exist: C:\\fake\\path', undefined);
+      });
+
+      test('Path is not a directory', () => {
+        options.windows.VBScriptPath = 'C:\\folder';
+
+        expect(validation.validateWindowsVBScriptPath(options))
+          .toEqual({
+            ...defaults,
+            customLogger,
+            windows: {}
+          });
+
+        expect(customLogger)
+          .toHaveBeenCalledWith('Optional WINDOWS VBScriptPath path must not be a directory: C:\\folder', undefined);
+      });
+
+      test('Custom VBScript  exists', () => {
+        options.windows.VBScriptPath = 'C:\\win.vbs';
+
+        expect(validation.validateWindowsVBScriptPath(options))
+          .toEqual({
+            ...defaults,
+            customLogger,
+            windows: {
+              VBScriptPath: 'C:\\win.vbs'
+            }
+          });
+
+        expect(customLogger)
+          .not.toHaveBeenCalled();
+      });
+    });
+
     describe('validateWindowsWindowMode', () => {
       test('Empty options', () => {
         expect(validation.validateWindowsWindowMode({}))

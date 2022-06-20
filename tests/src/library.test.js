@@ -564,6 +564,36 @@ describe('library', () => {
         .not.toHaveBeenCalled();
     });
 
+    test('Custom vbscript', () => {
+      const VBScriptPath = 'C:\\win.vbs';
+      options.windows.VBScriptPath = VBScriptPath;
+
+      expect(library.makeWindowsShortcut(options))
+        .toEqual(true);
+
+      expect(customLogger)
+        .not.toHaveBeenCalled();
+
+      expect(childProcess.execSync)
+        .not.toHaveBeenCalled();
+
+      expect(childProcess.spawnSync)
+        .toHaveBeenLastCalledWith(
+          'wscript',
+          [
+            VBScriptPath,
+            'C:/Users/DUMMY/Desktop/file.lnk',
+            'C:/file.ext',
+            '',
+            '',
+            '',
+            'C:/file.ext',
+            1,
+            ''
+          ]
+        );
+    });
+
     test('Catch error', () => {
       options.windows.filePath = 'Throw Error';
 

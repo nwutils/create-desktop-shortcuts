@@ -425,15 +425,24 @@ const validation = {
 
     options.windows.VBScriptPath = helpers.resolveWindowsEnvironmentVariables(options.windows.VBScriptPath);
 
-    if (options.windows.VBScriptPath && !fs.existsSync(options.windows.VBScriptPath)) {
-      options.windows.VBScriptPath = undefined;
+    if (options.windows.VBScriptPath) {
+      if (!fs.existsSync(options.windows.VBScriptPath)) {
+        helpers.throwError(options, 'Optional WINDOWS VBScriptPath path does not exist: ' + options.windows.VBScriptPath);
+        delete options.windows.VBScriptPath;
+        return options;
+      }
+      if (fs.lstatSync(options.windows.VBScriptPath).isDirectory()) {
+        helpers.throwError(options, 'Optional WINDOWS VBScriptPath path must not be a directory: ' + options.windows.VBScriptPath);
+        delete options.windows.VBScriptPath;
+        return options;
+      }
     }
 
     if (
       !options.windows.VBScriptPath ||
       typeof(options.windows.VBScriptPath) !== 'string'
     ) {
-      options.windows.VBScriptPath = undefined;
+      delete options.windows.VBScriptPath;
     }
 
     return options;
@@ -608,7 +617,7 @@ const validation = {
       return options;
     }
 
-	  options = this.validateWindowsVBScriptPath(options);
+    options = this.validateWindowsVBScriptPath(options);
     options = this.validateWindowsWindowMode(options);
     options = this.validateWindowsIcon(options);
     options = this.validateWindowsComment(options);

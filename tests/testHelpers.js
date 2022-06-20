@@ -153,6 +153,7 @@ const testHelpers = {
     });
     const Windows = {
       [vbs]: 'text',
+      'C:\\win.vbs': 'text',
       'C:\\file.ext': 'text',
       'C:\\folder': {},
       'C:\\Program Files\\DUMMY\\app.exe': windowsExecutable,
@@ -165,6 +166,7 @@ const testHelpers = {
     };
     let WindowsInLinuxCI = {
       [vbsLinux]: 'text',
+      'C:\\win.vbs': 'text',
       'C:/file.ext': 'text',
       'C:/folder': {},
       'C:\\Program Files\\DUMMY\\app.exe': windowsExecutable,
