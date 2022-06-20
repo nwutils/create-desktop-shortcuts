@@ -1,5 +1,5 @@
 declare module "create-desktop-shortcuts" {
-  export function createDesktopShortcut(options: {
+  declare function createDesktopShortcut(options: {
     /**
      * If true and you pass in objects for multiple OS's, this will only create a shortcut for the OS it was ran on.
      */
@@ -152,4 +152,6 @@ declare module "create-desktop-shortcuts" {
       overwrite?: boolean;
     }
   }): boolean;
+  
+  export = createDesktopShortcut;
 }
