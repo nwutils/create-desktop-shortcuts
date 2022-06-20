@@ -425,7 +425,7 @@ const validation = {
 
     options.windows.VBScriptPath = helpers.resolveWindowsEnvironmentVariables(options.windows.VBScriptPath);
 
-    if (options.windows.VBScriptPath && !fs.existsSync(options.windows.VBScriptPath) {
+    if (options.windows.VBScriptPath && !fs.existsSync(options.windows.VBScriptPath)) {
       options.windows.VBScriptPath = undefined;
     }
 
