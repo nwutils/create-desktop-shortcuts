@@ -65,8 +65,8 @@ const shortcutsCreated = createDesktopShortcut({
    * Your own custom logging function called with helpful warning/error
    * messages from the internal validators. Only used if verbose: true.
    *
-   * @param  {string} message The human readable warning/error message
-   * @param  {object} error   Sometimes an error or options object is passed
+   * @param {string} message  The human readable warning/error message
+   * @param {object} error    Sometimes an error or options object is passed
    */
   customLogger: function (message, error) {
     console.log(message, error);
