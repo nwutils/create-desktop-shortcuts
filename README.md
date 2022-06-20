@@ -151,6 +151,7 @@ Key                | Type   | Allowed                                  | Default
 `windowMode`       | String | `'normal'`, `'maximized'`, `'minimized'` | `'normal'`                   | How the window should be displayed by default
 `hotkey`           | String | Any string                               | None                         | A global hotkey to associate to opening this shortcut, like `'CTRL+ALT+F'`
 `workingDirectory` | String | Any valid path to a folder               | None                         | The working directory for the shortcut when it launches
+`VBScriptPath`     | String | Path to external VBS file                | None                         | This is an advanced option specifically for projects packaged with `pkg`. You can create a copy of the `windows.vbs` file outside of your packaged executable and pass in the location of it. If your `vbs` file differs in any way to the version shipped with this library, it have bugs. Ensure you are programmatically copying the shipped version, so if it changes in a future update, your code will still work. If you are not using `pkg`, you should not include `VBScriptPath` in your Windows settings.
 
 
 ### Linux Settings
@@ -172,7 +173,7 @@ Key          | Type    | Allowed                                  | Default     
 
 OSX will automatically inherit the icon of the target you point to. It doesn't care if you point to a folder, file, or application.
 
-**NOTE:** If `overwrite` is set to `false` and a matching file already exists, a `console.error` will occur to inform you of this, however `create-desktop-shortcuts` will still report successful (return `true`). This `console.error` can be hidden by setting `verbose` to `false`, or using a `customLogger` to [intercept it](https://github.com/nwutils/create-desktop-shortcuts/blob/main/src/library.js#L252).
+**NOTE:** If `overwrite` is set to `false` and a matching file already exists, a `console.error` will occur to inform you of this, however `create-desktop-shortcuts` will still report successful (return `true`). This `console.error` can be hidden by setting `verbose` to `false`, or using a `customLogger` to [intercept it](https://github.com/nwutils/create-desktop-shortcuts/blob/main/src/library.js#L260).
 
 Key          | Type    | Allowed                     | Default                      | Description
 :--          | :--     | :--                         | :--                          | :--
