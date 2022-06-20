@@ -166,7 +166,6 @@ const testHelpers = {
     };
     let WindowsInLinuxCI = {
       [vbsLinux]: 'text',
-      'C:/win.vbs': 'text',
       'C:\\win.vbs': 'text',
       'C:/file.ext': 'text',
       'C:/folder': {},
