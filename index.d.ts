@@ -1,15 +1,25 @@
 declare module "create-desktop-shortcuts" {
-  declare function createDesktopShortcut(options: {
+	/**
+	 * Creates OS based shortcuts for files, folders, and applications.
+	 *
+	 * @example
+	 * createDesktopShortcut({
+	 *   windows: { filePath: 'C:\\path\\to\\executable.exe' },
+	 *   linux:   { filePath: '/home/path/to/executable'     },
+	 *   osx:     { filePath: '/home/path/to/executable'     }
+	 * });
+	 */
+	declare function createDesktopShortcut(options: {
     /**
-     * If true and you pass in objects for multiple OS's, this will only create a shortcut for the OS it was ran on.
+     * Optional. If true and you pass in objects for multiple OS's, this will only create a shortcut for the OS it was ran on.
      */
     onlyCurrentOS?: boolean;
     /**
-     * If true, consoles out helpful warnings and errors using `customLogger` or {console.error}.
+     * Optional. If true, consoles out helpful warnings and errors using `customLogger` or {console.error}.
      */
     verbose?: boolean;
     /**
-     * You can pass in your own custom function to log errors/warnings to.
+     * Optional. You can pass in your own custom function to log errors/warnings to.
      * 
      * When called the function will receive a `message` string for the first argument and sometimes an `error` object for the second argument.
      * 
@@ -29,13 +39,16 @@ declare module "create-desktop-shortcuts" {
        */
       error: string
     ) => void;
+	/**
+	 * Optional. Windows shortcut settings.
+	 */
     windows?: {
       /**
        * This is the target the shortcut points to.
        */
       filePath: string;
       /**
-       * Path where the shortcut will be placed.
+       * Optional. Path where the shortcut will be placed.
        * 
        * The default value is determined by using PowerShell to ask Windows specifically where the User's desktop is located.
        * 
@@ -45,39 +58,39 @@ declare module "create-desktop-shortcuts" {
        */
       outputPath?: string;
       /**
-       * The name of the shortcut file.
+       * Optional. The name of the shortcut file.
        */
       name?: string;
       /**
-       * Metadata file `comment` property.
+       * Optional. Metadata file `comment` property.
        * 
        * Description of what the shortcut would open.
        */
       comment?: string;
       /**
-       * The image shown on the shortcut icon.
+       * Optional. The image shown on the shortcut icon.
        * 
        * You can also pass in an index if file contains multiple icons, like `'C:\\file.exe,0'`
        */
       icon?: string;
       /**
-       * Additional arguments passed in to the end of your target `filePath`
+       * Optional. Additional arguments passed in to the end of your target `filePath`
        */
       arguments?: string;
       /**
-       * How the window should be displayed by default.
+       * Optional. How the window should be displayed by default.
        */
       windowMode?: "maximized" | "minimized" | "normal";
       /**
-       * A global hotkey to associate to opening this shortcut, like `'CTRL+ALT+F'`
+       * Optional. A global hotkey to associate to opening this shortcut, like `'CTRL+ALT+F'`
        */
       hotkey?: string;
       /**
-       * The working directory for the shortcut when it launches.
+       * Optional. The working directory for the shortcut when it launches.
        */
       workingDirectory?: string;
       /**
-       * This is an advanced option specifically for projects packaged with pkg.
+       * Optional. This is an advanced option specifically for projects packaged with pkg.
        * 
        * You can create a copy of the windows.vbs file outside of your packaged executable and pass in the location of it.
        * 
@@ -89,29 +102,32 @@ declare module "create-desktop-shortcuts" {
        */
       VBScriptPath?: string;
     };
+	/**
+	 * Optional. Linux shortcut settings.
+	 */
     linux?: {
       /**
        * This is the target the shortcut points to. Must be a valid/existing folder if `type: 'Directory'`, or file if `type: 'Application'`.
        */
       filePath: string;
       /**
-       * Path where the shortcut will be placed.
+       * Optional. Path where the shortcut will be placed.
        */
       outputPath?: string;
       /**
-       * The name of the shortcut file.
+       * Optional. The name of the shortcut file.
        */
       name?: string;
       /**
-       * Metadata file `comment` property. Description of what the shortcut would open.
+       * Optional. Metadata file `comment` property. Description of what the shortcut would open.
        */
       comment?: string;
       /**
-       * The image shown on the shortcut icon. Preferably a 256x256 PNG.
+       * Optional. The image shown on the shortcut icon. Preferably a 256x256 PNG.
        */
       icon?: string;
       /**
-       * Type of shortcut.
+       * Optional. Type of shortcut.
        * 
        * Defaults to `'Link'` if `filePath` starts with `'http://'` or `'https://'`.\
        * Defaults to `'Directory'` if `filePath` exists and is a folder.\
@@ -119,33 +135,36 @@ declare module "create-desktop-shortcuts" {
        */
       type?: "Application" | "Link" | "Directory";
       /**
-       * If true, will run in a terminal.
+       * Optional. If true, will run in a terminal.
        */
       terminal?: boolean;
       /**
-       * If true, will apply a `chmod +x` (755) to the shortcut after creation to allow execution permission.
+       * Optional. If true, will apply a `chmod +x` (755) to the shortcut after creation to allow execution permission.
        */
       chmod?: boolean;
       /**
-       * Additional arguments passed in to the end of your target `filePath`.
+       * Optional. Additional arguments passed in to the end of your target `filePath`.
        */
       arguments?: string;
     };
+	/**
+	 * OSX shortcut settings.
+	 */
     osx?: {
       /**
        * This is the target the shortcut points to.
        */
       filePath: string;
       /**
-       * Path where the shortcut will be placed.
+       * Optional. Path where the shortcut will be placed.
        */
       outputPath?: string;
       /**
-       * The name of the shortcut file.
+       * Optional. The name of the shortcut file.
        */
       name?: string;
       /**
-       * If `true`, will replace any existing file in the `outputPath` with matching `name`.
+       * Optional. If `true`, will replace any existing file in the `outputPath` with matching `name`.
        * 
        * **NOTE:** If `overwrite` is set to `false` and a matching file already exists, a `console.error` will occur to inform you of this, however `create-desktop-shortcuts` will still report successful (return `true`). This `console.error` can be hidden by setting `verbose` to `false`, or using a `customLogger` to [intercept it](https://github.com/nwutils/create-desktop-shortcuts/blob/main/src/library.js#L260).
        */
