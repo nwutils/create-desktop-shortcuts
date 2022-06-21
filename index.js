@@ -69,15 +69,9 @@ const library = require('./src/library.js');
  *
  * @example
  * createDesktopShortcut({
- *   windows: {
- *     filePath: 'C:\\path\\to\\executable.exe'
- *   },
- *   linux: {
- *     filePath: '/home/path/to/executable'
- *   },
- *   osx: {
- *     filePath: '/home/path/to/executable'
- *   }
+ *   windows: { filePath: 'C:\\path\\to\\executable.exe' },
+ *   linux:   { filePath: '/home/path/to/executable'     },
+ *   osx:     { filePath: '/home/path/to/executable'     }
  * });
  *
  * @param  {OPTIONS} options  Options object for each OS.
