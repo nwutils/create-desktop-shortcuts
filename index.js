@@ -14,23 +14,23 @@ const library = require('./src/library.js');
  * messages from the internal validators. Only used if verbose: true.
  *
  * @callback CUSTOMLOGGER
- * @param    {string}     message  The human readable warning/error message
- * @param    {object}     [error]  Sometimes an error or options object is passed
- * @return   {void}
+ * @param  {string} message  The human readable warning/error message
+ * @param  {object} [error]  Sometimes an error or options object is passed
+ * @return {void}
  */
 
 /**
  * @typedef  {object} WINDOWS
- * @property {string} filePath              The target the shortcut points to.
- * @property {string} [outputPath]          Path where shortcut will be placed. Defaults to user's desktop.
- * @property {string} [name]                Name of the shortcut file.
- * @property {string} [comment]             Metadata file "comment" property. Description of what the shortcut would open.
- * @property {string} [icon]                Image shown on the shortcut icon. You can also pass in an index if file contains multiple icons, like `'C:\\file.exe,0'`
- * @property {string} [arguments]           Additional arguments passed in to the end of your target `filePath`.
- * @property {string} [windowMode="normal"] How the window should be displayed by default. Valid inputs: 'normal', 'maximized', 'minimized'. Defaults to 'normal'.
- * @property {string} [hotkey]              A global hotkey to associate to opening this shortcut, like 'CTRL+ALT+F'.
- * @property {string} [workingDirectory]    The working directory for the shortcut when it launches, must be a valid path to a folder.
- * @property {string} [VBScriptPath]        This is an advanced option specifically and only for projects packaged with `pkg`. See documentation.
+ * @property {string} filePath               The target the shortcut points to.
+ * @property {string} [outputPath]           Path where shortcut will be placed. Defaults to user's desktop.
+ * @property {string} [name]                 Name of the shortcut file.
+ * @property {string} [comment]              Metadata file "comment" property. Description of what the shortcut would open.
+ * @property {string} [icon]                 Image shown on the shortcut icon. You can also pass in an index if file contains multiple icons, like `'C:\\file.exe,0'`
+ * @property {string} [arguments]            Additional arguments passed in to the end of your target `filePath`.
+ * @property {string} [windowMode="normal"]  How the window should be displayed by default. Valid inputs: 'normal', 'maximized', 'minimized'. Defaults to 'normal'.
+ * @property {string} [hotkey]               A global hotkey to associate to opening this shortcut, like 'CTRL+ALT+F'.
+ * @property {string} [workingDirectory]     The working directory for the shortcut when it launches, must be a valid path to a folder.
+ * @property {string} [VBScriptPath]         This is an advanced option specifically and only for projects packaged with `pkg`. See documentation.
  */
 
 /**
@@ -69,9 +69,15 @@ const library = require('./src/library.js');
  *
  * @example
  * createDesktopShortcut({
- *   windows: { filePath: 'C:\\path\\to\\executable.exe' },
- *   linux: { filePath: '/home/path/to/executable' },
- *   osx: { filePath: '/home/path/to/executable' }
+ *   windows: {
+ *     filePath: 'C:\\path\\to\\executable.exe'
+ *   },
+ *   linux: {
+ *     filePath: '/home/path/to/executable'
+ *   },
+ *   osx: {
+ *     filePath: '/home/path/to/executable'
+ *   }
  * });
  *
  * @param  {OPTIONS} options  Options object for each OS.
