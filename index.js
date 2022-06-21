@@ -65,7 +65,7 @@ const library = require('./src/library.js');
  */
 
 /**
- * Creates OS based shortcuts for files, folders, and applications.
+ * Creates OS based shortcuts for files, folders, urls, and applications.
  *
  * @example
  * createDesktopShortcut({
