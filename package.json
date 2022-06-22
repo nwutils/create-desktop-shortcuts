@@ -1,7 +1,7 @@
 {
   "name": "create-desktop-shortcuts",
   "main": "index.js",
-  "version": "1.10.0",
+  "version": "1.10.1",
   "description": "Easy API to create desktop shortcuts with Node",
   "author": "The Jared Wilcurt",
   "keywords": [
