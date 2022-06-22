@@ -16,9 +16,6 @@ const library = require('./src/library.js');
  * @callback {Function} CUSTOMLOGGER
  * @param    {string}   message       The human readable warning/error message
  * @param    {object}   [error]       Sometimes an error or options object is passed
- * @param    {Array}    [asdf]        asdf
- * @param    {boolean}  [qwer]        qwer
- * @param    {number}   [wert]        wert
  * @return   {void}
  */
 
