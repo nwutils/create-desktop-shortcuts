@@ -13,10 +13,13 @@ const library = require('./src/library.js');
  * Your own custom logging function called with helpful warning/error
  * messages from the internal validators. Only used if verbose: true.
  *
- * @callback CUSTOMLOGGER
- * @param  {string} message  The human readable warning/error message
- * @param  {object} [error]  Sometimes an error or options object is passed
- * @return {void}
+ * @callback {Function} CUSTOMLOGGER
+ * @param    {string}   message       The human readable warning/error message
+ * @param    {object}   [error]       Sometimes an error or options object is passed
+ * @param    {Array}    [asdf]        asdf
+ * @param    {boolean}  [qwer]        qwer
+ * @param    {number}   [wert]        wert
+ * @return   {void}
  */
 
 /**
