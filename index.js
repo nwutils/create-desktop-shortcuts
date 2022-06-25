@@ -30,7 +30,8 @@ const library = require('./src/library.js');
  * @property {string} [windowMode="normal"]  How the window should be displayed by default. Valid inputs: 'normal', 'maximized', 'minimized'. Defaults to 'normal'.
  * @property {string} [hotkey]               A global hotkey to associate to opening this shortcut, like 'CTRL+ALT+F'.
  * @property {string} [workingDirectory]     The working directory for the shortcut when it launches, must be a valid path to a folder.
- * @property {string} [VBScriptPath]         This is an advanced option specifically and only for projects packaged with `pkg`. [See documentation](https://github.com/nwutils/create-desktop-shortcuts#windows-settings).
+ * @property {string} [VBScriptPath]         This is an advanced option specifically and only for projects packaged with `pkg`.
+ *                                           [See documentation](https://github.com/nwutils/create-desktop-shortcuts#windows-settings).
  */
 
 /**
@@ -51,7 +52,8 @@ const library = require('./src/library.js');
  * @property {string}  filePath           The target the shortcut points to.
  * @property {string}  [outputPath]       Path where shortcut will be placed. Defaults to user's desktop.
  * @property {string}  [name]             Name of the shortcut file.
- * @property {boolean} [overwrite=false]  If true, will replace any existing file in the `outputPath` with matching `name`. [See documentation](https://github.com/nwutils/create-desktop-shortcuts#osx-settings).
+ * @property {boolean} [overwrite=false]  If true, will replace any existing file in the `outputPath` with matching `name`.
+ *                                        [See documentation](https://github.com/nwutils/create-desktop-shortcuts#osx-settings).
  */
 
 /**
