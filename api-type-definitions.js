@@ -60,7 +60,7 @@
 /**
  * @type {OPTIONS}
  */
-const OPTIONS;
+let OPTIONS;
 
 module.exports = {
   OPTIONS
