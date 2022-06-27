@@ -6,18 +6,19 @@
 
 const validation = require('./src/validation.js');
 const library = require('./src/library.js');
+const { OPTIONS } = require('./api-type-definitions.js');
 
 /**
- * Creates OS based shortcuts for files, folders, and applications.
+ * Creates OS based shortcuts for files, folders, urls, and applications.
  *
  * @example
  * createDesktopShortcut({
  *   windows: { filePath: 'C:\\path\\to\\executable.exe' },
- *   linux: { filePath: '/home/path/to/executable' },
- *   osx: { filePath: '/home/path/to/executable' }
+ *   linux:   { filePath: '/home/path/to/executable'     },
+ *   osx:     { filePath: '/home/path/to/executable'     }
  * });
  *
- * @param  {object}  options  Options object for each OS.
+ * @param  {OPTIONS} options  Options object for each OS, and global options
  * @return {boolean}          True = success, false = failed to create the icon or set its permissions (Linux).
  */
 function createDesktopShortcut (options) {

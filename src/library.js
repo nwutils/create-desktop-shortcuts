@@ -11,6 +11,7 @@ const exec = require('child_process').execSync;
 const spawn = require('child_process').spawnSync;
 
 const helpers = require('./helpers.js');
+const { OPTIONS } = require('../api-type-definitions.js');
 
 const library = {
   // LINUX
@@ -21,8 +22,8 @@ const library = {
    * @example
    * let fileData = generateLinuxFileData(options);
    *
-   * @param  {object} options  User's options object
-   * @return {string}          The data to be stored in the shortcut file
+   * @param  {OPTIONS} options  User's options object
+   * @return {string}           The data to be stored in the shortcut file
    */
   generateLinuxFileData: function (options) {
     if (!options || !options.linux || !options.linux.filePath) {
@@ -81,7 +82,7 @@ const library = {
    * @example
    * let success = makeLinuxShortcut(options);
    *
-   * @param  {object}  options  User's options object
+   * @param  {OPTIONS} options  User's options object
    * @return {boolean}          true = successfully made Linux shortcut
    */
   makeLinuxShortcut: function (options) {
@@ -133,7 +134,7 @@ const library = {
    * @example
    * let success = makeWindowsShortcut(options);
    *
-   * @param  {object}  options  User's options object
+   * @param  {OPTIONS} options  User's options object
    * @return {boolean}          true = successfully made Windows shortcut
    */
   makeWindowsShortcut: function (options) {
@@ -218,7 +219,7 @@ const library = {
    * @example
    * let success = makeOSXShortcut(options);
    *
-   * @param  {object}  options  User's options object
+   * @param  {OPTIONS} options  User's options object
    * @return {boolean}          true = successfully made OSX shortcut
    */
   makeOSXShortcut: function (options) {
@@ -272,7 +273,7 @@ const library = {
    * @example
    * let success = runCorrectOSs(options);
    *
-   * @param  {object}  options  User's options object
+   * @param  {OPTIONS} options  User's options object
    * @return {boolean}          true = all shortcuts created successfully
    */
   runCorrectOSs: function (options) {

@@ -19,7 +19,7 @@ const helpers = {
    *
    * @param {object} options  The user's options containing verbose and customLogger settings
    * @param {string} message  The text to be logged
-   * @param {object} error    Optional object with additional details
+   * @param {object} [error]  Optional object with additional details
    */
   throwError: function (options, message, error) {
     if (options.verbose && options.customLogger) {
