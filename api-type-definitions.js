@@ -1,4 +1,3 @@
-
 /**
  * OPTIONAL: console.error is called by default if verbose: true.
  *
@@ -50,15 +49,19 @@
 
 /**
  * @typedef  {object}       OPTIONS
- * @property {boolean}      [onlyCurrentOS=true]  Optional. Only create a shortcut for the current OS even if other OS's are passed in.
- * @property {boolean}      [verbose=true]        Optional. Logs out helpful warnings/errors using `customLogger` or console.error.
- * @property {CUSTOMLOGGER} [customLogger]        Optional. Called (if verbose: true) with helpful warning/error messages from internal validators.
- * @property {WINDOWS}      [windows]             Optional. Windows shortcut settings.
- * @property {LINUX}        [linux]               Optional. Linux shortcut settings.
- * @property {OSX}          [osx]                 Optional. OSX shortcut settings.
+ * @property {boolean}      [onlyCurrentOS=true]  Only create a shortcut for the current OS even if other OS's are passed in.
+ * @property {boolean}      [verbose=true]        Logs out helpful warnings/errors using `customLogger` or console.error.
+ * @property {CUSTOMLOGGER} [customLogger]        Called (if verbose: true) with helpful warning/error messages from internal validators.
+ * @property {WINDOWS}      [windows]             Windows shortcut settings.
+ * @property {LINUX}        [linux]               Linux shortcut settings.
+ * @property {OSX}          [osx]                 OSX shortcut settings.
  */
 
-/**@type {OPTIONS} */
-let optionsType;
+/**
+ * @type {OPTIONS}
+ */
+const OPTIONS;
 
-module.exports = { optionsType };
+module.exports = {
+  OPTIONS
+};

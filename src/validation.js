@@ -13,6 +13,7 @@ const os = require('os');
 const which = require('which');
 
 const helpers = require('./helpers.js');
+const { OPTIONS } = require('../api-type-definitions.js');
 
 const validation = {
   // SHARED
@@ -23,8 +24,8 @@ const validation = {
    * @example
    * options = validateOptions(options);
    *
-   * @param  {object} options  User's options
-   * @return {object}          Validated or mutated user options
+   * @param  {OPTIONS} options  User's options
+   * @return {OPTIONS}          Validated or mutated user options
    */
   validateOptions: function (options) {
     options = options || {};
@@ -68,9 +69,9 @@ const validation = {
    * @example
    * options = validateOutputPath(options);
    *
-   * @param  {object} options          User's options
-   * @param  {string} operatingSystem  'windows', 'linux', or 'osx'
-   * @return {object}                  Validated or mutated user options
+   * @param  {OPTIONS} options          User's options
+   * @param  {string}  operatingSystem  'windows', 'linux', or 'osx'
+   * @return {OPTIONS}                  Validated or mutated user options
    */
   validateOutputPath: function (options, operatingSystem) {
     options = this.validateOptionalString(options, operatingSystem, 'name');
@@ -133,10 +134,10 @@ const validation = {
    * @example
    * options = validateOptionalString(options);
    *
-   * @param  {object} options          User's options
-   * @param  {string} operatingSystem  'windows', 'linux', or 'osx'
-   * @param  {string} key              The key within the OS object to be validated as an optional string
-   * @return {object}                  Validated or mutated user options
+   * @param  {OPTIONS} options          User's options
+   * @param  {string}  operatingSystem  'windows', 'linux', or 'osx'
+   * @param  {string}  key              The key within the OS object to be validated as an optional string
+   * @return {OPTIONS}                  Validated or mutated user options
    */
   validateOptionalString: function (options, operatingSystem, key) {
     if (
@@ -173,11 +174,11 @@ const validation = {
    * @example
    * options = defaultBoolean(options, 'linux', 'chmod', true);
    *
-   * @param  {object}  options          User's options
+   * @param  {OPTIONS} options          User's options
    * @param  {string}  operatingSystem  'windows', 'linux', or 'osx'
    * @param  {string}  key              The key within the OS object to be validated or defaulted
    * @param  {boolean} defaultValue     The default value if no value set
-   * @return {object}                   Validated or mutated user options
+   * @return {OPTIONS}                  Validated or mutated user options
    */
   defaultBoolean: function (options, operatingSystem, key, defaultValue) {
     defaultValue = !!defaultValue;
@@ -208,8 +209,8 @@ const validation = {
    * @example
    * options = validateLinuxFilePath(options);
    *
-   * @param  {object} options  User's options
-   * @return {object}          Validated or mutated user options
+   * @param  {OPTIONS} options  User's options
+   * @return {OPTIONS}          Validated or mutated user options
    */
   validateLinuxFilePath: function (options) {
     if (!options.linux) {
@@ -270,8 +271,8 @@ const validation = {
    * @example
    * options = validateLinuxType(options);
    *
-   * @param  {object} options  User's options
-   * @return {object}          Validated or mutated user options
+   * @param  {OPTIONS} options  User's options
+   * @return {OPTIONS}          Validated or mutated user options
    */
   validateLinuxType: function (options) {
     options = this.validateOptionalString(options, 'linux', 'type');
@@ -316,8 +317,8 @@ const validation = {
    * @example
    * options = validateLinuxIcon(options);
    *
-   * @param  {object} options  User's options
-   * @return {object}          Validated or mutated user options
+   * @param  {OPTIONS} options  User's options
+   * @return {OPTIONS}          Validated or mutated user options
    */
   validateLinuxIcon: function (options) {
     options = this.validateOutputPath(options, 'linux');
@@ -355,8 +356,8 @@ const validation = {
    * @example
    * options = validateLinuxOptions(options);
    *
-   * @param  {object} options  User's options
-   * @return {object}          Validated or mutated user options
+   * @param  {OPTIONS} options  User's options
+   * @return {OPTIONS}          Validated or mutated user options
    */
   validateLinuxOptions: function (options) {
     options = this.validateLinuxFilePath(options);
@@ -383,8 +384,8 @@ const validation = {
    * @example
    * options = validateWindowsFilePath(options);
    *
-   * @param  {object} options  User's options
-   * @return {object}          Validated or mutated user options
+   * @param  {OPTIONS} options  User's options
+   * @return {OPTIONS}          Validated or mutated user options
    */
   validateWindowsFilePath: function (options) {
     if (!options.windows) {
@@ -415,8 +416,8 @@ const validation = {
    * @example
    * options = validateWindowsVBScript(options);
    *
-   * @param  {object} options  User's options
-   * @return {object}          Validated or mutated user options
+   * @param  {OPTIONS} options  User's options
+   * @return {OPTIONS}          Validated or mutated user options
    */
   validateWindowsVBScriptPath: function (options) {
     if (!options.windows) {
@@ -453,8 +454,8 @@ const validation = {
    * @example
    * options = validateWindowsWindowMode(options);
    *
-   * @param  {object} options  User's options
-   * @return {object}          Validated or mutated user options
+   * @param  {OPTIONS} options  User's options
+   * @return {OPTIONS}          Validated or mutated user options
    */
   validateWindowsWindowMode: function (options) {
     options = this.validateOptionalString(options, 'windows', 'windowMode');
@@ -482,8 +483,8 @@ const validation = {
    * @example
    * options = validateWindowsIcon(options);
    *
-   * @param  {object} options  User's options
-   * @return {object}          Validated or mutated user options
+   * @param  {OPTIONS} options  User's options
+   * @return {OPTIONS}          Validated or mutated user options
    */
   validateWindowsIcon: function (options) {
     options = this.validateOutputPath(options, 'windows');
@@ -552,8 +553,8 @@ const validation = {
    * @example
    * options = validateWindowsComment(options);
    *
-   * @param  {object} options  User's options
-   * @return {object}          Validated or mutated user options
+   * @param  {OPTIONS} options  User's options
+   * @return {OPTIONS}          Validated or mutated user options
    */
   validateWindowsComment: function (options) {
     options = this.validateOptionalString(options, 'windows', 'comment');
@@ -576,8 +577,8 @@ const validation = {
    * @example
    * options = validateWindowsWorkingDirectory(options);
    *
-   * @param  {object} options  User's options
-   * @return {object}          Validated or mutated user options
+   * @param  {OPTIONS} options  User's options
+   * @return {OPTIONS}          Validated or mutated user options
    */
   validateWindowsWorkingDirectory: function (options) {
     options = this.validateOptionalString(options, 'windows', 'workingDirectory');
@@ -607,8 +608,8 @@ const validation = {
    * @example
    * options = validateWindowsOptions(options);
    *
-   * @param  {object} options  User's options
-   * @return {object}          Validated or mutated user options
+   * @param  {OPTIONS} options  User's options
+   * @return {OPTIONS}          Validated or mutated user options
    */
   validateWindowsOptions: function (options) {
     options = this.validateWindowsFilePath(options);
@@ -635,8 +636,8 @@ const validation = {
    * @example
    * options = validateOSXFilePath(options);
    *
-   * @param  {object} options  User's options
-   * @return {object}          Validated or mutated user options
+   * @param  {OPTIONS} options  User's options
+   * @return {OPTIONS}          Validated or mutated user options
    */
   validateOSXFilePath: function (options) {
     if (!options.osx) {
@@ -665,8 +666,8 @@ const validation = {
    * @example
    * options = validateOSXOptions(options);
    *
-   * @param  {object} options  User's options
-   * @return {object}          Validated or mutated user options
+   * @param  {OPTIONS} options  User's options
+   * @return {OPTIONS}          Validated or mutated user options
    */
   validateOSXOptions: function (options) {
     options = this.validateOSXFilePath(options);
