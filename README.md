@@ -173,7 +173,7 @@ Key          | Type    | Allowed                                  | Default     
 
 OSX will automatically inherit the icon of the target you point to. It doesn't care if you point to a folder, file, or application.
 
-**NOTE:** If `overwrite` is set to `false` and a matching file already exists, a `console.error` will occur to inform you of this, however `create-desktop-shortcuts` will still report successful (return `true`). This `console.error` can be hidden by setting `verbose` to `false`, or using a `customLogger` to [intercept it](https://github.com/nwutils/create-desktop-shortcuts/blob/main/src/library.js#L260).
+**NOTE:** If `overwrite` is set to `false` and a matching file already exists, a `console.error` will occur to inform you of this, however `create-desktop-shortcuts` will still report successful (return `true`). This `console.error` can be hidden by setting `verbose` to `false`, or using a `customLogger` to [intercept it](https://github.com/nwutils/create-desktop-shortcuts/blob/main/src/library.js#L261).
 
 Key          | Type    | Allowed                     | Default                      | Description
 :--          | :--     | :--                         | :--                          | :--
