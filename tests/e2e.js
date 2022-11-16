@@ -115,7 +115,7 @@ function endTime (osBlock) {
   console.log(' ¯¯¯¯¯¯¯¯¯¯¯¯¯¯ ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯' + '\n\n');
 }
 
-const successMessage = 'Successly created and validated file.';
+const successMessage = 'Successfully created and validated file.';
 
 if (success) {
   if (!fs.existsSync(outputFile)) {
