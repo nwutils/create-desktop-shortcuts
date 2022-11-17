@@ -257,7 +257,7 @@ Parts of the `windows.vbs` were copied/modified based on:
 * Fix reported bugs with a PR
 * Offer an async and sync mode, instead of just sync.
   * Note: Make sure it can still run in older versions of NW.js
-* Help with any of the known issues listed below:
+* Help with any of the [known issues listed below](#known-issues--limitations)
 * This repo is written using `require` for imports. I would endorse anyone that wants to create a fork of this repo written in ESM that drops support for older Node versions and is written with async support (maybe promises?). Maybe call it `create-desktop-shortcuts-esm` or something.
 
 
