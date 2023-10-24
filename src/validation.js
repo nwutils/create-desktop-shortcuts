@@ -204,7 +204,7 @@ const validation = {
   /**
    * Ensures the Linux file path is valid and exists as a file,
    * folder, or url based on `type`. Resolves tilde to absolute paths.
-   * If no valide filePath is presented, deleted "linux" object.
+   * If no valid filePath is presented, deletes "linux" object.
    *
    * @example
    * options = validateLinuxFilePath(options);

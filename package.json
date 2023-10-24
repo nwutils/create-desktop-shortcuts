@@ -4,6 +4,10 @@
   "version": "1.10.1",
   "description": "Easy API to create desktop shortcuts with Node",
   "author": "The Jared Wilcurt",
+  "volta": {
+    "node": "18.14.0",
+    "npm": "9.3.1"
+  },
   "keywords": [
     "Desktop Shortcuts",
     "desktop icon",
@@ -32,17 +36,17 @@
     "which": "2.0.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.18.5",
-    "@babel/eslint-parser": "^7.18.2",
-    "eslint": "^8.18.0",
+    "@babel/core": "^7.23.2",
+    "@babel/eslint-parser": "^7.22.15",
+    "eslint": "^8.52.0",
     "eslint-config-tjw-base": "^2.0.0",
     "eslint-config-tjw-jest": "^2.0.0",
-    "eslint-config-tjw-jsdoc": "^1.0.3",
-    "eslint-plugin-jsdoc": "^39.3.3",
+    "eslint-config-tjw-jsdoc": "^1.0.5",
+    "eslint-plugin-jsdoc": "^46.8.2",
     "fs-extra": "8.1.0",
     "get-windows-shortcut-properties": "^1.1.0",
     "jest": "24.9.0",
-    "mock-fs": "^5.1.2",
+    "mock-fs": "^5.2.0",
     "path-type": "4.0.0"
   },
   "license": "MIT",

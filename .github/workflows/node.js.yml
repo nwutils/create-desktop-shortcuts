@@ -31,7 +31,7 @@ jobs:
     - if: ${{ matrix.node-version != '18.x' }}
       run: npm install -g npm@5.7.1
 
-    - run: npm ci
+    - run: npm install
     - run: npm run e2e
 
     # mock-fs dropped support for Node 10
