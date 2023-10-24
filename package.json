@@ -41,7 +41,7 @@
     "eslint": "^8.52.0",
     "eslint-config-tjw-base": "^2.0.0",
     "eslint-config-tjw-jest": "^2.0.0",
-    "eslint-config-tjw-jsdoc": "^1.0.4",
+    "eslint-config-tjw-jsdoc": "^1.0.5",
     "eslint-plugin-jsdoc": "^46.8.2",
     "fs-extra": "8.1.0",
     "get-windows-shortcut-properties": "^1.1.0",

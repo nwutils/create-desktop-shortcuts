@@ -27,7 +27,6 @@ const testHelpers = {
    *
    * @example
    * mockEnvPATH();
-   *
    */
   mockEnvPATH: function () {
     if (process && process.env) {
@@ -66,7 +65,6 @@ const testHelpers = {
    *
    * @example
    * restoreEnvPATH();
-   *
    */
   restoreEnvPATH: function () {
     if (this.PATH && process && process.env) {
@@ -237,7 +235,6 @@ const testHelpers = {
    *
    * @example
    * restoreMockFs();
-   *
    */
   restoreMockFs: function () {
     mock.restore();
