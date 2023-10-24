@@ -263,10 +263,7 @@ Parts of the `windows.vbs` were copied/modified based on:
 
 ## Running locally for development
 
-1. Pick and install a Node version manager
-   * Win 7+/Lin/OSX - [Volta](https://volta.sh)
-   * Linux/OSX - [nvm](https://github.com/nvm-sh/nvm)
-1. Use the above tool to install Node (14+) (comes with npm)
+1. Install [Volta](https://volta.sh) (Runs the Node/npm version based on the repo's `package.json` automatically)
 1. Fork/Clone the repo with `git`
 1. `npm install`
 1. You can run `npm t` to run all unit tests
