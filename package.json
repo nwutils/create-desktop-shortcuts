@@ -5,8 +5,8 @@
   "description": "Easy API to create desktop shortcuts with Node",
   "author": "The Jared Wilcurt",
   "volta": {
-    "node": "20.8.1",
-    "npm": "10.2.1"
+    "node": "18.14.0",
+    "npm": "9.3.1"
   },
   "keywords": [
     "Desktop Shortcuts",
