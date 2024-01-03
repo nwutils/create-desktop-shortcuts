@@ -392,17 +392,18 @@ const validation = {
       return options;
     }
 
-    if (options.windows.filePath) {
-      options.windows.filePath = helpers.resolveWindowsEnvironmentVariables(options.windows.filePath);
-      options.windows.filePath = this.resolvePATH(options.windows.filePath);
+    let windowsFilePath = options.windows.filePath;
+    if (windowsFilePath) {
+      windowsFilePath = helpers.resolveWindowsEnvironmentVariables(windowsFilePath);
+      windowsFilePath = this.resolvePATH(windowsFilePath);
     }
 
     if (
-      !options.windows.filePath ||
-      typeof(options.windows.filePath) !== 'string' ||
-      !fs.existsSync(options.windows.filePath)
+      !windowsFilePath ||
+      typeof(windowsFilePath) !== 'string' ||
+      !fs.existsSync(windowsFilePath)
     ) {
-      helpers.throwError(options, 'WINDOWS filePath does not exist: ' + options.windows.filePath);
+      helpers.throwError(options, 'WINDOWS filePath does not exist: ' + windowsFilePath);
       delete options.windows;
     }
 
