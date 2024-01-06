@@ -379,7 +379,7 @@ const validation = {
   /**
    * Ensures the Windows file path is valid and exists.
    * Resolves any environment variables to absolute paths
-   * during validation, original input path is not mutated.
+   * during validation (original input path is not mutated).
    * If no valid filePath is presented, deleted "windows" object.
    *
    * @example
