@@ -3,7 +3,9 @@
  * @author  TheJaredWilcurt
  */
 
-const fs = jest.requireActual('fs');
+import { vi } from "vitest";
+
+const fs = await vi.importActual('fs');
 
 const fsMock = Object.assign({}, fs, {
   writeFileSync: jest.fn((file) => {

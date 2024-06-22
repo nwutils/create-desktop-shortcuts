@@ -3,7 +3,9 @@
  * @author  TheJaredWilcurt
  */
 
-const childProcess = jest.requireActual('child_process');
+import { vi } from "vitest";
+
+const childProcess = await vi.importActual('child_process');
 
 const childProcessMock = Object.assign({}, childProcess, {
   execSync: jest.fn((executableAndArgs) => {

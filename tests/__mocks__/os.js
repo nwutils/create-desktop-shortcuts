@@ -3,7 +3,9 @@
  * @author  TheJaredWilcurt
  */
 
-const os = jest.requireActual('os');
+import { vi } from "vitest";
+
+const os = await vi.importActual('os');
 
 const osMock = Object.assign({}, os, {
   homedir: function () {

@@ -3,7 +3,9 @@
  * @author  TheJaredWilcurt
  */
 
-const path = jest.requireActual('path');
+import { vi } from "vitest";
+
+const path = await vi.importActual('path');
 
 const pathMock = Object.assign({}, path, {
   sep: '/'
