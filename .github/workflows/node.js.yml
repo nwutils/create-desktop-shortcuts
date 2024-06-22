@@ -24,5 +24,5 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm ci
     - run: npm run e2e
-      run: npm t
-      run: npm run lint
+    - run: npm t
+    - run: npm run lint
