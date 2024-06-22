@@ -50,7 +50,8 @@
     "get-windows-shortcut-properties": "^1.3.0",
     "jest": "24.9.0",
     "mock-fs": "^5.2.0",
-    "path-type": "4.0.0"
+    "path-type": "4.0.0",
+    "vitest": "^1.6.0"
   },
   "license": "MIT",
   "repository": {
