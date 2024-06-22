@@ -22,7 +22,7 @@ jobs:
     - name: Setup Node
       uses: volta-cli/action@v4.1.1
     - name: Switch Node version
-        run: volta pin node@${{ matrix.node-version }}
+      run: volta pin node@${{ matrix.node-version }}
     - name: Node.js version
       run: node -v
     - name: npm version
