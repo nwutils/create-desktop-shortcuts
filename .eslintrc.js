@@ -12,11 +12,9 @@ module.exports = {
   env: {
     es6: true,
     node: true,
-    jest: true
   },
   extends: [
     'tjw-base',
-    'tjw-jest',
     'tjw-jsdoc'
   ],
   rules: {

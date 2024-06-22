@@ -3,10 +3,13 @@
  * @author  TheJaredWilcurt
  */
 
-const createDesktopShortcut = require('../index.js');
-const testHelpers = require('@@/testHelpers.js');
+import { describe, expect, test, vi } from 'vitest';
 
-let customLogger = jest.fn();
+import createDesktopShortcut from '../index.js';
+
+import { defaults } from './testHelpers.js';
+
+let customLogger = vi.fn();
 
 describe('createDesktopShortcut', () => {
   test('Empty options', () => {
@@ -17,7 +20,7 @@ describe('createDesktopShortcut', () => {
       .toHaveBeenLastCalledWith(
         'No shortcuts were created due to lack of accurate details passed in to options object',
         {
-          ...testHelpers.defaults,
+          ...defaults,
           customLogger
         }
       );

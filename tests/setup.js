@@ -3,24 +3,28 @@
  * @author  TheJaredWilcurt
  */
 
-const os = require('os');
-const processPlatform = process.platform;
-const testHelpers = require('@@/testHelpers.js');
+import { platform } from 'node:os';
 
-if (os.platform() !== 'win32') {
+import { afterEach, beforeEach, vi } from 'vitest';
+
+import testHelpers from './testHelpers.js';
+
+const processPlatform = process.platform;
+
+if (platform() !== 'win32') {
   testHelpers.mockOsType();
 }
 
-global.beforeEach(() => {
+beforeEach(() => {
 });
 
-global.afterEach(() => {
+afterEach(() => {
   testHelpers.mockPlatform(processPlatform);
-  jest.resetModules();
-  // thing = jest.fn(); gets called, then .toHaveBeenCalledWith() will see all calls, but this clears the log after each test
-  jest.clearAllMocks();
+  vi.resetModules();
+  // thing = vi.fn(); gets called, then .toHaveBeenCalledWith() will see all calls, but this clears the log after each test
+  vi.clearAllMocks();
 });
 
 // Jest's setTimeout defaults to 5 seconds.
 // Bump the timeout to 60 seconds.
-jest.setTimeout(60 * 1000);
+vi.setConfig({ testTimeout: 60 * 1000});

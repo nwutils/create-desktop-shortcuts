@@ -3,22 +3,27 @@
  * @author  TheJaredWilcurt
  */
 
-jest.mock('os');
+import process from 'node:process';
+
+import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
+
+vi.mock('os');
+
 const processPlatform = process.platform;
 
-const helpers = require('@/helpers.js');
+import { throwError, resolveTilde, resolveWindowsEnvironmentVariables } from '../../src/helpers.js';
 
-const testHelpers = require('@@/testHelpers.js');
+import testHelpers from '../testHelpers.js';
 
 describe('helpers', () => {
   describe('throwError', () => {
     test('Custom logger is called', () => {
       const options = {
         verbose: true,
-        customLogger: jest.fn()
+        customLogger: vi.fn()
       };
 
-      helpers.throwError(options, 'message', 'error');
+      throwError(options, 'message', 'error');
 
       expect(options.customLogger)
         .toHaveBeenCalledWith('message', 'error');
@@ -27,10 +32,10 @@ describe('helpers', () => {
     test('Custom logger is not called when verbose is false', () => {
       const options = {
         verbose: false,
-        customLogger: jest.fn()
+        customLogger: vi.fn()
       };
 
-      helpers.throwError(options, 'message', 'error');
+      throwError(options, 'message', 'error');
 
       expect(options.customLogger)
         .not.toHaveBeenCalled();
@@ -38,12 +43,12 @@ describe('helpers', () => {
 
     test('Console.error called when verbose true and no custom logger', () => {
       const consoleError = console.error;
-      console.error = jest.fn();
+      console.error = vi.fn();
       const options = {
         verbose: true
       };
 
-      helpers.throwError(options, 'message', 'error');
+      throwError(options, 'message', 'error');
 
       expect(console.error)
         .toHaveBeenCalledWith('_________________________\nCreate-Desktop-Shortcuts:\nmessage', 'error');
@@ -62,37 +67,37 @@ describe('helpers', () => {
     });
 
     test('Returns undefined if nothing passed in', () => {
-      expect(helpers.resolveTilde())
+      expect(resolveTilde())
         .toEqual(undefined);
     });
 
     test('Returns undefined if non-string passed in', () => {
-      expect(helpers.resolveTilde(33))
+      expect(resolveTilde(33))
         .toEqual(undefined);
     });
 
     test('~', () => {
-      expect(helpers.resolveTilde('~'))
+      expect(resolveTilde('~'))
         .toEqual('/home/DUMMY');
     });
 
     test('~/', () => {
-      expect(helpers.resolveTilde('~/'))
+      expect(resolveTilde('~/'))
         .toEqual('/home/DUMMY/');
     });
 
     test('~/folder', () => {
-      expect(helpers.resolveTilde('~/folder'))
+      expect(resolveTilde('~/folder'))
         .toEqual('/home/DUMMY/folder');
     });
 
     test('~alias/folder', () => {
-      expect(helpers.resolveTilde('~alias/folder'))
+      expect(resolveTilde('~alias/folder'))
         .toEqual('~alias/folder');
     });
 
     test('/folder/file.ext', () => {
-      expect(helpers.resolveTilde('/folder/file.ext'))
+      expect(resolveTilde('/folder/file.ext'))
         .toEqual('/folder/file.ext');
     });
   });
@@ -107,29 +112,29 @@ describe('helpers', () => {
     });
 
     test('Returns undefined if nothing passed in', () => {
-      expect(helpers.resolveWindowsEnvironmentVariables())
+      expect(resolveWindowsEnvironmentVariables())
         .toEqual(undefined);
     });
 
     test('Returns undefined if non-string passed in', () => {
-      expect(helpers.resolveWindowsEnvironmentVariables(33))
+      expect(resolveWindowsEnvironmentVariables(33))
         .toEqual(undefined);
     });
 
     test('C:\\folder\\file.ext', () => {
-      expect(helpers.resolveWindowsEnvironmentVariables('C:\\folder\\file.ext'))
+      expect(resolveWindowsEnvironmentVariables('C:\\folder\\file.ext'))
         .toEqual('C:\\folder\\file.ext');
     });
 
     test('C:\\%KITTEN%\\file.ext', () => {
       process.env.KITTEN = 'kitty';
 
-      expect(helpers.resolveWindowsEnvironmentVariables('C:\\%KITTEN%\\file.ext'))
+      expect(resolveWindowsEnvironmentVariables('C:\\%KITTEN%\\file.ext'))
         .toEqual('C:\\kitty\\file.ext');
     });
 
     test('C:\\%PUPPY%\\file.ext', () => {
-      expect(helpers.resolveWindowsEnvironmentVariables('C:\\%PUPPY%\\file.ext'))
+      expect(resolveWindowsEnvironmentVariables('C:\\%PUPPY%\\file.ext'))
         .toEqual('C:\\%PUPPY%\\file.ext');
     });
   });

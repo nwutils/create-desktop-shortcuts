@@ -3,14 +3,16 @@
  * @author  TheJaredWilcurt
  */
 
-jest.mock('child_process');
-jest.mock('path');
-jest.mock('os');
+import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 
-const os = require('os');
+vi.mock('child_process');
+vi.mock('path');
+vi.mock('os');
 
-const validation = require('@/validation.js');
-const testHelpers = require('@@/testHelpers.js');
+import os from 'node:os';
+
+import validation from '../../src/validation';
+import testHelpers from '../testHelpers';
 
 const defaults = testHelpers.defaults;
 const mockfs = testHelpers.mockfs;
@@ -20,7 +22,7 @@ let customLogger;
 
 describe('Validation', () => {
   beforeEach(() => {
-    customLogger = jest.fn();
+    customLogger = vi.fn();
   });
 
   afterEach(() => {
@@ -55,7 +57,7 @@ describe('Validation', () => {
 
     test('Defaults', () => {
       const consoleError = console.error;
-      console.error = jest.fn();
+      console.error = vi.fn();
 
       options = {
         customLogger: 'Not a function'
