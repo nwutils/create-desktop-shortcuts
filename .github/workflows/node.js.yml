@@ -14,14 +14,17 @@ jobs:
     strategy:
       matrix:
         os: [macos-latest, windows-latest, ubuntu-latest]
-        node-version: [18.20.3]
-
+        node-version: [8, 18.20.3]
+      fail-fast: false
     steps:
-    - uses: actions/checkout@v4.1.7
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4.0.2
-      with:
-        node-version: ${{ matrix.node-version }}
+    - name: Checkout repository
+      uses: actions/checkout@v4.1.7
+    - name: Setup Node
+      uses: volta-cli/action@v4.1.1
+    - name: Node.js version
+      run: node -v
+    - name: npm version
+      run: npm -v
     - run: npm ci
     - run: npm run e2e
     - run: npm t
