@@ -6,7 +6,7 @@ on:
   pull_request:
     branches: [ main ]
 
-oncurrency:
+concurrency:
   group: ${{ github.ref }}
   cancel-in-progress: true
 
