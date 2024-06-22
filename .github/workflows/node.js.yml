@@ -29,7 +29,7 @@ jobs:
       run: volta pin node@${{ matrix.node-version }}
     - name: Node.js version
       run: node -v
-    - name: npm version
+    - if: ${{ matrix.node-version == '18.x' }}
       run: npm -v
 
     # Node 8.3.0 comes with npm 5.3.0.
