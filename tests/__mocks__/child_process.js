@@ -3,8 +3,6 @@
  * @author  TheJaredWilcurt
  */
 
-import { vi } from "vitest";
-
 const childProcess = await vi.importActual('child_process');
 
 const childProcessMock = Object.assign({}, childProcess, {

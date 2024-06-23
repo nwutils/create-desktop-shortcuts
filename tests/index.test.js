@@ -3,8 +3,6 @@
  * @author  TheJaredWilcurt
  */
 
-import { describe, expect, test, vi } from 'vitest';
-
 import createDesktopShortcut from '../index.js';
 
 import { defaults } from './testHelpers.js';

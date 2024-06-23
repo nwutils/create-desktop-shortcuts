@@ -5,8 +5,6 @@
 
 import { platform } from 'node:os';
 
-import { afterEach, beforeEach, vi } from 'vitest';
-
 import testHelpers from './testHelpers.js';
 
 const processPlatform = process.platform;

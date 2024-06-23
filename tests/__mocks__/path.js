@@ -3,8 +3,6 @@
  * @author  TheJaredWilcurt
  */
 
-import { vi } from "vitest";
-
 const path = await vi.importActual('path');
 
 const pathMock = Object.assign({}, path, {

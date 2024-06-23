@@ -3,8 +3,6 @@
  * @author  TheJaredWilcurt
  */
 
-import { vi } from "vitest";
-
 const os = await vi.importActual('os');
 
 const osMock = Object.assign({}, os, {
