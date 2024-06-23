@@ -3,7 +3,7 @@
  * @author  TheJaredWilcurt
  */
 
-const os = await vi.importActual('os');
+const os = await vi.importActual('node:os');
 
 const osMock = Object.assign({}, os, {
   homedir: function () {
@@ -14,4 +14,4 @@ const osMock = Object.assign({}, os, {
   }
 });
 
-module.exports = osMock;
+export default osMock;

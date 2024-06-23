@@ -3,16 +3,10 @@
  * @author  TheJaredWilcurt
  */
 
-vi.mock('child_process');
-vi.mock('fs');
-vi.mock('path');
-vi.mock('os');
-
 import process from 'node:process';
 
-import helpers from '../../src/helpers.js';
-
-import testHelpers from '@@/testHelpers.js';
+import helpers from '@/helpers.js';
+import testHelpers from '../testHelpers.js';
 
 describe('helpers', () => {
   describe('throwError', () => {
@@ -57,6 +51,15 @@ describe('helpers', () => {
   });
 
   describe('resolveTilde', () => {
+    beforeAll(() => {
+      vi.mock('node:os', async (module) => {
+        const os_module = await module();
+        return {
+          ...os_module,
+          homedir: process.platform === 'win32' ? 'C:\\Users\\DUMMY' : '/home/DUMMY',
+        }
+      })
+    });
     beforeEach(() => {
       testHelpers.mockPlatform('linux');
     });

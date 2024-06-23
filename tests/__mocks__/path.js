@@ -3,10 +3,10 @@
  * @author  TheJaredWilcurt
  */
 
-const path = await vi.importActual('path');
+const path = await vi.importActual('node:path');
 
 const pathMock = Object.assign({}, path, {
   sep: '/'
 });
 
-module.exports = pathMock;
+export default pathMock;

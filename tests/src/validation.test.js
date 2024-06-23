@@ -3,9 +3,6 @@
  * @author  TheJaredWilcurt
  */
 
-vi.mock('child_process');
-vi.mock('fs');
-vi.mock('path');
 vi.mock('os');
 
 import os from 'node:os';

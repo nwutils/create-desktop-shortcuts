@@ -5,8 +5,6 @@
 
 vi.mock('child_process');
 vi.mock('fs');
-vi.mock('path');
-vi.mock('os');
 
 import childProcess from 'node:child_process';
 import fs from 'node:fs';
