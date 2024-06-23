@@ -7,10 +7,6 @@
   "engines": {
     "node": ">=4"
   },
-  "volta": {
-    "node": "18.20.3",
-    "npm": "10.8.1"
-  },
   "keywords": [
     "Desktop Shortcuts",
     "desktop icon",

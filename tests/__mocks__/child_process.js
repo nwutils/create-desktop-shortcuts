@@ -6,7 +6,7 @@
 const childProcess = await vi.importActual('child_process');
 
 const childProcessMock = Object.assign({}, childProcess, {
-  execSync: jest.fn((executableAndArgs) => {
+  execSync: vi.fn((executableAndArgs) => {
     if (executableAndArgs.includes('Throw Error')) {
       throw 'Successfully errored';
     }

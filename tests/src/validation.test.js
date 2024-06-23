@@ -4,6 +4,7 @@
  */
 
 vi.mock('child_process');
+vi.mock('fs');
 vi.mock('path');
 vi.mock('os');
 
