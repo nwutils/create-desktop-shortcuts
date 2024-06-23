@@ -35,7 +35,7 @@ jobs:
     # Node 8.3.0 comes with npm 5.3.0.
     # npm 5.7.1 is the first version to support npm ci
     - if: ${{ matrix.node-version != '18.x' }}
-      run: npm install -g npm@5.7.1
+      run: volta pin npm@5.7.1
 
     - run: npm install
     - run: npm run e2e
