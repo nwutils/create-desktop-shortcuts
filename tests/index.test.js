@@ -5,7 +5,7 @@
 
 import createDesktopShortcut from '../index.js';
 
-import { defaults } from './testHelpers.js';
+import testHelpers from '@@/testHelpers.js';
 
 let customLogger = vi.fn();
 
@@ -18,7 +18,7 @@ describe('createDesktopShortcut', () => {
       .toHaveBeenLastCalledWith(
         'No shortcuts were created due to lack of accurate details passed in to options object',
         {
-          ...defaults,
+          ...testHelpers.defaults,
           customLogger
         }
       );

@@ -3,13 +3,13 @@
  * @author  TheJaredWilcurt
  */
 
-import { platform } from 'node:os';
+import os from 'node:os';
 
 import testHelpers from './testHelpers.js';
 
 const processPlatform = process.platform;
 
-if (platform() !== 'win32') {
+if (os.platform() !== 'win32') {
   testHelpers.mockOsType();
 }
 

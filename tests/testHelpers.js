@@ -3,9 +3,10 @@
  * @author  TheJaredWilcurt
  */
 
-import { join, dirname } from 'path';
-import { platform as _platform } from 'os';
-import mock, { file, restore } from 'mock-fs';
+import os from 'node:os';
+import path from 'node:path';
+
+import mock from 'mock-fs';
 
 const testHelpers = {
   /**
@@ -135,15 +136,15 @@ const testHelpers = {
    * @param {boolean} bool  mockfs causes weird issues with console.log unless it is called first from this function, true resolves this
    */
   mockfs: function (bool) {
-    const vbs = join(dirname(__dirname), 'src', 'windows.vbs');
+    const vbs = path.join(path.dirname(__dirname), 'src', 'windows.vbs');
     const vbsLinux = testHelpers.slasher(vbs);
-    const windowsExecutable = file({
+    const windowsExecutable = mock.file({
       content: 'Executable',
       mode: 33206,
       uid: 0,
       gid: 0
     });
-    const linuxExecutable = file({
+    const linuxExecutable = mock.file({
       content: 'Executable',
       mode: 33261,
       uid: 1000,
@@ -191,7 +192,7 @@ const testHelpers = {
         'file.ext': 'text'
       }
     };
-    if (_platform() === 'win32') {
+    if (os.platform() === 'win32') {
       WindowsInLinuxCI = {};
     }
 
@@ -235,7 +236,7 @@ const testHelpers = {
    * restoreMockFs();
    */
   restoreMockFs: function () {
-    restore();
+    mock.restore();
   }
 };
 

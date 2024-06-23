@@ -3,16 +3,14 @@
  * @author  TheJaredWilcurt
  */
 
-import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
-
 vi.mock('child_process');
 vi.mock('path');
 vi.mock('os');
 
 import os from 'node:os';
 
-import validation from '../../src/validation';
-import testHelpers from '../testHelpers';
+import validation from '@/validation';
+import testHelpers from '@@/testHelpers';
 
 const defaults = testHelpers.defaults;
 const mockfs = testHelpers.mockfs;

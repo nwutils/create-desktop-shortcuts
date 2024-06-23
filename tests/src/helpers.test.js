@@ -3,17 +3,13 @@
  * @author  TheJaredWilcurt
  */
 
-import process from 'node:process';
-
-import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
-
 vi.mock('os');
 
-const processPlatform = process.platform;
+import process from 'node:process';
 
-import { throwError, resolveTilde, resolveWindowsEnvironmentVariables } from '../../src/helpers.js';
+import helpers from '../../src/helpers.js';
 
-import testHelpers from '../testHelpers.js';
+import testHelpers from '@@/testHelpers.js';
 
 describe('helpers', () => {
   describe('throwError', () => {
@@ -23,7 +19,7 @@ describe('helpers', () => {
         customLogger: vi.fn()
       };
 
-      throwError(options, 'message', 'error');
+      helpers.throwError(options, 'message', 'error');
 
       expect(options.customLogger)
         .toHaveBeenCalledWith('message', 'error');
@@ -35,7 +31,7 @@ describe('helpers', () => {
         customLogger: vi.fn()
       };
 
-      throwError(options, 'message', 'error');
+      helpers.throwError(options, 'message', 'error');
 
       expect(options.customLogger)
         .not.toHaveBeenCalled();
@@ -48,7 +44,7 @@ describe('helpers', () => {
         verbose: true
       };
 
-      throwError(options, 'message', 'error');
+      helpers.throwError(options, 'message', 'error');
 
       expect(console.error)
         .toHaveBeenCalledWith('_________________________\nCreate-Desktop-Shortcuts:\nmessage', 'error');
@@ -63,41 +59,41 @@ describe('helpers', () => {
     });
 
     afterEach(() => {
-      testHelpers.mockPlatform(processPlatform);
+      testHelpers.mockPlatform(process.platform);
     });
 
     test('Returns undefined if nothing passed in', () => {
-      expect(resolveTilde())
+      expect(helpers.resolveTilde())
         .toEqual(undefined);
     });
 
     test('Returns undefined if non-string passed in', () => {
-      expect(resolveTilde(33))
+      expect(helpers.resolveTilde(33))
         .toEqual(undefined);
     });
 
     test('~', () => {
-      expect(resolveTilde('~'))
+      expect(helpers.resolveTilde('~'))
         .toEqual('/home/DUMMY');
     });
 
     test('~/', () => {
-      expect(resolveTilde('~/'))
+      expect(helpers.resolveTilde('~/'))
         .toEqual('/home/DUMMY/');
     });
 
     test('~/folder', () => {
-      expect(resolveTilde('~/folder'))
+      expect(helpers.resolveTilde('~/folder'))
         .toEqual('/home/DUMMY/folder');
     });
 
     test('~alias/folder', () => {
-      expect(resolveTilde('~alias/folder'))
+      expect(helpers.resolveTilde('~alias/folder'))
         .toEqual('~alias/folder');
     });
 
     test('/folder/file.ext', () => {
-      expect(resolveTilde('/folder/file.ext'))
+      expect(helpers.resolveTilde('/folder/file.ext'))
         .toEqual('/folder/file.ext');
     });
   });
@@ -108,33 +104,33 @@ describe('helpers', () => {
     });
 
     afterEach(() => {
-      testHelpers.mockPlatform(processPlatform);
+      testHelpers.mockPlatform(process.platform);
     });
 
     test('Returns undefined if nothing passed in', () => {
-      expect(resolveWindowsEnvironmentVariables())
+      expect(helpers.resolveWindowsEnvironmentVariables())
         .toEqual(undefined);
     });
 
     test('Returns undefined if non-string passed in', () => {
-      expect(resolveWindowsEnvironmentVariables(33))
+      expect(helpers.resolveWindowsEnvironmentVariables(33))
         .toEqual(undefined);
     });
 
     test('C:\\folder\\file.ext', () => {
-      expect(resolveWindowsEnvironmentVariables('C:\\folder\\file.ext'))
+      expect(helpers.resolveWindowsEnvironmentVariables('C:\\folder\\file.ext'))
         .toEqual('C:\\folder\\file.ext');
     });
 
     test('C:\\%KITTEN%\\file.ext', () => {
       process.env.KITTEN = 'kitty';
 
-      expect(resolveWindowsEnvironmentVariables('C:\\%KITTEN%\\file.ext'))
+      expect(helpers.resolveWindowsEnvironmentVariables('C:\\%KITTEN%\\file.ext'))
         .toEqual('C:\\kitty\\file.ext');
     });
 
     test('C:\\%PUPPY%\\file.ext', () => {
-      expect(resolveWindowsEnvironmentVariables('C:\\%PUPPY%\\file.ext'))
+      expect(helpers.resolveWindowsEnvironmentVariables('C:\\%PUPPY%\\file.ext'))
         .toEqual('C:\\%PUPPY%\\file.ext');
     });
   });
