@@ -15,6 +15,7 @@ module.exports = {
   },
   extends: [
     'tjw-base',
+    'tjw-jest',
     'tjw-jsdoc'
   ],
   rules: {
