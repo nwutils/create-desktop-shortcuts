@@ -3,15 +3,16 @@
  * @author  TheJaredWilcurt
  */
 
-import process from 'node:process';
+import os from 'node:os';
 
 import testHelpers from './testHelpers.js';
 
-if (process.platform !== 'win32') {
+if (os.platform() !== 'win32') {
   testHelpers.mockOsType();
 }
 
 beforeEach(() => {
+  vi.spyOn(os, 'homedir').mockReturnValue(process.platform === 'win32' ? 'C:\\Users\\DUMMY': '/home/DUMMY');
 });
 
 afterEach(() => {
@@ -19,4 +20,5 @@ afterEach(() => {
   vi.resetModules();
   // thing = vi.fn(); gets called, then .toHaveBeenCalledWith() will see all calls, but this clears the log after each test
   vi.clearAllMocks();
+  vi.restoreAllMocks();
 });

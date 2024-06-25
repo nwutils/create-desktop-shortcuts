@@ -51,15 +51,7 @@ describe('helpers', () => {
   });
 
   describe('resolveTilde', () => {
-    beforeAll(() => {
-      vi.mock('node:os', async (module) => {
-        const os_module = await module();
-        return {
-          ...os_module,
-          homedir: process.platform === 'win32' ? 'C:\\Users\\DUMMY' : '/home/DUMMY',
-        }
-      })
-    });
+
     beforeEach(() => {
       testHelpers.mockPlatform('linux');
     });
