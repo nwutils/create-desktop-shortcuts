@@ -3,6 +3,8 @@
  * @author  TheJaredWilcurt
  */
 
+vi.mock('os');
+
 import process from 'node:process';
 
 import helpers from '@/helpers.js';
