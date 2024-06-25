@@ -17,7 +17,7 @@ const childProcessMock = Object.assign({}, childProcess, {
       return 'C:/Powershell-derived-desktop';
     }
   }),
-  spawnSync: jest.fn((executable, args) => {
+  spawnSync: vi.fn((executable, args) => {
     if (args.includes('Throw Error')) {
       throw 'Successfully errored';
     }

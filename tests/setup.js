@@ -1,5 +1,5 @@
 /**
- * @file    The global setup for all Jest tests.
+ * @file    The global setup for all Vitest tests.
  * @author  TheJaredWilcurt
  */
 
