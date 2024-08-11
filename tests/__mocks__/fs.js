@@ -3,19 +3,19 @@
  * @author  TheJaredWilcurt
  */
 
-const fs = jest.requireActual('fs');
+const fs = await vi.importActual('fs');
 
 const fsMock = Object.assign({}, fs, {
-  writeFileSync: jest.fn((file) => {
+  writeFileSync: vi.fn((file) => {
     if (file.includes('Throw Error')) {
       throw 'Successfully errored';
     }
   }),
-  chmodSync: jest.fn((file) => {
+  chmodSync: vi.fn((file) => {
     if (file.includes('Throw chmod')) {
       throw 'Successfully errored';
     }
   })
 });
 
-module.exports = fsMock;
+export default fsMock;

@@ -3,19 +3,19 @@
  * @author  TheJaredWilcurt
  */
 
-jest.mock('os');
-const processPlatform = process.platform;
+vi.mock('os');
+import process from 'process';
 
-const helpers = require('@/helpers.js');
+import helpers from '@/helpers.js';
 
-const testHelpers = require('@@/testHelpers.js');
+import testHelpers from '../testHelpers.js';
 
 describe('helpers', () => {
   describe('throwError', () => {
     test('Custom logger is called', () => {
       const options = {
         verbose: true,
-        customLogger: jest.fn()
+        customLogger: vi.fn()
       };
 
       helpers.throwError(options, 'message', 'error');
@@ -27,7 +27,7 @@ describe('helpers', () => {
     test('Custom logger is not called when verbose is false', () => {
       const options = {
         verbose: false,
-        customLogger: jest.fn()
+        customLogger: vi.fn()
       };
 
       helpers.throwError(options, 'message', 'error');
@@ -38,7 +38,7 @@ describe('helpers', () => {
 
     test('Console.error called when verbose true and no custom logger', () => {
       const consoleError = console.error;
-      console.error = jest.fn();
+      console.error = vi.fn();
       const options = {
         verbose: true
       };
@@ -53,12 +53,13 @@ describe('helpers', () => {
   });
 
   describe('resolveTilde', () => {
+
     beforeEach(() => {
       testHelpers.mockPlatform('linux');
     });
 
     afterEach(() => {
-      testHelpers.mockPlatform(processPlatform);
+      testHelpers.mockPlatform(process.platform);
     });
 
     test('Returns undefined if nothing passed in', () => {
@@ -103,7 +104,7 @@ describe('helpers', () => {
     });
 
     afterEach(() => {
-      testHelpers.mockPlatform(processPlatform);
+      testHelpers.mockPlatform(process.platform);
     });
 
     test('Returns undefined if nothing passed in', () => {

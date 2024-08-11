@@ -3,9 +3,9 @@
  * @author  TheJaredWilcurt
  */
 
-const path = require('path');
-const os = require('os');
-const mock = require('mock-fs');
+import os from 'os';
+import path from 'path';
+import mock from 'mock-fs';
 
 const testHelpers = {
   /**
@@ -55,9 +55,7 @@ const testHelpers = {
     type = type || 'cygwin';
     if (process && process.env) {
       this.OSTYPE = process.env.OSTYPE;
-      Object.defineProperty(process.env, 'OSTYPE', {
-        value: type
-      });
+      process.env.OSTYPE = type;
     }
   },
   /**
@@ -241,4 +239,4 @@ const testHelpers = {
   }
 };
 
-module.exports = testHelpers;
+export default testHelpers;

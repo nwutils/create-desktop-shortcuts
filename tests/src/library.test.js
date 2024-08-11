@@ -3,17 +3,18 @@
  * @author  TheJaredWilcurt
  */
 
-jest.mock('child_process');
-jest.mock('fs');
-jest.mock('path');
-jest.mock('os');
+vi.mock('child_process');
+vi.mock('fs');
+vi.mock('path');
+vi.mock('os');
 
-const fs = require('fs');
-const childProcess = require('child_process');
+import fs from 'fs';
 
-const library = require('@/library.js');
-const validation = require('@/validation.js');
-const testHelpers = require('@@/testHelpers.js');
+import childProcess from 'child_process';
+
+import library from '@/library';
+import validation from '@/validation.js';
+import testHelpers from '@@/testHelpers.js';
 
 const defaults = testHelpers.defaults;
 const mockfs = testHelpers.mockfs;
@@ -23,7 +24,7 @@ let customLogger;
 
 describe('library', () => {
   beforeEach(() => {
-    customLogger = jest.fn();
+    customLogger = vi.fn();
     options = {
       customLogger
     };
@@ -545,7 +546,7 @@ describe('library', () => {
 
     test('Windows.vbs not found', () => {
       const fsExistsSync = fs.existsSync;
-      fs.existsSync = jest.fn(() => {
+      fs.existsSync = vi.fn(() => {
         return false;
       });
 

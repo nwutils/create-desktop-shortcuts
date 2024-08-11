@@ -3,7 +3,9 @@
  * @author  TheJaredWilcurt
  */
 
-const os = jest.requireActual('os');
+import process from 'process';
+
+const os = await vi.importActual('os');
 
 const osMock = Object.assign({}, os, {
   homedir: function () {
@@ -14,4 +16,4 @@ const osMock = Object.assign({}, os, {
   }
 });
 
-module.exports = osMock;
+export default osMock;

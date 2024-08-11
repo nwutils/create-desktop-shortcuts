@@ -3,10 +3,10 @@
  * @author  TheJaredWilcurt
  */
 
-const childProcess = jest.requireActual('child_process');
+const childProcess = await vi.importActual('child_process');
 
 const childProcessMock = Object.assign({}, childProcess, {
-  execSync: jest.fn((executableAndArgs) => {
+  execSync: vi.fn((executableAndArgs) => {
     if (executableAndArgs.includes('Throw Error')) {
       throw 'Successfully errored';
     }
@@ -17,11 +17,11 @@ const childProcessMock = Object.assign({}, childProcess, {
       return 'C:/Powershell-derived-desktop';
     }
   }),
-  spawnSync: jest.fn((executable, args) => {
+  spawnSync: vi.fn((executable, args) => {
     if (args.includes('Throw Error')) {
       throw 'Successfully errored';
     }
   })
 });
 
-module.exports = childProcessMock;
+export default childProcessMock;

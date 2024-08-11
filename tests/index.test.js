@@ -3,10 +3,10 @@
  * @author  TheJaredWilcurt
  */
 
-const createDesktopShortcut = require('../index.js');
-const testHelpers = require('@@/testHelpers.js');
+import createDesktopShortcut from '../index.js';
+import testHelpers from '@@/testHelpers.js';
 
-let customLogger = jest.fn();
+let customLogger = vi.fn();
 
 describe('createDesktopShortcut', () => {
   test('Empty options', () => {
