@@ -3,9 +3,9 @@
  * @author  TheJaredWilcurt
  */
 
-import os from 'node:os';
-
-import testHelpers from './testHelpers.js';
+import process from 'process';
+import os from 'os';
+import testHelpers from '@@/testHelpers.js';
 
 if (os.platform() !== 'win32') {
   testHelpers.mockOsType();

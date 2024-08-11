@@ -3,7 +3,7 @@
  * @author  TheJaredWilcurt
  */
 
-const childProcess = await vi.importActual('node:child_process');
+const childProcess = await vi.importActual('child_process');
 
 const childProcessMock = Object.assign({}, childProcess, {
   execSync: vi.fn((executableAndArgs) => {

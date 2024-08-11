@@ -4,10 +4,10 @@
  */
 
 vi.mock('os');
-
-import process from 'node:process';
+import process from 'process';
 
 import helpers from '@/helpers.js';
+
 import testHelpers from '../testHelpers.js';
 
 describe('helpers', () => {

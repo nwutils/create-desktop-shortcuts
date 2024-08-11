@@ -3,7 +3,7 @@
  * @author  TheJaredWilcurt
  */
 
-const fs = await vi.importActual('node:fs');
+const fs = await vi.importActual('fs');
 
 const fsMock = Object.assign({}, fs, {
   writeFileSync: vi.fn((file) => {

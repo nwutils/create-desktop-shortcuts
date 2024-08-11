@@ -5,9 +5,12 @@
 
 vi.mock('child_process');
 vi.mock('fs');
+vi.mock('path');
+vi.mock('os');
 
-import childProcess from 'node:child_process';
-import fs from 'node:fs';
+import fs from 'fs';
+
+import childProcess from 'child_process';
 
 import library from '@/library';
 import validation from '@/validation.js';

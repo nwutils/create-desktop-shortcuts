@@ -5,7 +5,7 @@
  * @author  TheJaredWilcurt
  */
 
-const os = require('node:os');
+const os = require('os');
 
 const helpers = {
   /**

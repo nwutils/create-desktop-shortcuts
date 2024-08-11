@@ -3,9 +3,8 @@
  * @author  TheJaredWilcurt
  */
 
-import os from 'node:os';
-import path from 'node:path';
-
+import os from 'os';
+import path from 'path';
 import mock from 'mock-fs';
 
 const testHelpers = {

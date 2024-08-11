@@ -4,7 +4,6 @@
  */
 
 import createDesktopShortcut from '../index.js';
-
 import testHelpers from '@@/testHelpers.js';
 
 let customLogger = vi.fn();

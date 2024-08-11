@@ -3,9 +3,11 @@
  * @author  TheJaredWilcurt
  */
 
+vi.mock('child_process');
+vi.mock('path');
 vi.mock('os');
 
-import os from 'node:os';
+import os from 'os';
 
 import validation from '@/validation';
 import testHelpers from '@@/testHelpers';

@@ -3,7 +3,9 @@
  * @author  TheJaredWilcurt
  */
 
-const os = await vi.importActual('node:os');
+import process from 'process';
+
+const os = await vi.importActual('os');
 
 const osMock = Object.assign({}, os, {
   homedir: function () {
