@@ -20,6 +20,8 @@ jobs:
     steps:
     - uses: actions/checkout@v4.1.7
     - uses: volta-cli/action@v4.1.1
+      with:
+        volta-version: '1.1.1'
     - run: volta pin node@${{ matrix.node-version }}
 
     # Node 8.3.0 comes with npm 5.3.0.
