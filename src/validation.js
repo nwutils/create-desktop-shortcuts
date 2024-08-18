@@ -398,7 +398,9 @@ const validation = {
       windowsFilePath = helpers.resolveWindowsEnvironmentVariables(windowsFilePath);
       windowsFilePath = this.resolvePATH(windowsFilePath);
     }
-
+    if (options.windows.isLink) {
+      return options;
+    }
     if (
       !windowsFilePath ||
       typeof(windowsFilePath) !== 'string' ||

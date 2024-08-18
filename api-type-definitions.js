@@ -22,6 +22,7 @@
  * @property {string} [hotkey]               A global hotkey to associate to opening this shortcut, like 'CTRL+ALT+F'.
  * @property {string} [workingDirectory]     The working directory for the shortcut when it launches, must be a valid path to a folder.
  * @property {string} [VBScriptPath]         This is an advanced option specifically and only for projects packaged with `pkg`.
+ * @property {string} [isLink]               This parameter indicates that it is a link or deeplink, It is using either the "http://" or "https://" protocol or a custom deeplink protocol.
  *                                           [See documentation](https://github.com/nwutils/create-desktop-shortcuts#windows-settings).
  */
 
