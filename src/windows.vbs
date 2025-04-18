@@ -32,7 +32,9 @@ sub createFile()
   objLink.WorkingDirectory = strCwd
   objLink.IconLocation = strIcon
   objLink.WindowStyle = strWindowMode
-  objLink.Hotkey = strHotkey
+  If Trim(strHotkey) <> "" Then
+    objLink.Hotkey = strHotkey
+  End If
   objLink.Save
 end sub
 
