@@ -141,7 +141,7 @@ if (success) {
     if (windowsShortcutVerified) {
       alert(true, successMessage);
     } else {
-      console.log({ expected, outputProperties });
+      console.log({ expected, actual: outputProperties });
       alert(false, 'Windows Shortcut properties mismatch');
     }
   } else if (process.platform === 'linux') {

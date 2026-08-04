@@ -101,7 +101,7 @@ const validation = {
       if (process.platform === 'win32') {
         const powershellExists = which.sync('powershell.exe', { nothrow: true });
         if (powershellExists) {
-          desktop = exec('[Environment]::GetFolderPath("Desktop")', { shell: 'powershell.exe' }) || '';
+          desktop = exec('[Environment]::GetFolderPath("Desktop")', { shell: 'powershell.exe -NoProfile' }) || '';
           desktop = desktop.toString().trim();
         }
       }

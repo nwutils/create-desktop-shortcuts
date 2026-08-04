@@ -183,6 +183,7 @@ const library = {
 
     let wscriptArguments = [
       vbsScript,
+      '-NoProfile',
       // '/NoLogo',  // Apparently this stops it from displaying a logo in the console, even though I haven't actually ever seen one
       // '/B',  // silent mode, but doesn't actually stop dialog alert windows from popping up on errors
       outputPath,
@@ -195,8 +196,10 @@ const library = {
       hotkey
     ];
 
+    console.log(wscriptArguments);
+
     try {
-      spawn('wscript', wscriptArguments);
+      spawn('cscript', wscriptArguments);
     } catch (error) {
       success = false;
       helpers.throwError(

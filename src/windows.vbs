@@ -12,14 +12,14 @@ Function replaceDoubleQuotes(str)
 End Function
 
 dim strOutputPath, strFilePath, strArgs, strComment, strCwd, strIcon, strWindowMode, strHotkey
-strOutputPath = Wscript.Arguments(0)
-strFilePath = Wscript.Arguments(1)
-strArgs = replaceDoubleQuotes(Wscript.Arguments(2))
-strComment = replaceDoubleQuotes(Wscript.Arguments(3))
-strCwd = Wscript.Arguments(4)
-strIcon = Wscript.Arguments(5)
-strWindowMode = Wscript.Arguments(6)
-strHotkey = replaceDoubleQuotes(Wscript.Arguments(7))
+strOutputPath = Wscript.Arguments(1)
+strFilePath = Wscript.Arguments(2)
+strArgs = replaceDoubleQuotes(Wscript.Arguments(3))
+strComment = replaceDoubleQuotes(Wscript.Arguments(4))
+strCwd = Wscript.Arguments(5)
+strIcon = Wscript.Arguments(6)
+strWindowMode = Wscript.Arguments(7)
+strHotkey = replaceDoubleQuotes(Wscript.Arguments(8))
 
 sub createFile()
   dim objShell, objLink
