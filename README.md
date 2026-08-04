@@ -1,4 +1,3 @@
-
 # create-desktop-shortcuts
 
 [![Build Status](https://github.com/nwutils/create-desktop-shortcuts/workflows/Build%20Status/badge.svg)](https://github.com/nwutils/create-desktop-shortcuts/actions?query=workflow%3A%22Build+Status%22+branch%3Amain) [![Unit Test Coverage: 100%](https://img.shields.io/badge/Test%20Coverage-100%25-brightgreen.svg?logo=jest)](https://github.com/nwutils/create-desktop-shortcuts/actions?query=workflow%3A%22Build+Status%22+branch%3Amain) [![End-to-End Windows Passing](https://img.shields.io/badge/E2E-Passing-brightgreen.svg?logo=windows)](https://github.com/nwutils/create-desktop-shortcuts/actions?query=workflow%3A%22Build+Status%22+branch%3Amain) [![End-to-End Linux Passing](https://img.shields.io/badge/E2E-Passing-brightgreen.svg?logo=ubuntu)](https://github.com/nwutils/create-desktop-shortcuts/actions?query=workflow%3A%22Build+Status%22+branch%3Amain) [![End-to-End OSX Passing](https://img.shields.io/badge/E2E-Passing-brightgreen.svg?logo=apple)](https://github.com/nwutils/create-desktop-shortcuts/actions?query=workflow%3A%22Build+Status%22+branch%3Amain) [![Lint Coverage: 100%](https://img.shields.io/badge/Lint%20Coverage-100%25-brightgreen.svg?logo=eslint)](https://github.com/tjw-lint) [![Compatible with Node 4+](https://img.shields.io/badge/Node-%3E%3D4.0.0-brightgreen.svg?logo=Node.js)](/package.json) [![Code of Conduct: No Ideologies](https://img.shields.io/badge/CoC-No%20Ideologies-blue)](/CODE_OF_CONDUCT.md) [![MIT Licensed](https://img.shields.io/badge/License-MIT-brightgreen)](/LICENSE)
@@ -263,7 +262,7 @@ Parts of the `windows.vbs` were copied/modified based on:
 
 ## Running locally for development
 
-1. Install [Volta](https://volta.sh) (Runs the Node/npm version based on the repo's `package.json` automatically)
+1. Install [Proto](https://github.com/TheJaredWilcurt/blog/discussions/41) (Runs the Node/npm version based on the repo's `package.json` automatically)
 1. Fork/Clone the repo with `git`
 1. `npm install`
 1. You can run `npm t` to run all unit tests
