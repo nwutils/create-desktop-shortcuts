@@ -129,7 +129,7 @@ const library = {
   },
   /**
    * Creates the data to be passed in to the VBScript based on user options.
-   * Spawns a wscript child process to create the shortcut and log if error.
+   * Spawns a cscript child process to create the shortcut and log if error.
    *
    * @example
    * let success = makeWindowsShortcut(options);
@@ -181,7 +181,7 @@ const library = {
       }
     }
 
-    let wscriptArguments = [
+    let cscriptArguments = [
       vbsScript,
       '-NoProfile',
       // '/NoLogo',  // Apparently this stops it from displaying a logo in the console, even though I haven't actually ever seen one
@@ -196,10 +196,8 @@ const library = {
       hotkey
     ];
 
-    console.log(wscriptArguments);
-
     try {
-      spawn('cscript', wscriptArguments);
+      spawn('cscript', cscriptArguments);
     } catch (error) {
       success = false;
       helpers.throwError(

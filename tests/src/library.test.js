@@ -324,9 +324,10 @@ describe('library', () => {
 
       expect(childProcess.spawnSync)
         .toHaveBeenLastCalledWith(
-          'wscript',
+          'cscript',
           [
             library.produceWindowsVBSPath(),
+            '-NoProfile',
             'C:/Users/DUMMY/Desktop/file.lnk',
             'C:/file.ext',
             '',
@@ -353,9 +354,10 @@ describe('library', () => {
 
       expect(childProcess.spawnSync)
         .toHaveBeenLastCalledWith(
-          'wscript',
+          'cscript',
           [
             library.produceWindowsVBSPath(),
+            '-NoProfile',
             'C:/Users/DUMMY/Desktop/file.lnk',
             'C:/file.ext',
             '',
@@ -382,9 +384,10 @@ describe('library', () => {
 
       expect(childProcess.spawnSync)
         .toHaveBeenLastCalledWith(
-          'wscript',
+          'cscript',
           [
             library.produceWindowsVBSPath(),
+            '-NoProfile',
             'C:/Users/DUMMY/Desktop/file.lnk',
             'C:/file.ext',
             '',
@@ -412,9 +415,10 @@ describe('library', () => {
 
       expect(childProcess.spawnSync)
         .toHaveBeenLastCalledWith(
-          'wscript',
+          'cscript',
           [
             library.produceWindowsVBSPath(),
+            '-NoProfile',
             'C:/Users/DUMMY/Desktop/file.lnk',
             'C:/Users/DUMMY/icon.dll',
             '',
@@ -441,9 +445,10 @@ describe('library', () => {
 
       expect(childProcess.spawnSync)
         .toHaveBeenLastCalledWith(
-          'wscript',
+          'cscript',
           [
             library.produceWindowsVBSPath(),
+            '-NoProfile',
             'C:/Users/DUMMY/Desktop/file.lnk',
             'C:/file.ext',
             '--force',
@@ -470,9 +475,10 @@ describe('library', () => {
 
       expect(childProcess.spawnSync)
         .toHaveBeenLastCalledWith(
-          'wscript',
+          'cscript',
           [
             library.produceWindowsVBSPath(),
+            '-NoProfile',
             'C:/Users/DUMMY/Desktop/file.lnk',
             'C:/file.ext',
             '-m __DOUBLEQUOTE__Some text__DOUBLEQUOTE__',
@@ -499,9 +505,10 @@ describe('library', () => {
 
       expect(childProcess.spawnSync)
         .toHaveBeenLastCalledWith(
-          'wscript',
+          'cscript',
           [
             library.produceWindowsVBSPath(),
+            '-NoProfile',
             'C:/Users/DUMMY/Desktop/file.lnk',
             'C:/file.ext',
             '',
@@ -528,9 +535,10 @@ describe('library', () => {
 
       expect(childProcess.spawnSync)
         .toHaveBeenLastCalledWith(
-          'wscript',
+          'cscript',
           [
             library.produceWindowsVBSPath(),
+            '-NoProfile',
             'C:/Users/DUMMY/Desktop/file.lnk',
             'C:/file.ext',
             '',
@@ -579,9 +587,10 @@ describe('library', () => {
 
       expect(childProcess.spawnSync)
         .toHaveBeenLastCalledWith(
-          'wscript',
+          'cscript',
           [
             VBScriptPath,
+            '-NoProfile',
             'C:/Users/DUMMY/Desktop/file.lnk',
             'C:/file.ext',
             '',
@@ -613,9 +622,10 @@ describe('library', () => {
 
       expect(childProcess.spawnSync)
         .toHaveBeenLastCalledWith(
-          'wscript',
+          'cscript',
           [
             library.produceWindowsVBSPath(),
+            '-NoProfile',
             'C:/Users/DUMMY/Desktop/file.lnk',
             'Throw Error',
             '',
@@ -781,9 +791,10 @@ describe('library', () => {
 
       expect(childProcess.spawnSync)
         .toHaveBeenLastCalledWith(
-          'wscript',
+          'cscript',
           [
             library.produceWindowsVBSPath(),
+            '-NoProfile',
             'C:/Users/DUMMY/Desktop/file.lnk',
             'C:/file.ext',
             '',
@@ -903,9 +914,10 @@ describe('library', () => {
 
       expect(childProcess.spawnSync)
         .toHaveBeenLastCalledWith(
-          'wscript',
+          'cscript',
           [
             library.produceWindowsVBSPath(),
+            '-NoProfile',
             '/home/DUMMY/Desktop/file.desktop',
             'C:/file.ext',
             '',
@@ -953,9 +965,10 @@ describe('library', () => {
 
       expect(childProcess.spawnSync)
         .toHaveBeenLastCalledWith(
-          'wscript',
+          'cscript',
           [
             library.produceWindowsVBSPath(),
+            '-NoProfile',
             '/home/DUMMY/Desktop/file.desktop',
             'C:/file.ext',
             '',
