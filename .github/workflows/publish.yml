@@ -14,7 +14,6 @@ jobs:
       id-token: write
       contents: read
     steps:
-    steps:
       - name: Checkout
         uses: actions/checkout@v7
       - name: Set up Volta
