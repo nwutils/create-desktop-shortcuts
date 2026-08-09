@@ -59,14 +59,8 @@
     "url": "https://github.com/nwutils/create-desktop-shortcuts/issues"
   },
   "homepage": "https://github.com/nwutils/create-desktop-shortcuts#readme",
-  "devEngines": {
-    "runtime": {
-      "name": "node",
-      "version": "18.18.0"
-    },
-    "packageManager": {
-      "name": "npm",
-      "version": "9.3.1"
-    }
+  "volta": {
+    "node": "18.18.0",
+    "npm": "9.3.1"
   }
 }

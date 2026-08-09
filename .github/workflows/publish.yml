@@ -1,8 +1,5 @@
 name: Publish to npm
 
-env:
-  PROTO_TELEMETRY: false
-
 on:
   # Only ran after a new GitHub release is published
   release:
@@ -17,20 +14,21 @@ jobs:
       id-token: write
       contents: read
     steps:
+    steps:
       - name: Checkout
         uses: actions/checkout@v7
-      - name: Set up Proto
-        uses: moonrepo/setup-toolchain@v0
+      - name: Set up Volta
+        uses: volta-cli/action@v4.2.1
         with:
-          auto-install: true
+          volta-version: '2.0.2'
       - name: Node Version
         run: node -v
       - name: npm Version
         run: npm -v
       - name: Install dependencies
         run: npm i
-      - name: OIDC requires npm 11.5.1 or above
-        run: npm i -g npm@11.5.1
+      - name: OIDC requires npm v11.5.1+
+        run: volta pin npm@11.5.1
       - name: npm Version
         run: npm -v
       - name: Publish to npm
