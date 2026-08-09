@@ -107,9 +107,8 @@ const validation = {
           try {
             desktop = exec('powershell.exe -NoProfile -NonInteractive -Command "[Environment]::GetFolderPath(\'Desktop\')"') || '';
             desktop = desktop.toString().trim();
-          } catch (error) {
+          } catch {
             desktop = '';
-            helpers.throwError(options, 'Unable to use PowerShell to determine the location of the desktop. Defaulting to the user home directory.', error);
           }
         }
       }

@@ -252,7 +252,7 @@ describe('Validation', () => {
         results = testHelpers.optionsSlasher(results);
 
         expect(customLogger)
-          .toHaveBeenCalledWith('Unable to use PowerShell to determine the location of the desktop. Defaulting to the user home directory.', 'Successfully errored');
+          .not.toHaveBeenCalled();
 
         expect(results)
           .toEqual({

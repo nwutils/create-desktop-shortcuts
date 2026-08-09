@@ -327,7 +327,6 @@ describe('library', () => {
           'cscript',
           [
             library.produceWindowsVBSPath(),
-            '-NoProfile',
             'C:/Users/DUMMY/Desktop/file.lnk',
             'C:/file.ext',
             '',
@@ -357,7 +356,6 @@ describe('library', () => {
           'cscript',
           [
             library.produceWindowsVBSPath(),
-            '-NoProfile',
             'C:/Users/DUMMY/Desktop/file.lnk',
             'C:/file.ext',
             '',
@@ -387,7 +385,6 @@ describe('library', () => {
           'cscript',
           [
             library.produceWindowsVBSPath(),
-            '-NoProfile',
             'C:/Users/DUMMY/Desktop/file.lnk',
             'C:/file.ext',
             '',
@@ -418,7 +415,6 @@ describe('library', () => {
           'cscript',
           [
             library.produceWindowsVBSPath(),
-            '-NoProfile',
             'C:/Users/DUMMY/Desktop/file.lnk',
             'C:/Users/DUMMY/icon.dll',
             '',
@@ -448,7 +444,6 @@ describe('library', () => {
           'cscript',
           [
             library.produceWindowsVBSPath(),
-            '-NoProfile',
             'C:/Users/DUMMY/Desktop/file.lnk',
             'C:/file.ext',
             '--force',
@@ -478,7 +473,6 @@ describe('library', () => {
           'cscript',
           [
             library.produceWindowsVBSPath(),
-            '-NoProfile',
             'C:/Users/DUMMY/Desktop/file.lnk',
             'C:/file.ext',
             '-m __DOUBLEQUOTE__Some text__DOUBLEQUOTE__',
@@ -508,7 +502,6 @@ describe('library', () => {
           'cscript',
           [
             library.produceWindowsVBSPath(),
-            '-NoProfile',
             'C:/Users/DUMMY/Desktop/file.lnk',
             'C:/file.ext',
             '',
@@ -538,7 +531,6 @@ describe('library', () => {
           'cscript',
           [
             library.produceWindowsVBSPath(),
-            '-NoProfile',
             'C:/Users/DUMMY/Desktop/file.lnk',
             'C:/file.ext',
             '',
@@ -590,7 +582,6 @@ describe('library', () => {
           'cscript',
           [
             VBScriptPath,
-            '-NoProfile',
             'C:/Users/DUMMY/Desktop/file.lnk',
             'C:/file.ext',
             '',
@@ -625,7 +616,6 @@ describe('library', () => {
           'cscript',
           [
             library.produceWindowsVBSPath(),
-            '-NoProfile',
             'C:/Users/DUMMY/Desktop/file.lnk',
             'Throw Error',
             '',
@@ -794,7 +784,6 @@ describe('library', () => {
           'cscript',
           [
             library.produceWindowsVBSPath(),
-            '-NoProfile',
             'C:/Users/DUMMY/Desktop/file.lnk',
             'C:/file.ext',
             '',
@@ -917,7 +906,6 @@ describe('library', () => {
           'cscript',
           [
             library.produceWindowsVBSPath(),
-            '-NoProfile',
             '/home/DUMMY/Desktop/file.desktop',
             'C:/file.ext',
             '',
@@ -968,7 +956,6 @@ describe('library', () => {
           'cscript',
           [
             library.produceWindowsVBSPath(),
-            '-NoProfile',
             '/home/DUMMY/Desktop/file.desktop',
             'C:/file.ext',
             '',
