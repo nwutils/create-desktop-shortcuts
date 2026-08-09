@@ -10,7 +10,7 @@ const childProcessMock = Object.assign({}, childProcess, {
     if (executableAndArgs.includes('Throw Error')) {
       throw 'Successfully errored';
     }
-    if (executableAndArgs === 'powershell.exe -NoProfile -NonInteractive -Command "[Environment]::GetFolderPath(\'Desktop\')"') {
+    if (executableAndArgs.endsWith('"[Environment]::GetFolderPath(\'Desktop\')"')) {
       if (global.throwInPowershell) {
         throw 'Successfully errored';
       }

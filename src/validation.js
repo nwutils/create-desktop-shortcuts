@@ -102,12 +102,10 @@ const validation = {
         const powershellExists = which.sync('powershell.exe', { nothrow: true });
         if (powershellExists) {
           // -NoProfile must be passed as an argument to powershell.exe itself.
-          // Passing it via the "shell" option is not supported by Node and the
-          // user's profile could output text that corrupts the returned path.
           try {
             desktop = exec('powershell.exe -NoProfile -NonInteractive -Command "[Environment]::GetFolderPath(\'Desktop\')"') || '';
             desktop = desktop.toString().trim();
-          } catch {
+          } catch (error) {
             desktop = '';
           }
         }
