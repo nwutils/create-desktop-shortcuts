@@ -1,0 +1,37 @@
+name: Publish to npm
+
+on:
+  # Only ran after a new GitHub release is published
+  release:
+    types: [published]
+
+jobs:
+  Release:
+    runs-on: ubuntu-latest
+    permissions:
+      # Required for OIDC to let npm registry know
+      # that this workflow is trusted
+      id-token: write
+      contents: read
+    steps:
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+      - name: Set up Volta
+        uses: volta-cli/action@v4.2.1
+        with:
+          volta-version: '2.0.2'
+      - name: Node Version
+        run: node -v
+      - name: npm Version
+        run: npm -v
+      - name: Install dependencies
+        run: npm i
+      - name: OIDC requires npm v11.5.1+
+        run: volta pin npm@11.5.1
+      - name: npm Version
+        run: npm -v
+      - name: Publish to npm
+        run: npm publish --provenance --access=public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

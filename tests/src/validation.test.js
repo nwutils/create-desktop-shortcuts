@@ -245,6 +245,28 @@ describe('Validation', () => {
         global.breakPowershell = false;
       });
 
+      test('Powershell throws an error', () => {
+        global.throwInPowershell = true;
+
+        let results = validation.validateOutputPath(options, 'windows');
+        results = testHelpers.optionsSlasher(results);
+
+        expect(customLogger)
+          .not.toHaveBeenCalled();
+
+        expect(results)
+          .toEqual({
+            ...defaults,
+            customLogger,
+            windows: {
+              filePath: 'C:/file.ext',
+              outputPath: 'C:/Users/DUMMY/Desktop/file.lnk'
+            }
+          });
+
+        global.throwInPowershell = false;
+      });
+
       test('Output and powershell does not exist', () => {
         testHelpers.restoreMockFs();
 

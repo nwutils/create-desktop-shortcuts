@@ -1,4 +1,3 @@
-
 # create-desktop-shortcuts
 
 [![Build Status](https://github.com/nwutils/create-desktop-shortcuts/workflows/Build%20Status/badge.svg)](https://github.com/nwutils/create-desktop-shortcuts/actions?query=workflow%3A%22Build+Status%22+branch%3Amain) [![Unit Test Coverage: 100%](https://img.shields.io/badge/Test%20Coverage-100%25-brightgreen.svg?logo=jest)](https://github.com/nwutils/create-desktop-shortcuts/actions?query=workflow%3A%22Build+Status%22+branch%3Amain) [![End-to-End Windows Passing](https://img.shields.io/badge/E2E-Passing-brightgreen.svg?logo=windows)](https://github.com/nwutils/create-desktop-shortcuts/actions?query=workflow%3A%22Build+Status%22+branch%3Amain) [![End-to-End Linux Passing](https://img.shields.io/badge/E2E-Passing-brightgreen.svg?logo=ubuntu)](https://github.com/nwutils/create-desktop-shortcuts/actions?query=workflow%3A%22Build+Status%22+branch%3Amain) [![End-to-End OSX Passing](https://img.shields.io/badge/E2E-Passing-brightgreen.svg?logo=apple)](https://github.com/nwutils/create-desktop-shortcuts/actions?query=workflow%3A%22Build+Status%22+branch%3Amain) [![Lint Coverage: 100%](https://img.shields.io/badge/Lint%20Coverage-100%25-brightgreen.svg?logo=eslint)](https://github.com/tjw-lint) [![Compatible with Node 4+](https://img.shields.io/badge/Node-%3E%3D4.0.0-brightgreen.svg?logo=Node.js)](/package.json) [![Code of Conduct: No Ideologies](https://img.shields.io/badge/CoC-No%20Ideologies-blue)](/CODE_OF_CONDUCT.md) [![MIT Licensed](https://img.shields.io/badge/License-MIT-brightgreen)](/LICENSE)
@@ -263,7 +262,7 @@ Parts of the `windows.vbs` were copied/modified based on:
 
 ## Running locally for development
 
-1. Install [Volta](https://volta.sh) (Runs the Node/npm version based on the repo's `package.json` automatically)
+1. Install [Proto](https://github.com/TheJaredWilcurt/blog/discussions/41) (Runs the Node/npm version based on the repo's `package.json` automatically)
 1. Fork/Clone the repo with `git`
 1. `npm install`
 1. You can run `npm t` to run all unit tests
@@ -278,7 +277,7 @@ Parts of the `windows.vbs` were copied/modified based on:
 
 ## Known issues & limitations
 
-1. **Windows:** If WScript does not like what is passed to it, it displays a Windows Dialog with an error on the line that failed. I have no idea how to turn that off, so I've just added in tons of validation checks to prevent anything from being passed in to it that could cause this. But may still occur if you pass in junk that gets by the validation checks.
+1. **Windows:** If CScript does not like what is passed to it, it displays a Windows Dialog with an error on the line that failed. I have no idea how to turn that off, so I've just added in tons of validation checks to prevent anything from being passed in to it that could cause this. But may still occur if you pass in junk that gets by the validation checks.
 1. **Linux:** No real recourse if the script does not have permission to run `chmod` on Linux. You would just need to run it again with sudo or something. If you have ideas, create an issue or PR.
 1. **OSX:** I know of no way to set a custom icon image on OSX. It will just always use the same icon the executable had (or file type if linking to an `.html` file for example)
 1. **Windows/Linux:** May want to add in `overwrite` option for Windows and Linux too. This would require deleting the existing shortcut. Deleting files is something that each OS sucks at in different ways and would require pulling in something like `fs-extra` or a similar dependency. If you need this, you can reference this [implementation code example](https://github.com/nwutils/create-desktop-shortcuts/issues/54).

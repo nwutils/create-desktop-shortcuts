@@ -124,8 +124,13 @@ if (success) {
     // We need to log the Windows time now to be accurate, as the
     // getWindowsShortcutProperties step adds ~200-400ms that we don't care about
     endTime('| WINDOWS TIME |');
-    // This is here to validate the VBS script outputted a shortcut as expected
-    const outputProperties = getWindowsShortcutProperties.sync(outputFile)[0];
+    // This is here to validate the VBS script outputted a shortcut as expected.
+    // A user's PowerShell profile may print text that ends up parsed as an extra
+    // (incorrect) shortcut. So we filter them out.
+    const allProperties = getWindowsShortcutProperties.sync(outputFile) || [];
+    const outputProperties = allProperties.filter(function (properties) {
+      return properties.FullName === outputFile;
+    })[0];
     const expected = {
       FullName: outputFile,
       Arguments: Arguments,
@@ -141,7 +146,7 @@ if (success) {
     if (windowsShortcutVerified) {
       alert(true, successMessage);
     } else {
-      console.log({ expected, outputProperties });
+      console.log({ expected, actual: outputProperties });
       alert(false, 'Windows Shortcut properties mismatch');
     }
   } else if (process.platform === 'linux') {
