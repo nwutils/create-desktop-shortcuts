@@ -101,8 +101,16 @@ const validation = {
       if (process.platform === 'win32') {
         const powershellExists = which.sync('powershell.exe', { nothrow: true });
         if (powershellExists) {
-          desktop = exec('[Environment]::GetFolderPath("Desktop")', { shell: 'powershell.exe -NoProfile' }) || '';
-          desktop = desktop.toString().trim();
+          // -NoProfile must be passed as an argument to powershell.exe itself.
+          // Passing it via the "shell" option is not supported by Node and the
+          // user's profile could output text that corrupts the returned path.
+          try {
+            desktop = exec('powershell.exe -NoProfile -NonInteractive -Command "[Environment]::GetFolderPath(\'Desktop\')"') || '';
+            desktop = desktop.toString().trim();
+          } catch (error) {
+            desktop = '';
+            helpers.throwError(options, 'Unable to use PowerShell to determine the location of the desktop. Defaulting to the user home directory.', error);
+          }
         }
       }
       desktop = desktop || path.join(os.homedir(), 'Desktop');

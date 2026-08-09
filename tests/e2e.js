@@ -125,7 +125,12 @@ if (success) {
     // getWindowsShortcutProperties step adds ~200-400ms that we don't care about
     endTime('| WINDOWS TIME |');
     // This is here to validate the VBS script outputted a shortcut as expected
-    const outputProperties = getWindowsShortcutProperties.sync(outputFile)[0];
+    // A user's PowerShell profile may print text that ends up parsed as an extra
+    // (bogus) shortcut, so we must find the entry for the shortcut we created.
+    const allProperties = getWindowsShortcutProperties.sync(outputFile) || [];
+    const outputProperties = allProperties.filter(function (properties) {
+      return properties.FullName === outputFile;
+    })[0];
     const expected = {
       FullName: outputFile,
       Arguments: Arguments,
